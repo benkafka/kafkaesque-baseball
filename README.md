@@ -5,7 +5,7 @@ A pitching tool that grades every arsenal in MLB against its exact peers and fla
 Built in Python with [pybaseball](https://github.com/jldbc/pybaseball), using 2026 and 2025 Statcast data and the MLB Stats API.
 
 **Live site:** (https://claude.ai/artifact/Eum1X3GGBGDW5qiZYjGcFf)
-**Notebook:** `Pitch_Mix_Tool.ipynb`
+**Notebook:** `Pitch_Mix_Toolv1.ipynb`
 
 ## What it does
 
