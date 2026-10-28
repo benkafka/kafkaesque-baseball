@@ -188,6 +188,12 @@ table.sl-t{min-width:820px}
 .sl-t a{color:var(--fg);font-weight:600;text-decoration:none}
 .sl-t a:hover{text-decoration:underline}
 .sl-t td small{font-family:var(--f-body)}
+.sl-sort{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.sl-sort:hover{color:var(--fg)}
+.sl-sort:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sl-t th[aria-sort="descending"] .sl-sort i::after{content:"\25BC";font-size:8px;font-style:normal}
+.sl-t th[aria-sort="ascending"] .sl-sort i::after{content:"\25B2";font-size:8px;font-style:normal}
+.sl-t th[aria-sort="descending"],.sl-t th[aria-sort="ascending"]{color:var(--fg)}
 .sl-t .up{color:var(--ok)} .sl-t .dn{color:var(--hot)} .sl-t .mu{color:var(--muted)}
 .plab-teaser{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:18px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;color:var(--fg);text-decoration:none}
 .plab-teaser:hover{border-color:var(--accent)}
@@ -537,7 +543,6 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     <a class="brand" href="#home"><b>Kafkaesque Baseball</b><span>Pitching · Beta</span></a>
     <nav class="nav" aria-label="Sections">
       <a href="#writing">Writing</a>
-      <a href="#models">On Deck</a>
       <a href="#report">Pitcher Search</a>
       <a href="#lab">Pitch Lab</a>
       <a href="#breakouts">2027 Watch List</a>
@@ -667,26 +672,6 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <div class="tags"><span class="tag">Pitch usage</span><span class="tag">Coors</span></div>
         <span class="art-go">Read on Pitcher List →</span>
       </a>
-    </div>
-  </section>
-
-  <section id="models" class="page">
-    <div class="sec-head"><h2>On Deck</h2><p>Projects · Python · Statcast</p></div>
-    <div class="grid g2">
-      <article class="panel">
-        <span class="chip c-ok">Live</span>
-        <h3>Pitch Mix Tool</h3>
-        <p>Grades every pitch a pitcher throws on stuff (Whiff+), location (Location+) and results (run value) against the same pitch, hand and batter side, then flags where his usage and his results don't match. It powers Pitcher Search, Teams and the Leaderboards.</p>
-        <div class="tags"><span class="tag">pybaseball</span><span class="tag">Statcast</span><span class="tag">563 pitchers</span></div>
-        <span class="btns"><a class="btn" href="https://colab.research.google.com/drive/111J5fH63pKgDbXyZ_mPqNP8DXhszSeCR?usp=sharing" target="_blank" rel="noopener">Read the notebook →</a><a class="btn btn-2" href="https://github.com/benkafka/kafkaesque-baseball" target="_blank" rel="noopener">View on GitHub →</a></span>
-      </article>
-      <article class="panel">
-        <span class="chip c-ok">Live</span>
-        <h3>Arm-Angle Shift Analysis</h3>
-        <p>When a pitcher's arm slot moves, what happens to his movement and his results? Every 4°+ change since 2021 (335 in all), with the fastball shape change and how his next season went. The short answer: the shape change is predictable, the results aren't.</p>
-        <div class="tags"><span class="tag">Arm angle</span><span class="tag">Movement</span></div>
-        <span class="btns"><a class="btn" href="#slots">See every slot change →</a><a class="btn btn-2" href="#leaders" data-board="arm">Arm slot leaderboard →</a></span>
-      </article>
     </div>
   </section>
 
@@ -926,7 +911,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       </div>
       <div class="rc-wrap">
         <table class="rc sl-t">
-          <thead><tr><th scope="col">Pitcher</th><th scope="col">Arm angle</th><th scope="col">Change</th><th scope="col">Fastball ride</th><th scope="col">Fastball run</th><th scope="col">Stuff+</th><th scope="col">Runs/100</th><th scope="col">Result</th></tr></thead>
+          <thead><tr><th scope="col" data-k="n" aria-sort="none"><button type="button" class="sl-sort">Pitcher<i></i></button></th><th scope="col" data-k="a1" aria-sort="none"><button type="button" class="sl-sort">Arm angle<i></i></button></th><th scope="col" data-k="d" aria-sort="none"><button type="button" class="sl-sort">Change<i></i></button></th><th scope="col" data-k="iv" aria-sort="none"><button type="button" class="sl-sort">Fastball ride<i></i></button></th><th scope="col" data-k="hb" aria-sort="none"><button type="button" class="sl-sort">Fastball run<i></i></button></th><th scope="col" data-k="st" aria-sort="none"><button type="button" class="sl-sort">Stuff+<i></i></button></th><th scope="col" data-k="rv" aria-sort="none"><button type="button" class="sl-sort">Runs/100<i></i></button></th><th scope="col" data-k="res" aria-sort="none"><button type="button" class="sl-sort">Result<i></i></button></th></tr></thead>
           <tbody id="sl-body"></tbody>
         </table>
       </div>
@@ -1546,8 +1531,8 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 </script>
 <script>
 (function(){
-  var PAGES=["home","writing","models","report","lab","breakouts","teams","leaders","shapes","slots","glossary","about"];
-  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",models:"On Deck",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Shapes",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
+  var PAGES=["home","writing","report","lab","breakouts","teams","leaders","shapes","slots","glossary","about"];
+  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Shapes",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
   var raw=window.kbShowPitcher;
   function go(pg){
     PAGES.forEach(function(p){var el=document.getElementById(p);if(el)el.classList.toggle("on",p===pg)});
@@ -1563,6 +1548,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     if(/^lab-\d+$/.test(h)){if(window.kbShowLab)window.kbShowLab(h.slice(4));go("lab");return}
     if(h.indexOf("t-")===0){if(window.kbShowTeam)window.kbShowTeam(h);go("teams");return}
     if(h==="matchups"||h==="today"){go("home");var t=document.getElementById("today");if(t)setTimeout(function(){t.scrollIntoView()},0);return}
+    if(h==="models"){go("slots");return}
     go(PAGES.indexOf(h)>-1?h:"home");
   }
   window.addEventListener("hashchange",route);
@@ -1761,11 +1747,15 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
   function sg(v,d,u){if(v==null)return '<span class="mu">–</span>';var c=v>0?"up":v<0?"dn":"mu";return '<span>'+(v>=0?"+":"−")+Math.abs(v).toFixed(d)+(u||"")+'</span>'}
   function cl(v,good){if(v==null)return "mu";if(Math.abs(v)<0.05)return "mu";return (v>0)===good?"up":"dn"}
-  var years=[2026,2025,2024,2023,2022], Y=2026, DIR="all";
+  var years=[2026,2025,2024,2023,2022], Y=2026, DIR="all", SK=null, SD=-1;
+  function val(r,k){if(k==="res")return r.rv==null?null:(r.rv>=0.5?1:r.rv<=-0.5?-1:0);return r[k]}
+  document.querySelectorAll(".sl-t th[data-k]").forEach(function(th){th.querySelector("button").addEventListener("click",function(){var k=th.dataset.k;if(SK===k){SD=-SD}else{SK=k;SD=(k==="n")?1:-1}
+    document.querySelectorAll(".sl-t th[data-k]").forEach(function(o){o.setAttribute("aria-sort",o===th?(SD>0?"ascending":"descending"):"none")});draw()})});
   var yb=document.querySelector(".sl-yr");
   yb.innerHTML=years.map(function(y){return '<button type="button" data-y="'+y+'" aria-pressed="'+(y===Y)+'">'+(y-1)+'→'+y+'</button>'}).join("");
   function draw(){
     var rows=(D.rows||[]).filter(function(r){return r.y===Y&&(DIR==="all"||(DIR==="down"?r.d<0:r.d>0))});
+    if(SK){rows=rows.slice().sort(function(x,y){var a=val(x,SK),b=val(y,SK);if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;if(SK==="n")return SD*String(a).localeCompare(String(b));return SD*(a-b)})}
     document.getElementById("sl-body").innerHTML=rows.map(function(r){
       var res=r.rv==null?'':r.rv>=0.5?'<span class="flag f-ok">Results up</span>':r.rv<=-0.5?'<span class="flag f-bad">Results down</span>':'<span class="flag f-mute">About the same</span>';
       var link='#p'+r.id+(r.y===2026?'':'-'+r.y);
