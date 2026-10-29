@@ -503,6 +503,8 @@ html.js .page.on{display:block}
 .nav a[aria-current="page"]{color:var(--fg);background:var(--panel-2)}
 section.page{padding-block:28px 12px;min-height:60vh;scroll-margin-top:100vh}
 #home .hero{padding-top:20px}
+#home .home-grid{margin-top:0}
+#home .home-fa{margin-top:36px}
 .home-grid{margin-top:8px}
 .hcard{text-decoration:none;transition:border-color .15s}
 .hcard:hover{border-color:var(--accent)}
@@ -605,66 +607,6 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 <main class="wrap" id="top">
 
   <section id="home" class="page">
-  <div class="hero">
-    <div>
-      <div class="eyebrow">Ben Kafka · Brooklyn, NY</div>
-      <h1>Pitching analysis, pitch by pitch</h1>
-      <p class="lede">A pitching tool that grades every arsenal in MLB against its exact peers and flags where a pitcher's usage doesn't match his results. Search any of 563 pitchers, compare all 30 staffs, and track arm-slot and pitch-shape changes from 2025 to 2026.</p>
-    </div>
-    <div class="scorebug" aria-label="Portfolio at a glance">
-      <header><span>Portfolio</span><span>2026</span></header>
-      <dl>
-        <div><dt>Pitchers graded</dt><dd id="pitcher-count">563</dd></div>
-        <div><dt>Pitches analyzed</dt><dd>717K</dd></div>
-        <div><dt>Staffs ranked</dt><dd>30</dd></div>
-      </dl>
-    </div>
-  </div>
-  <div class="home-fa">
-    <div class="sec-head" id="fa"><h2>Free Agency Tracker</h2><p>Every free-agent pitcher this winter, graded · signings update live from MLB</p></div>
-    <div class="panel">
-      <div class="fa-top">
-        <div class="fa-count" id="fa-count"></div>
-        <p class="fine" id="fa-feed-note">Checking MLB for signings…</p>
-      </div>
-      <div class="fa-recent" id="fa-recent" hidden></div>
-      <div class="fa-bar">
-        <div class="seg fa-st" role="group" aria-label="Status"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="avail" aria-pressed="false">Available</button><button type="button" data-v="signed" aria-pressed="false">Signed</button></div>
-        <div class="seg fa-role" role="group" aria-label="Role"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="SP" aria-pressed="false">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
-      </div>
-      <div class="fa-key"><span class="ok-club">Club option</span><span class="ok-mut">Mutual option</span><span class="ok-ply">Player option or opt-out</span><span class="ok-fa">No color: straight free agent</span></div>
-      <div class="rc-wrap">
-        <table class="rc fa-t">
-          <thead><tr>
-            <th scope="col" data-k="n" aria-sort="none"><button type="button" class="sl-sort">Pitcher<i></i></button></th>
-            <th scope="col" data-k="age" aria-sort="none"><button type="button" class="sl-sort">Age<i></i></button></th>
-            <th scope="col" data-k="v" aria-sort="descending"><button type="button" class="sl-sort">Est. AAV<i></i></button></th>
-            <th scope="col" data-k="a" aria-sort="none"><button type="button" class="sl-sort">Arsenal grade<i></i></button></th>
-            <th scope="col" data-k="s" aria-sort="none"><button type="button" class="sl-sort">Stuff+<i></i></button></th>
-            <th scope="col" data-k="rv" aria-sort="none"><button type="button" class="sl-sort">Runs/100<i></i></button></th>
-            <th scope="col" data-k="bg" aria-sort="none"><button type="button" class="sl-sort">Best pitch<i></i></button></th>
-            <th scope="col">Status</th>
-          </tr></thead>
-          <tbody id="fa-body"></tbody>
-        </table>
-      </div>
-      <button type="button" class="share-btn fa-more" id="fa-more"></button>
-      <p class="fine">Free agents from MLB.com's 2026–27 list; ages are 2027 seasonal ages. Est. AAV is the average annual value we expect him to sign for. For the five pitchers with published predictions (Bleacher Report, ESPN's insider panel, Spotrac, The Athletic's Jim Bowden), it's the average of those. For everyone else it's our estimate: projected 2027 WAR, built from his run value over the last four seasons (newest weighted most, pulled toward average), a full workload for his role scaled by how much he's actually pitched, and an age adjustment, at about $9M per win for starters and $12.6M for relievers, who get paid more per win. Grades are from each pitcher's 2026 regular season, or his most recent season with 300+ pitches when marked. Club, mutual and player options can still be exercised, which takes a pitcher off the market. Signings come from MLB's transaction feed, so contract terms don't show. Click a name for his full report card.</p>
-    </div>
-  </div>
-  <div class="home-mu" hidden>
-    <div class="sec-head" id="today"><h2>Today's Matchups</h2><p>Starting pitchers, what they do best, and how the other lineup handles it</p></div>
-    <div class="panel">
-      <div class="mu-bar">
-        <button type="button" class="share-btn" id="mu-prev" aria-label="Previous day">← Prev</button>
-        <b id="mu-date"></b>
-        <button type="button" class="share-btn" id="mu-next" aria-label="Next day">Next →</button>
-        <button type="button" class="share-btn" id="mu-today">Today</button>
-      </div>
-      <p class="fine" id="mu-note">Games, probable pitchers and lineups load live from MLB. Pitcher and team grades use 2026 regular-season Statcast data. Lineups usually post 2–4 hours before first pitch.</p>
-      <div id="mu-list" class="mu-list"><p class="fine">Loading games…</p></div>
-    </div>
-  </div>
   <div class="grid g3 home-grid">
     <a class="panel hcard" href="#report">
       <div class="meta">Pitcher Search</div>
@@ -710,6 +652,51 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     </a>
   </div>
   <p class="hc-foot">New to the numbers? <a href="#glossary">Read the glossary</a> · <a href="#about">About Ben</a></p>
+  <div class="home-fa">
+    <div class="sec-head" id="fa"><h2>Free Agency Tracker</h2><p>Every free-agent pitcher this winter, graded · signings update live from MLB</p></div>
+    <div class="panel">
+      <div class="fa-top">
+        <div class="fa-count" id="fa-count"></div>
+        <p class="fine" id="fa-feed-note">Checking MLB for signings…</p>
+      </div>
+      <div class="fa-recent" id="fa-recent" hidden></div>
+      <div class="fa-bar">
+        <div class="seg fa-st" role="group" aria-label="Status"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="avail" aria-pressed="false">Available</button><button type="button" data-v="signed" aria-pressed="false">Signed</button></div>
+        <div class="seg fa-role" role="group" aria-label="Role"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="SP" aria-pressed="false">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
+      </div>
+      <div class="fa-key"><span class="ok-club">Club option</span><span class="ok-mut">Mutual option</span><span class="ok-ply">Player option or opt-out</span><span class="ok-fa">No color: straight free agent</span></div>
+      <div class="rc-wrap">
+        <table class="rc fa-t">
+          <thead><tr>
+            <th scope="col" data-k="n" aria-sort="none"><button type="button" class="sl-sort">Pitcher<i></i></button></th>
+            <th scope="col" data-k="age" aria-sort="none"><button type="button" class="sl-sort">Age<i></i></button></th>
+            <th scope="col" data-k="v" aria-sort="descending"><button type="button" class="sl-sort">Est. AAV<i></i></button></th>
+            <th scope="col" data-k="a" aria-sort="none"><button type="button" class="sl-sort">Arsenal grade<i></i></button></th>
+            <th scope="col" data-k="s" aria-sort="none"><button type="button" class="sl-sort">Stuff+<i></i></button></th>
+            <th scope="col" data-k="rv" aria-sort="none"><button type="button" class="sl-sort">Runs/100<i></i></button></th>
+            <th scope="col" data-k="bg" aria-sort="none"><button type="button" class="sl-sort">Best pitch<i></i></button></th>
+            <th scope="col">Status</th>
+          </tr></thead>
+          <tbody id="fa-body"></tbody>
+        </table>
+      </div>
+      <button type="button" class="share-btn fa-more" id="fa-more"></button>
+      <p class="fine">Free agents from MLB.com's 2026–27 list; ages are 2027 seasonal ages. Est. AAV is the average annual value we expect him to sign for. For the five pitchers with published predictions (Bleacher Report, ESPN's insider panel, Spotrac, The Athletic's Jim Bowden), it's the average of those. For everyone else it's our estimate: projected 2027 WAR, built from his run value over the last four seasons (newest weighted most, pulled toward average), a full workload for his role scaled by how much he's actually pitched, and an age adjustment, at about $9M per win for starters and $12.6M for relievers, who get paid more per win. Grades are from each pitcher's 2026 regular season, or his most recent season with 300+ pitches when marked. Club, mutual and player options can still be exercised, which takes a pitcher off the market. Signings come from MLB's transaction feed, so contract terms don't show. Click a name for his full report card.</p>
+    </div>
+  </div>
+  <div class="home-mu" hidden>
+    <div class="sec-head" id="today"><h2>Today's Matchups</h2><p>Starting pitchers, what they do best, and how the other lineup handles it</p></div>
+    <div class="panel">
+      <div class="mu-bar">
+        <button type="button" class="share-btn" id="mu-prev" aria-label="Previous day">← Prev</button>
+        <b id="mu-date"></b>
+        <button type="button" class="share-btn" id="mu-next" aria-label="Next day">Next →</button>
+        <button type="button" class="share-btn" id="mu-today">Today</button>
+      </div>
+      <p class="fine" id="mu-note">Games, probable pitchers and lineups load live from MLB. Pitcher and team grades use 2026 regular-season Statcast data. Lineups usually post 2–4 hours before first pitch.</p>
+      <div id="mu-list" class="mu-list"><p class="fine">Loading games…</p></div>
+    </div>
+  </div>
 </section>
 
   <section id="writing" class="page">
