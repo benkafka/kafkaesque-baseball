@@ -212,6 +212,21 @@ h1{line-height:1!important}
 .fa-bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
 table.fa-t{min-width:880px}
 .fa-t td.fa-v b{font-weight:600}
+.fa-t{--o-club:#2f6fd0;--o-mut:#8a4fd0;--o-ply:#c9821a}
+.fa-t tr.o-club td{background:rgba(47,111,208,.09)} .fa-t tr.o-club td:first-child{box-shadow:inset 4px 0 0 var(--o-club)}
+.fa-t tr.o-mut td{background:rgba(138,79,208,.09)} .fa-t tr.o-mut td:first-child{box-shadow:inset 4px 0 0 var(--o-mut)}
+.fa-t tr.o-ply td{background:rgba(201,130,26,.11)} .fa-t tr.o-ply td:first-child{box-shadow:inset 4px 0 0 var(--o-ply)}
+.fa-t tr.o-club .o-pill{color:var(--o-club)} .fa-t tr.o-mut .o-pill{color:var(--o-mut)} .fa-t tr.o-ply .o-pill{color:var(--o-ply)}
+.o-pill{font-weight:600}
+.fa-key{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0 2px;font-size:12px;color:var(--muted)}
+.fa-key span{display:inline-flex;align-items:center;gap:6px}
+.fa-key span::before{content:"";width:12px;height:12px;border-radius:3px;border:1px solid var(--line)}
+.fa-key .ok-club::before{background:rgba(47,111,208,.2);border-color:#2f6fd0}
+.fa-key .ok-mut::before{background:rgba(138,79,208,.2);border-color:#8a4fd0}
+.fa-key .ok-ply::before{background:rgba(201,130,26,.24);border-color:#c9821a}
+.fa-key .ok-fa::before{background:transparent}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fa-t{--o-club:#6fa3f0;--o-mut:#b48ef0;--o-ply:#e8a94a}}
+:root[data-theme="dark"] .fa-t{--o-club:#6fa3f0;--o-mut:#b48ef0;--o-ply:#e8a94a}
 .fa-t td{font-family:var(--f-data)}
 .fa-t td:first-child{font-family:var(--f-body)}
 .fa-t a{color:var(--fg);font-weight:600;text-decoration:none}
@@ -617,6 +632,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <div class="seg fa-st" role="group" aria-label="Status"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="avail" aria-pressed="false">Available</button><button type="button" data-v="signed" aria-pressed="false">Signed</button></div>
         <div class="seg fa-role" role="group" aria-label="Role"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="SP" aria-pressed="false">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
       </div>
+      <div class="fa-key"><span class="ok-club">Club option</span><span class="ok-mut">Mutual option</span><span class="ok-ply">Player option or opt-out</span><span class="ok-fa">No color: straight free agent</span></div>
       <div class="rc-wrap">
         <table class="rc fa-t">
           <thead><tr>
@@ -1856,7 +1872,8 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var shown=rows.slice(0,SHOW);
     document.getElementById("fa-body").innerHTML=shown.map(function(p){
       var link='#p'+p.id+(p.y===2026?'':'-'+p.y);
-      return '<tr><td><a href="'+link+'">'+esc(p.n)+'</a>'+(p.y!==2026?'<span class="fa-tag">'+p.y+' data</span>':'')+'<small>'+(p.h==="L"?"LHP":"RHP")+' · '+(p.r==="SP"?"Starter":"Reliever")+(p.tm?' · '+esc(p.tm):'')+(p.note?' · '+esc(p.note):'')+'</small></td>'+
+      var oc=p.note==="club option"?"o-club":p.note==="mutual option"?"o-mut":(p.note==="player option"||p.note==="opt-out")?"o-ply":"";
+      return '<tr'+(oc?' class="'+oc+'"':'')+'><td><a href="'+link+'">'+esc(p.n)+'</a>'+(p.y!==2026?'<span class="fa-tag">'+p.y+' data</span>':'')+'<small>'+(p.h==="L"?"LHP":"RHP")+' · '+(p.r==="SP"?"Starter":"Reliever")+(p.tm?' · '+esc(p.tm):'')+(p.note?' · <span class="o-pill">'+esc(p.note)+'</span>':'')+'</small></td>'+
         '<td>'+p.age+'</td><td class="fa-v"><b>'+$m(p.v)+'</b><small>'+(p.vp?'published avg':p.war+' proj. WAR')+'</small></td><td class="'+gc(p.a)+'">'+(p.a==null?'–':p.a)+'</td><td class="'+(p.s==null?"mu":p.s>=105?"up":p.s<=95?"dn":"")+'">'+(p.s==null?'–':p.s)+'</td>'+
         '<td class="'+(p.rv==null?"mu":p.rv>=0?"up":"dn")+'">'+sgn(p.rv)+'</td><td>'+(p.bp?esc(p.bp)+' <small>'+p.bg+' grade</small>':'–')+'</td><td>'+stTxt(p)+'</td></tr>'}).join("")||'<tr><td colspan="8" class="mu">No pitchers in this group yet.</td></tr>';
     var more=document.getElementById("fa-more");
