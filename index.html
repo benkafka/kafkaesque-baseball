@@ -2254,7 +2254,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       if(/sign/.test(td)&&t.toTeam){var cur=ST[pid];if(!cur||cur.k==="opt"||(cur.d||"")<=d)ST[pid]={k:"sign",t:t.toTeam.name,d:d,x:desc}}
     });
     // option and opt-out decisions: free agency filings, reported news, then 40-man rosters after the deadline
-    var DL="2026-11-03", today=ymd(new Date()), FILED={}, NEWS=j.news||{}, ROS=j.rosters||{};
+    var DL="2026-11-06", today=ymd(new Date()), FILED={}, NEWS=j.news||{}, ROS=j.rosters||{};
     (j.transactions||[]).forEach(function(t){if(t.typeDesc==="Declared Free Agency"&&t.person)FILED[String(t.person.id)]=(t.date||"").slice(0,10)});
     L.forEach(function(p){if(!p.note||MAN[p.id]||(ST[p.id]&&ST[p.id].k==="sign"))return;
       var club=p.note==="club option", nw=NEWS[p.id];
