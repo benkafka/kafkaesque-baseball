@@ -2371,7 +2371,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var orgs=Object.keys(M.tr).sort();
     if($("mi-pros")){$("mi-org").innerHTML='<option value="">All organizations</option>'+orgs.map(function(o){return '<option>'+esc(o)+'</option>'}).join("");}
     $("mi-forg").innerHTML=orgs.map(function(o){return '<option'+(o===FO?' selected':'')+'>'+esc(o)+'</option>'}).join("");
-    if($("mi-pros")){seg("mi-lv",function(v){F.lv=v;SHOW=50;pros()});seg("mi-ro",function(v){F.ro=v;SHOW=50;pros()});seg("mi-wr",function(v){WR=v;watch()});}
+    if($("mi-pros")){seg("mi-lv",function(v){F.lv=v;SHOW=50;pros()});seg("mi-ro",function(v){F.ro=v;SHOW=50;pros()});}
     if($("mi-pros")){$("mi-org").addEventListener("change",function(){F.org=this.value;SHOW=50;pros()});}
     if($("mi-pros")){$("mi-vet").addEventListener("change",function(){F.vet=this.checked;pros()});}
     $("mi-forg").addEventListener("change",function(){FO=this.value;FOPEN={};$("mi-fmore").dataset.all="";farm();try{history.replaceState(null,"","#minors-"+FO.toLowerCase().replace(/[^a-z0-9]+/g,"-"))}catch(x){}});
@@ -2384,6 +2384,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     $("mi-fbody").addEventListener("click",function(e){toggle(e,FOPEN,farm)});
     $("mi-wbody").addEventListener("click",function(e){toggle(e,WOPEN,watch)});
     document.querySelectorAll(".mi-tabs button").forEach(function(b){b.addEventListener("click",function(){view(b.dataset.v)})});
+    seg("mi-wr",function(v){WR=v;watch()});
     view(PENDING||"farm");
   }
   var PENDING=null;
