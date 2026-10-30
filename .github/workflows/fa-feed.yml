@@ -72,6 +72,7 @@ jobs:
                            r"becomes? a free agent|hits? free agency|buyout|\bbuys? out\b", re.I)
           def classify(title, name):
               title, name = norm(title), norm(name)
+              title = title.replace("\u2019", "'").replace("\u2018", "'")
               if MAYBE.search(re.sub(re.escape(name), " ", title, flags=re.I)) or not re.search(r"option|opt(s|ed|ing)?[- ]?(out|in)\b|free agen|buyout", title, re.I):
                   return None
               last = name.split()[-1].lower()
