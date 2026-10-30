@@ -1116,7 +1116,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <div class="seg" id="mi-lv"><button type="button" data-v="all" aria-pressed="true">All tracked</button><button type="button" data-v="AAA" aria-pressed="false">Triple-A</button><button type="button" data-v="A" aria-pressed="false">Single-A (FSL)</button></div>
         <div class="seg" id="mi-ro"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="SP" aria-pressed="false">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
         <label class="mi-sel"><span class="meta">Organization</span><select id="mi-org"></select></label>
-        <label class="mi-chk"><input type="checkbox" id="mi-vet"> Include MLB veterans</label>
+        <label class="mi-chk"><input type="checkbox" id="mi-vet"> Include MLB vets (debuted before 2025)</label>
       </div>
       <div class="lb-head"><h3>Best stuff in the minors</h3><p class="fine">Ranked by K-Stuff+, scored on the big league scale: 100 means average stuff for an MLB pitcher. Min. 400 pitches for the top three.</p></div>
       <div class="lb-pod" id="mi-pod"></div>
@@ -1142,7 +1142,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <div class="seg" id="mi-wr"><button type="button" data-v="SP" aria-pressed="true">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
       <div class="panel lb-panel" style="margin-top:14px"><div class="rc-wrap"><table class="rc lb mi-t"><thead><tr><th scope="col">#</th><th scope="col">Pitcher</th><th scope="col" class="r">Age</th><th scope="col" class="r">K-Stuff+</th><th scope="col" class="r">Runs/100</th><th scope="col">Best pitch</th><th scope="col">Why he's here</th></tr></thead><tbody id="mi-wbody"></tbody></table></div></div>
     </div>
-    <p class="fine">Pitch tracking (velocity, movement, K-Stuff+, grades) exists only where Statcast tracked games in 2026: every Triple-A park and the Single-A Florida State League. Everyone else has regular stats only. K-Stuff+ uses the model trained on 2026 MLB pitches, so a minor leaguer's number is on the big league scale. Pitch grades and runs per 100 compare each pitcher with his own level. Ages are as of July 1, 2026. <b>Called up</b> means he debuted in the majors in 2026; click it to open his MLB card. Select a pitcher to see his pitches.</p>
+    <p class="fine">Pitch tracking (velocity, movement, K-Stuff+, grades) exists only where Statcast tracked games in 2026: every Triple-A park and the Single-A Florida State League. Everyone else has regular stats only. K-Stuff+ uses the model trained on 2026 MLB pitches, so a minor leaguer's number is on the big league scale. Pitch grades and runs per 100 compare each pitcher with his own level. Ages are as of July 1, 2026. <b>Called up</b> means he debuted in the majors in 2026 and <b>Debuted 2025</b> means his first MLB game came last year; both count as prospects here. <b>MLB vet</b> means he debuted before 2025. Click a tag to open his MLB card when he has one. Select a pitcher to see his pitches.</p>
   </section>
 
   <section id="teams" class="page">
@@ -2287,8 +2287,8 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function best(e){if(!e.c||!e.c.length)return null;var c=e.c.filter(function(x){return x[1]>=60});if(!c.length)c=e.c;return c.slice().sort(function(a,b){return b[3]-a[3]})[0]}
   function fbv(e){if(!e.c)return null;var f=e.c.filter(function(x){return x[0]==="FF"||x[0]==="SI"}).sort(function(a,b){return b[1]-a[1]})[0];return f?f[2]:null}
   function lvls(e){var s={};(e.s||[]).forEach(function(l){s[l[0]]=1});return Object.keys(s).sort(function(a,b){return LVO[a]-LVO[b]})}
-  function tag(id,e){if(!e.deb)return '';if(e.deb.indexOf("2026")===0)return e.mlb?'<a class="mi-tag up" href="#p'+id+'" onclick="event.stopPropagation()">Called up</a>':'<span class="mi-tag up">Called up</span>';return e.mlb?'<a class="mi-tag vet" href="#p'+id+'" onclick="event.stopPropagation()">MLB vet</a>':'<span class="mi-tag vet">MLB vet</span>'}
-  function isPros(e){return !e.deb||e.deb.indexOf("2026")===0}
+  function tag(id,e){if(!e.deb)return '';var y=+e.deb.slice(0,4),lab=y===2026?"Called up":y===2025?"Debuted 2025":"MLB vet",cl=y>=2025?"up":"vet";return e.mlb?'<a class="mi-tag '+cl+'" href="#p'+id+'" onclick="event.stopPropagation()">'+lab+'</a>':'<span class="mi-tag '+cl+'">'+lab+'</span>'}
+  function isPros(e){return !e.deb||+e.deb.slice(0,4)>=2025}
   function det(id,e,cols){
     if(!e.r)return '<tr class="mi-det"><td colspan="'+cols+'"><span class="fine">No pitch tracking for this pitcher: his levels weren’t tracked in 2026.</span></td></tr>';
     var h='<tr class="mi-det"><td colspan="'+cols+'"><table><thead><tr><th>Pitch</th><th>Usage</th><th>Velo</th><th>Ride</th><th>Run</th><th>Whiff+</th><th>K-Stuff+</th><th>Grade</th><th>Runs/100 vs lvl</th><th>Pitches</th></tr></thead><tbody>';
