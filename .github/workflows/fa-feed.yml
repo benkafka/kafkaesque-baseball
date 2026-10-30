@@ -43,7 +43,8 @@ jobs:
           declared = {t["person"]["id"] for t in keep if t["typeDesc"] == "Declared Free Agency"}
 
           # 2. Who is on a 40-man roster right now (only the free agents with options matter)
-          opts = json.load(open("fa_options.json"))
+          everyone = json.load(open("fa_options.json"))      # all free agent pitchers on the tracker
+          opts = [o for o in everyone if o.get("note")]       # the ones with an option or opt-out
           want = {o["id"] for o in opts}
           rosters = {}
           teams = json.loads(get("https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2026")).get("teams", [])
@@ -122,11 +123,66 @@ jobs:
                   print(o["n"], "->", best["k"], "|", best["title"])
               time.sleep(1)
 
-          new = {"transactions": keep, "rosters": rosters, "news": news}
+
+          # 4. Contract terms (years and dollars) for anyone who signed or stayed, from headlines
+          WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9,
+                   "ten": 10, "eleven": 11, "twelve": 12}
+          AMT = r"\$\s?(\d+(?:\.\d+)?)\s*(billion|bn|b|million|mm|m)\b"
+          DEAL = re.compile(r"\b(\d{1,2}|" + "|".join(WORDS) + r")[- ]years?,?\s*(?:deal\s*)?(?:worth\s*)?" + AMT, re.I)
+          DEAL2 = re.compile(AMT + r"\s*(?:deal\s*|contract\s*)?(?:over|for)\s*(\d{1,2}|" + "|".join(WORDS) + r")\s*years", re.I)
+          OPTV = re.compile(AMT + r"\s*(?:\d{4}\s*)?(?:club |team |player |mutual )?option", re.I)
+          def money(v, unit):
+              v = float(v)
+              return v * 1000 if unit.lower() in ("billion", "bn", "b") else v
+          def terms(title, name, kind):
+              t = norm(title).replace("’", "'")
+              if norm(name).split()[-1].lower() not in t.lower() or MAYBE.search(re.sub(re.escape(norm(name)), " ", t, flags=re.I)):
+                  return None
+              m = DEAL.search(t)
+              if m:
+                  y = m.group(1).lower(); y = WORDS.get(y, None) or int(y)
+                  return {"yrs": y, "tot": round(money(m.group(2), m.group(3)), 1)}
+              m = DEAL2.search(t)
+              if m:
+                  y = m.group(3).lower(); y = WORDS.get(y, None) or int(y)
+                  return {"yrs": y, "tot": round(money(m.group(1), m.group(2)), 1)}
+              if kind == "option":
+                  m = OPTV.search(t)
+                  if m:
+                      return {"yrs": 1, "tot": round(money(m.group(1), m.group(2)), 1)}
+              return None
+
+          contracts = dict(old.get("contracts", {}))
+          signed = {str(t["person"]["id"]) for t in keep if "sign" in t["typeDesc"].lower() and t.get("toTeam")}
+          stayed = {pid for pid, n in news.items() if n["k"] == "stay"}
+          names = {str(o["id"]): o for o in everyone}
+          for pid in sorted((signed | stayed) & set(names)):
+              if pid in contracts:
+                  continue
+              o = names[pid]
+              kind = "deal" if pid in signed else "option"
+              q = urllib.parse.quote(f'"{o["n"]}" ' + ("contract OR deal OR signs OR agree" if kind == "deal" else "option") + " when:30d")
+              try:
+                  feed = ET.fromstring(get(f"https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en"))
+              except Exception as e:
+                  print("terms failed", o["n"], e)
+                  continue
+              for it in feed.iter("item"):
+                  title = re.sub(r"\s+-\s+[^-]+$", "", (it.findtext("title") or "").strip())
+                  tm = terms(title, o["n"], kind)
+                  if tm and (kind == "option" or tm["yrs"] >= 1):
+                      src = (it.find("source").text if it.find("source") is not None else "") or ""
+                      tm.update({"title": title[:200], "src": src[:60]})
+                      contracts[pid] = tm
+                      print("terms:", o["n"], tm["yrs"], "yr", tm["tot"], "|", title)
+                      break
+              time.sleep(1)
+
+          new = {"transactions": keep, "rosters": rosters, "news": news, "contracts": contracts}
           if any(old.get(k) != v for k, v in new.items()):
               new["updated"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
               json.dump(new, open("fa_transactions.json", "w"), separators=(",", ":"))
-          print(len(keep), "transactions,", len(rosters), "option players on 40-man rosters,", len(news), "news decisions")
+          print(len(keep), "transactions,", len(rosters), "option players on 40-man rosters,", len(news), "news decisions,", len(contracts), "contracts")
           PY
 
       - name: Save it to the site
