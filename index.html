@@ -1891,7 +1891,8 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   var note=document.getElementById("fa-feed-note");
   function ymd(d){return d.toISOString().slice(0,10)}
   var end=new Date();end.setDate(end.getDate()+1);
-  fetch("https://statsapi.mlb.com/api/v1/transactions?sportId=1&startDate=2026-10-28&endDate="+ymd(end)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
+  function getJ(u){return fetch(u,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
+  getJ("fa_transactions.json?v="+Date.now()).catch(function(){return getJ("https://statsapi.mlb.com/api/v1/transactions?sportId=1&startDate=2026-10-28&endDate="+ymd(end))}).then(function(j){
     (j.transactions||[]).forEach(function(t){
       var pid=t.person&&String(t.person.id);if(!pid||!ids[pid]||MAN[pid])return;
       var desc=t.description||"", td=(t.typeDesc||"").toLowerCase(), team=t.toTeam&&t.toTeam.name||t.fromTeam&&t.fromTeam.name||"";
@@ -1900,7 +1901,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       if(/sign/.test(td)&&t.toTeam){var cur=ST[pid];if(!cur||cur.k==="opt"||(cur.d||"")<=d)ST[pid]={k:"sign",t:t.toTeam.name,d:d,x:desc}}
     });
     var n=Object.keys(ST).length;
-    note.textContent="Signings checked live against MLB's transaction feed "+(n?"("+n+" so far).":"(none yet).");
+    var up=j.updated?new Date(j.updated):null;note.textContent="Signings come from MLB's transaction feed, checked every 3 hours"+(up&&!isNaN(up)?" (last change "+up.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+")":"")+". "+(n?n+" off the market so far.":"None off the market yet.");
     draw();
   }).catch(function(){note.textContent="Couldn’t reach MLB’s transaction feed right now, so signings may be missing. Try again in a bit."});
 })();
