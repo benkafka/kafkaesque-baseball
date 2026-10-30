@@ -1,0 +1,266 @@
+[
+{
+"id": 656876,
+"n": "Drew Rasmussen",
+"tm": "Tampa Bay Rays",
+"note": "club option"
+},
+{
+"id": 543243,
+"n": "Sonny Gray",
+"tm": "Boston Red Sox",
+"note": "mutual option"
+},
+{
+"id": 571510,
+"n": "Matthew Boyd",
+"tm": "Chicago Cubs",
+"note": "mutual option"
+},
+{
+"id": 601713,
+"n": "Nick Pivetta",
+"tm": "San Diego Padres",
+"note": "club option"
+},
+{
+"id": 645261,
+"n": "Sandy Alcantara",
+"tm": "Miami Marlins",
+"note": "club option"
+},
+{
+"id": 607259,
+"n": "Nick Martinez",
+"tm": "Tampa Bay Rays",
+"note": "mutual option"
+},
+{
+"id": 647336,
+"n": "Michael Soroka",
+"tm": "Arizona Diamondbacks",
+"note": "mutual option"
+},
+{
+"id": 605280,
+"n": "Clay Holmes",
+"tm": "Chicago Cubs",
+"note": "opt-out"
+},
+{
+"id": 650633,
+"n": "Michael King",
+"tm": "San Diego Padres",
+"note": "opt-out"
+},
+{
+"id": 622663,
+"n": "Luis Severino",
+"tm": "Athletics",
+"note": "player option"
+},
+{
+"id": 669160,
+"n": "Dustin May",
+"tm": "Milwaukee Brewers",
+"note": "mutual option"
+},
+{
+"id": 607067,
+"n": "Colin Rea",
+"tm": "Chicago Cubs",
+"note": "club option"
+},
+{
+"id": 608337,
+"n": "Lucas Giolito",
+"tm": "San Diego Padres",
+"note": "mutual option"
+},
+{
+"id": 605488,
+"n": "Jeffrey Springs",
+"tm": "Athletics",
+"note": "club option"
+},
+{
+"id": 621244,
+"n": "José Berríos",
+"tm": "Toronto Blue Jays",
+"note": "opt-out"
+},
+{
+"id": 656288,
+"n": "Griffin Canning",
+"tm": "San Diego Padres",
+"note": "mutual option"
+},
+{
+"id": 837227,
+"n": "Tatsuya Imai",
+"tm": "Houston Astros",
+"note": "opt-out"
+},
+{
+"id": 669203,
+"n": "Corbin Burnes",
+"tm": "Arizona Diamondbacks",
+"note": "opt-out"
+},
+{
+"id": 621107,
+"n": "Zach Eflin",
+"tm": "Baltimore Orioles",
+"note": "mutual option"
+},
+{
+"id": 664062,
+"n": "Tony Gonsolin",
+"tm": "Los Angeles Dodgers",
+"note": "club option"
+},
+{
+"id": 676477,
+"n": "Garrett Whitlock",
+"tm": "Boston Red Sox",
+"note": "club option"
+},
+{
+"id": 662253,
+"n": "Andrés Muñoz",
+"tm": "Seattle Mariners",
+"note": "club option"
+},
+{
+"id": 641941,
+"n": "Emilio Pagán",
+"tm": "Cincinnati Reds",
+"note": "opt-out"
+},
+{
+"id": 542888,
+"n": "Shawn Armstrong",
+"tm": "Cleveland Guardians",
+"note": "mutual option"
+},
+{
+"id": 661403,
+"n": "Emmanuel Clase",
+"tm": "Cleveland Guardians",
+"note": "club option"
+},
+{
+"id": 596001,
+"n": "Jakob Junis",
+"tm": "Texas Rangers",
+"note": "mutual option"
+},
+{
+"id": 608032,
+"n": "Carlos Estévez",
+"tm": "Kansas City Royals",
+"note": "club option"
+},
+{
+"id": 593974,
+"n": "Wandy Peralta",
+"tm": "San Diego Padres",
+"note": "player option"
+},
+{
+"id": 622608,
+"n": "Antonio Senzatela",
+"tm": "Milwaukee Brewers",
+"note": "club option"
+},
+{
+"id": 573204,
+"n": "Caleb Thielbar",
+"tm": "Chicago Cubs",
+"note": "mutual option"
+},
+{
+"id": 445276,
+"n": "Kenley Jansen",
+"tm": "Detroit Tigers",
+"note": "club option"
+},
+{
+"id": 623454,
+"n": "Drew Anderson",
+"tm": "Detroit Tigers",
+"note": "club option"
+},
+{
+"id": 608650,
+"n": "Dietrich Enns",
+"tm": "Baltimore Orioles",
+"note": "club option"
+},
+{
+"id": 657097,
+"n": "Jacob Webb",
+"tm": "Chicago Cubs",
+"note": "club option"
+},
+{
+"id": 606996,
+"n": "Kyle Hart",
+"tm": "San Diego Padres",
+"note": "club option"
+},
+{
+"id": 640451,
+"n": "Hunter Harvey",
+"tm": "Washington Nationals",
+"note": "mutual option"
+},
+{
+"id": 664854,
+"n": "Ryan Helsley",
+"tm": "St. Louis Cardinals",
+"note": "opt-out"
+},
+{
+"id": 572955,
+"n": "Pierce Johnson",
+"tm": "Cincinnati Reds",
+"note": "mutual option"
+},
+{
+"id": 673513,
+"n": "Yuki Matsui",
+"tm": "San Diego Padres",
+"note": "opt-out"
+},
+{
+"id": 592773,
+"n": "Ryne Stanek",
+"tm": "St. Louis Cardinals",
+"note": "club option"
+},
+{
+"id": 596112,
+"n": "Robert Stephenson",
+"tm": "Tampa Bay Rays",
+"note": "club option"
+},
+{
+"id": 663986,
+"n": "Trevor Stephan",
+"tm": "Cleveland Guardians",
+"note": "club option"
+},
+{
+"id": 592858,
+"n": "Rowan Wick",
+"tm": "Chicago Cubs",
+"note": "club option"
+},
+{
+"id": 680802,
+"n": "Ryan Weiss",
+"tm": "Houston Astros",
+"note": "club option"
+}
+]
