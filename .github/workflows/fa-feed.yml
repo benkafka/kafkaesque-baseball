@@ -14,36 +14,118 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download MLB transactions
+      - name: Download transactions, 40-man rosters and option news
         run: |
           python3 - <<'PY'
-          import datetime, json, os, urllib.request
+          import datetime, json, os, re, time, urllib.parse, urllib.request
+          import xml.etree.ElementTree as ET
+
+          def get(url, timeout=60):
+              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (kafkaesque-baseball)"})
+              return urllib.request.urlopen(req, timeout=timeout).read()
+
+          old = json.load(open("fa_transactions.json")) if os.path.exists("fa_transactions.json") else {}
+
+          # 1. Every MLB transaction since the World Series (signings, free agency filings, trades)
           end = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
-          url = ("https://statsapi.mlb.com/api/v1/transactions"
-                 f"?sportId=1&startDate=2026-10-28&endDate={end}")
-          req = urllib.request.Request(url, headers={"User-Agent": "kafkaesque-baseball"})
-          data = json.load(urllib.request.urlopen(req, timeout=60))
+          data = json.loads(get("https://statsapi.mlb.com/api/v1/transactions"
+                                f"?sportId=1&startDate=2026-10-28&endDate={end}"))
           keep = []
           for t in data.get("transactions", []):
               person = t.get("person") or {}
               if not person.get("id"):
                   continue
               team = lambda k: {"name": (t.get(k) or {}).get("name", "")} if t.get(k) else None
-              keep.append({"person": {"id": person["id"]},
-                           "typeDesc": t.get("typeDesc", ""),
-                           "description": t.get("description", ""),
-                           "date": t.get("date", ""),
-                           "effectiveDate": t.get("effectiveDate", ""),
-                           "toTeam": team("toTeam"),
+              keep.append({"person": {"id": person["id"]}, "typeDesc": t.get("typeDesc", ""),
+                           "description": t.get("description", ""), "date": t.get("date", ""),
+                           "effectiveDate": t.get("effectiveDate", ""), "toTeam": team("toTeam"),
                            "fromTeam": team("fromTeam")})
-          old = None
-          if os.path.exists("fa_transactions.json"):
-              old = json.load(open("fa_transactions.json")).get("transactions")
-          if old != keep:
-              now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
-              json.dump({"updated": now, "transactions": keep},
-                        open("fa_transactions.json", "w"), separators=(",", ":"))
-          print(len(keep), "transactions")
+          declared = {t["person"]["id"] for t in keep if t["typeDesc"] == "Declared Free Agency"}
+
+          # 2. Who is on a 40-man roster right now (only the free agents with options matter)
+          opts = json.load(open("fa_options.json"))
+          want = {o["id"] for o in opts}
+          rosters = {}
+          teams = json.loads(get("https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2026")).get("teams", [])
+          for tm in teams:
+              try:
+                  r = json.loads(get(f"https://statsapi.mlb.com/api/v1/teams/{tm['id']}/roster?rosterType=40Man"))
+              except Exception as e:
+                  print("roster failed", tm.get("name"), e)
+                  continue
+              for p in r.get("roster", []):
+                  pid = (p.get("person") or {}).get("id")
+                  if pid in want:
+                      rosters[str(pid)] = tm.get("name", "")
+              time.sleep(0.3)
+
+          # 3. Option news: headlines that report a decision (predictions are ignored)
+          import re, unicodedata
+          def norm(t): return "".join(c for c in unicodedata.normalize("NFKD", t) if not unicodedata.combining(c))
+          MAYBE = re.compile(r"\b(expected|expect|expects|could|likely|unlikely|may|might|should|would|whether|weigh\w*|looms?|"
+                             r"candidates?|predict\w*|projection\w*|if|rumou?r\w*|consider\w*|ahead of|preview|what to know|"
+                             r"decisions? (on|to)|plans? to|set to|poised to|leaning)\b|\?", re.I)
+          STAY = re.compile(r"(won'?t|will not|not to|doesn'?t|does not|did not|didn'?t|declin\w* to|decided not to|chooses not to|"
+                            r"elects? not to|passes on)\s+(his\s+)?opt(ing)?[- ]?out|\bopt(s|ed)?[- ]in\b|\bexercis\w*|\bpick(s|ed)? up\b|"
+                            r"\bpicked up\b|\bretain\w*|\bstays?\b with", re.I)
+          OUT = re.compile(r"\bopt(s|ed|ing)?[- ]?out\b|\bdeclin\w*|\breject\w*|\bturn(s|ed)? down|elects? free agency|"
+                           r"becomes? a free agent|hits? free agency|buyout|\bbuys? out\b", re.I)
+          def classify(title, name):
+              title, name = norm(title), norm(name)
+              if MAYBE.search(re.sub(re.escape(name), " ", title, flags=re.I)) or not re.search(r"option|opt(s|ed|ing)?[- ]?(out|in)\b|free agen|buyout", title, re.I):
+                  return None
+              last = name.split()[-1].lower()
+              parts = re.split(r",|;| and | & |\s[-–—:]\s", title)
+              clause = next((c for c in parts if last in c.lower()), None)
+              if clause is None:
+                  return None
+              if STAY.search(clause):
+                  return "stay"
+              if OUT.search(clause):
+                  return "out"
+              # verb sits in the first clause (e.g. "Royals exercise X's option, Y's")
+              first = parts[0]
+              if clause is not first and last not in first.lower():
+                  if STAY.search(first) and not OUT.search(first):
+                      return "stay"
+              return None
+
+          news = dict(old.get("news", {}))
+          for o in opts:
+              pid = str(o["id"])
+              if o["id"] in declared:
+                  continue
+              q = urllib.parse.quote(f'"{o["n"]}" option OR "opt out" OR "opts out" OR "opts in" when:21d')
+              try:
+                  feed = ET.fromstring(get(f"https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en"))
+              except Exception as e:
+                  print("news failed", o["n"], e)
+                  continue
+              best = None
+              for it in feed.iter("item"):
+                  title = re.sub(r"\s+-\s+[^-]+$", "", (it.findtext("title") or "").strip())   # drop " - Source Name"
+                  k = classify(title, o["n"])
+                  if not k:
+                      continue
+                  try:
+                      d = datetime.datetime.strptime(it.findtext("pubDate")[5:25].strip(), "%d %b %Y %H:%M:%S").date().isoformat()
+                  except Exception:
+                      d = datetime.date.today().isoformat()
+                  if d < "2026-10-27":
+                      continue
+                  src = (it.find("source").text if it.find("source") is not None else "") or ""
+                  if best is None or d > best["d"]:
+                      best = {"k": k, "d": d, "title": title[:200], "src": src[:60], "url": it.findtext("link") or ""}
+              if best:
+                  news[pid] = best
+                  print(o["n"], "->", best["k"], "|", best["title"])
+              time.sleep(1)
+
+          new = {"transactions": keep, "rosters": rosters, "news": news}
+          if any(old.get(k) != v for k, v in new.items()):
+              new["updated"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+              json.dump(new, open("fa_transactions.json", "w"), separators=(",", ":"))
+          print(len(keep), "transactions,", len(rosters), "option players on 40-man rosters,", len(news), "news decisions")
           PY
 
       - name: Save it to the site
