@@ -388,6 +388,10 @@ table.cnt-t{min-width:480px}
 .tm-strip .z{position:absolute;top:4px;bottom:4px;width:1px;background:var(--muted)}
 .tm-strip .d{position:absolute;top:15px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#a9b4c3;border:2px solid var(--panel);box-sizing:content-box}
 .tm-strip .d.me{top:10px;width:18px;height:18px;margin-left:-9px}
+.tm-strip button.d{padding:0;cursor:pointer;font:inherit}
+.tm-strip button.d::after{content:"";position:absolute;inset:-8px}
+.tm-strip button.d:not(.me):hover,.tm-strip button.d:not(.me):focus-visible{background:var(--muted);transform:scale(1.5);z-index:2}
+.tm-strip button.d:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tm-strip-lab{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
 .tm-strip-lab span:last-child{font-weight:600}
 .tm-ident{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0}
@@ -1566,7 +1570,8 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var pe=document.getElementById("tm-pay"),pr=payRank[t.name],pn=Object.keys(PAY).length;
     pe.innerHTML=PAY[t.name]?'$'+(PAY[t.name]/1e6).toFixed(1)+'M<small>'+(pr===1?"Most in MLB":pr===pn?"Least in MLB":ord(pr)+"-highest of "+pn)+'</small>':'<span class="na">Not available</span>';
     document.getElementById("tm-strip").innerHTML='<span class="z" style="left:'+pos(0)+'"></span>'+list.slice().reverse().map(function(o){var me=o.name===t.name;
-      return '<span class="d'+(me?' me':'')+'" title="'+esc((INFO[o.name]||[0,0,0,o.name])[3])+' '+sgn(o.rv)+'" style="left:'+pos(o.rv)+(me?';background:'+I[1]+';box-shadow:0 0 0 2px '+I[1]:'')+'"></span>'}).join("");
+      var lab=(INFO[o.name]||[0,0,0,o.name])[3]+' '+sgn(o.rv)+' ('+ord(o.rank)+')';
+      return '<button type="button" class="d'+(me?' me':'')+'" data-tm="'+esc(o.name)+'" title="'+esc(lab)+'" aria-label="'+esc(o.name+', '+ord(o.rank)+', '+sgn(o.rv))+'" style="left:'+pos(o.rv)+(me?';background:'+I[1]+';box-shadow:0 0 0 2px '+I[1]:'')+'"></button>'}).join("");
     var L=list[N-1],H=list[0];
     document.getElementById("tm-lo").textContent=(INFO[L.name]||[0,0,0,L.name])[3]+" "+sgn(L.rv);
     var hiEl=document.getElementById("tm-hi");hiEl.textContent=(t.name===H.name?I[3]:(INFO[H.name]||[0,0,0,H.name])[3])+" "+sgn(H.rv);
@@ -1580,6 +1585,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function slug(n){return "t-"+n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
   window.kbShowTeam=function(h){list.forEach(function(t){if(slug(t.name)===h)cur=t.name});sel.value=cur;render()};
   sel.addEventListener("change",function(){cur=sel.value;render();try{history.replaceState(null,"","#"+slug(cur))}catch(e){}});
+  document.getElementById("tm-strip").addEventListener("click",function(e){var d=e.target.closest("button[data-tm]");if(!d||!teams[d.dataset.tm])return;cur=d.dataset.tm;sel.value=cur;render();try{history.replaceState(null,"","#"+slug(cur))}catch(x){}});
   document.getElementById("tm-share").addEventListener("click",function(){if(cur&&window.kbCopyLink)window.kbCopyLink(this,"https://benkafka.github.io/kafkaesque-baseball/#"+slug(cur))});
   function open(e){var r=e.target.closest("tr[data-id]");if(r&&window.kbShowPitcher)window.kbShowPitcher(r.dataset.id)}
   ["tm-sp","tm-rp"].forEach(function(id){var b=document.getElementById(id);b.addEventListener("click",open);b.addEventListener("keydown",function(e){if(e.key==="Enter")open(e)})});
