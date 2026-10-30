@@ -320,6 +320,35 @@ table.rc{width:100%;min-width:760px;border-collapse:collapse;font-size:14px;font
 .lb tbody tr:hover td,.lb tbody tr:focus td{background:var(--panel-2)}
 .lb .rk{font-family:var(--f-data);color:var(--muted);width:2.5em}
 .lb .pl{font-weight:600}
+.mi-tabs{margin-bottom:14px}
+.mi-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:16px}
+.mi-sel{display:flex;flex-direction:column;gap:4px}
+.mi-sel select,#mi-forg{font:500 14px var(--f-body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);max-width:100%}
+.mi-chk{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);padding-bottom:8px}
+.mi-t{min-width:980px}
+.mi-t th button{all:unset;cursor:pointer}
+.mi-t th[aria-sort=descending] button::after{content:" \25BC";font-size:9px}
+.mi-t th[aria-sort=ascending] button::after{content:" \25B2";font-size:9px}
+.mi-t td.r,.mi-t th.r,.mi-tr td.r,.mi-tr th.r{text-align:right}
+.mi-tag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:10px;margin-left:6px;vertical-align:1px;text-decoration:none}
+.mi-tag.up{background:rgba(31,138,91,.14);color:var(--ok)}
+.mi-tag.vet{background:var(--panel-2);color:var(--muted)}
+.mi-tag.lv{background:var(--panel-2);color:var(--fg)}
+.mi-det td{background:var(--panel-2);padding:12px 16px}
+.mi-det table{width:100%;border-collapse:collapse;font-size:13px}
+.mi-det th{text-align:left;color:var(--muted);font-weight:500;padding:4px 8px}
+.mi-det td td,.mi-det tbody td{padding:4px 8px;background:transparent;font-family:var(--f-data)}
+.mi-det .grp{font-family:var(--f-body);font-weight:600;padding-top:8px}
+.mi-aff{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:0 24px 22px}
+.mi-aff > div{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.mi-aff b{display:block;font-size:14px;margin:2px 0 6px}
+.mi-aff span{display:block;font-size:12px;color:var(--muted);font-family:var(--f-data)}
+.mi-tr{min-width:640px}
+.mi-tr .rkb{display:flex;align-items:center;gap:10px}
+.mi-tr .rkb i{position:relative;display:block;width:140px;height:8px;background:var(--panel-2);border-radius:4px}
+.mi-tr .rkb i b{position:absolute;top:-3px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--accent)}
+@media (max-width:820px){.mi-aff{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 .lb-tabs{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:18px}
 .lb-grp{display:flex;flex-direction:column;gap:6px}
 .lb-grp .meta{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
@@ -702,6 +731,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <a href="#report">Pitcher Search</a>
       <a href="#lab">Pitch Lab</a>
       <a href="#breakouts">2027 Watch List</a>
+      <a href="#minors">Minors</a>
       <a href="#teams">Teams</a>
       <a href="#leaders">Leaderboards</a>
       <a href="#shapes">Pitch Shapes</a>
@@ -1075,6 +1105,44 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <p><b>What it can't know.</b> Whether his body can make a change, how pitches play off each other in sequence, or what a hitter is sitting on. Treat these as ideas to test with video and a coach.</p>
       </details>
     </div>
+  </section>
+
+  <section id="minors" class="page">
+    <div class="sec-head"><h2>Minor Leagues</h2><p>2026 · pitch tracking from Triple-A and the Florida State League, stats from every level</p></div>
+    <div class="seg mi-tabs" role="group" aria-label="Minor league view"><button type="button" data-v="pros" aria-pressed="true">Prospects</button><button type="button" data-v="farm" aria-pressed="false">Farm systems</button><button type="button" data-v="watch" aria-pressed="false">Watch list</button></div>
+    <p class="fine" id="mi-load">Loading minor league data…</p>
+    <div id="mi-pros" class="mi-pane" hidden>
+      <div class="mi-bar">
+        <div class="seg" id="mi-lv"><button type="button" data-v="all" aria-pressed="true">All tracked</button><button type="button" data-v="AAA" aria-pressed="false">Triple-A</button><button type="button" data-v="A" aria-pressed="false">Single-A (FSL)</button></div>
+        <div class="seg" id="mi-ro"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="SP" aria-pressed="false">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
+        <label class="mi-sel"><span class="meta">Organization</span><select id="mi-org"></select></label>
+        <label class="mi-chk"><input type="checkbox" id="mi-vet"> Include MLB veterans</label>
+      </div>
+      <div class="lb-head"><h3>Best stuff in the minors</h3><p class="fine">Ranked by K-Stuff+, scored on the big league scale: 100 means average stuff for an MLB pitcher. Min. 400 pitches for the top three.</p></div>
+      <div class="lb-pod" id="mi-pod"></div>
+      <div class="panel lb-panel"><div class="rc-wrap"><table class="rc lb mi-t"><thead><tr id="mi-head"></tr></thead><tbody id="mi-body"></tbody></table></div>
+      <button type="button" class="share-btn fa-more" id="mi-more"></button></div>
+    </div>
+    <div id="mi-farm" class="mi-pane" hidden>
+      <div class="tm-top"><label class="meta" for="mi-forg">Organization</label><select id="mi-forg"></select></div>
+      <div class="panel tm-hero"><div class="tm-stripe" id="mi-fstripe"></div>
+        <div class="tm-head"><div class="tm-id"><span class="tm-logo" id="mi-flogo"></span><div><div class="meta">Farm system</div><h3 id="mi-fname"></h3></div></div>
+        <dl class="tm-stats"><div><dt>Strikeout rate</dt><dd id="mi-fk"></dd></div><div><dt>Walk rate</dt><dd id="mi-fbb"></dd></div><div><dt>Age vs level</dt><dd id="mi-fage"></dd></div></dl></div>
+        <div class="mi-aff" id="mi-aff"></div>
+      </div>
+      <div class="tm-ident" id="mi-fident"></div>
+      <div class="panel tm-sec"><div class="tm-sec-head"><h3>System trends</h3><p class="fine">How this system compares with all 30. Pitch-mix trends use Triple-A tracking for every team and Florida State League tracking for the 10 teams with a club there.</p></div>
+        <div class="rc-wrap"><table class="rc mi-tr"><thead><tr><th scope="col">Trend</th><th scope="col" class="r">This system</th><th scope="col" class="r">Average of 30</th><th scope="col">Rank</th></tr></thead><tbody id="mi-ftr"></tbody></table></div></div>
+      <div class="panel tm-sec"><div class="tm-sec-head"><h3>Pitchers</h3><div class="tm-pills" id="mi-fcount"></div></div>
+        <div class="rc-wrap"><table class="rc lb mi-t"><thead><tr id="mi-fhead"></tr></thead><tbody id="mi-fbody"></tbody></table></div>
+        <button type="button" class="share-btn fa-more" id="mi-fmore"></button></div>
+    </div>
+    <div id="mi-watch" class="mi-pane" hidden>
+      <div class="lb-head"><h3>Minor League Watch List</h3><p class="fine">Arms 25 or younger who haven't reached the majors, whose stuff grades better than their 2026 results. Same idea as the 2027 Watch List: K-Stuff+ of 100 or better (average big league stuff) while their pitches were at or below league average in run value. Min. 400 tracked pitches.</p></div>
+      <div class="seg" id="mi-wr"><button type="button" data-v="SP" aria-pressed="true">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
+      <div class="panel lb-panel" style="margin-top:14px"><div class="rc-wrap"><table class="rc lb mi-t"><thead><tr><th scope="col">#</th><th scope="col">Pitcher</th><th scope="col" class="r">Age</th><th scope="col" class="r">K-Stuff+</th><th scope="col" class="r">Runs/100</th><th scope="col">Best pitch</th><th scope="col">Why he's here</th></tr></thead><tbody id="mi-wbody"></tbody></table></div></div>
+    </div>
+    <p class="fine">Pitch tracking (velocity, movement, K-Stuff+, grades) exists only where Statcast tracked games in 2026: every Triple-A park and the Single-A Florida State League. Everyone else has regular stats only. K-Stuff+ uses the model trained on 2026 MLB pitches, so a minor leaguer's number is on the big league scale. Pitch grades and runs per 100 compare each pitcher with his own level. Ages are as of July 1, 2026. <b>Called up</b> means he debuted in the majors in 2026; click it to open his MLB card. Select a pitcher to see his pitches.</p>
   </section>
 
   <section id="teams" class="page">
@@ -1893,12 +1961,13 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 </script>
 <script>
 (function(){
-  var PAGES=["home","writing","report","lab","breakouts","teams","leaders","shapes","slots","glossary","about"];
-  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Shapes",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
+  var PAGES=["home","writing","report","lab","breakouts","minors","teams","leaders","shapes","slots","glossary","about"];
+  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",minors:"Minor Leagues",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Shapes",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
   var raw=window.kbShowPitcher;
   function go(pg){
     PAGES.forEach(function(p){var el=document.getElementById(p);if(el)el.classList.toggle("on",p===pg)});
     document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==="#"+pg)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+    if(pg==="minors"&&window.kbMinors)window.kbMinors();
     document.title=pg==="home"?"Kafkaesque Baseball":TITLES[pg]+" · Kafkaesque Baseball";
     window.scrollTo(0,0);
   }
@@ -1908,6 +1977,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var pm=h.match(/^p(\d+)(?:-(\d{4}))?$/);
     if(pm){raw(pm[1],true,pm[2]?+pm[2]:0);go("report");return}
     if(/^lab-\d+$/.test(h)){if(window.kbShowLab)window.kbShowLab(h.slice(4));go("lab");return}
+    if(h.indexOf("minors-")===0){if(window.kbMinors)window.kbMinors("farm:"+h.slice(7));go("minors");return}
     if(h.indexOf("t-")===0){if(window.kbShowTeam)window.kbShowTeam(h);go("teams");return}
     if(h==="fa"||h==="freeagency"){go("home");var f=document.getElementById("fa");if(f)setTimeout(function(){f.scrollIntoView()},0);return}
     if(h==="matchups"||h==="today"){go("home");var t=document.getElementById("today");if(t)setTimeout(function(){t.scrollIntoView()},0);return}
@@ -2194,5 +2264,149 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var up=j.updated?new Date(j.updated):null;note.textContent="Signings come from MLB's transaction feed, checked every 3 hours"+(up&&!isNaN(up)?" (last change "+up.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+")":"")+". "+(n?n+" off the market so far.":"None off the market yet.");
     draw();
   }).catch(function(){note.textContent="Couldn’t reach MLB’s transaction feed right now, so signings may be missing. Try again in a bit."});
+})();
+</script>
+<script>
+(function(){
+  var M=null, loading=false;
+  var NAMES={FF:"4-Seam",SI:"Sinker",FC:"Cutter",SL:"Slider",ST:"Sweeper",SV:"Slurve",CU:"Curveball",KC:"Knuckle Curve",CS:"Slow Curve",CH:"Changeup",FS:"Splitter",FO:"Forkball",SC:"Screwball",KN:"Knuckleball",EP:"Eephus",FA:"Fastball"};
+  var FAM={FF:"fb",SI:"fb",FC:"fb",FA:"fb",SL:"br",ST:"br",SV:"br",CU:"br",KC:"br",CS:"br",CH:"os",FS:"os",FO:"os",SC:"os",KN:"os",EP:"os"};
+  var ORG={"Arizona Diamondbacks":[109,"#A71930"],"Athletics":[133,"#003831"],"Atlanta Braves":[144,"#CE1141"],"Baltimore Orioles":[110,"#DF4601"],"Boston Red Sox":[111,"#BD3039"],"Chicago Cubs":[112,"#0E3386"],"Chicago White Sox":[145,"#27251F"],"Cincinnati Reds":[113,"#C6011F"],"Cleveland Guardians":[114,"#00385D"],"Colorado Rockies":[115,"#333366"],"Detroit Tigers":[116,"#0C2340"],"Houston Astros":[117,"#EB6E1F"],"Kansas City Royals":[118,"#004687"],"Los Angeles Angels":[108,"#BA0021"],"Los Angeles Dodgers":[119,"#005A9C"],"Miami Marlins":[146,"#00A3E0"],"Milwaukee Brewers":[158,"#12284B"],"Minnesota Twins":[142,"#002B5C"],"New York Mets":[121,"#FF5910"],"New York Yankees":[147,"#0C2340"],"Philadelphia Phillies":[143,"#E81828"],"Pittsburgh Pirates":[134,"#FDB827"],"San Diego Padres":[135,"#2F241D"],"San Francisco Giants":[137,"#FD5A1E"],"Seattle Mariners":[136,"#0C2C56"],"St. Louis Cardinals":[138,"#C41E3A"],"Tampa Bay Rays":[139,"#092C5C"],"Texas Rangers":[140,"#003278"],"Toronto Blue Jays":[141,"#134A8E"],"Washington Nationals":[120,"#AB0003"]};
+  var LVN={AAA:"Triple-A",AA:"Double-A","A+":"High-A",A:"Single-A"}, LVO={AAA:0,AA:1,"A+":2,A:3};
+  function SHORT(o){o=o||"";return /Red Sox|White Sox|Blue Jays/.test(o)?o.replace(/^(Boston|Chicago|Toronto) /,""):o.replace(/^.* /,"")}
+  function $(i){return document.getElementById(i)}
+  function esc(t){return String(t==null?"":t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function sgn(v,d){v=Math.round(v*Math.pow(10,d))/Math.pow(10,d);return (v>0?"+":v<0?"−":"")+Math.abs(v).toFixed(d)}
+  function ord(n){var s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+  function HS(id,w){return "https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_"+w+",q_auto:best/v1/people/"+id+"/headshot/67/current"}
+  function ini(n){return n.split(" ").map(function(x){return x[0]}).join("").slice(0,2)}
+  function face(id,n,w,cls,ring){return '<img'+(cls?' class="'+cls+'"':'')+' src="'+HS(id,w)+'" alt="" loading="lazy"'+(ring?' style="box-shadow:0 0 0 3px '+ring+'"':'')+' onerror="if(this.parentNode)this.outerHTML=\'<span class=&quot;'+(cls||"ini")+'&quot;'+(ring?' style=&quot;box-shadow:0 0 0 3px '+ring+'&quot;':'')+'>'+esc(ini(n))+'</span>\'">'}
+  function chip(t){return t?'<span class="tm-chip '+(FAM[t]||"os")+'">'+esc(NAMES[t]||t)+'</span>':''}
+  // derived per pitcher
+  function tot(e){var ip=0,bf=0,k=0,bb=0,er=0;(e.s||[]).forEach(function(l){ip+=l[2];bf+=l[3];k+=l[4];bb+=l[5];if(l[6]!=null)er+=l[6]*l[2]/9});return {ip:ip,bf:bf,k:bf?k/bf*100:null,bb:bf?bb/bf*100:null,era:ip>0?er*9/ip:null}}
+  function best(e){if(!e.c||!e.c.length)return null;var c=e.c.filter(function(x){return x[1]>=60});if(!c.length)c=e.c;return c.slice().sort(function(a,b){return b[3]-a[3]})[0]}
+  function fbv(e){if(!e.c)return null;var f=e.c.filter(function(x){return x[0]==="FF"||x[0]==="SI"}).sort(function(a,b){return b[1]-a[1]})[0];return f?f[2]:null}
+  function lvls(e){var s={};(e.s||[]).forEach(function(l){s[l[0]]=1});return Object.keys(s).sort(function(a,b){return LVO[a]-LVO[b]})}
+  function tag(id,e){if(!e.deb)return '';if(e.deb.indexOf("2026")===0)return e.mlb?'<a class="mi-tag up" href="#p'+id+'" onclick="event.stopPropagation()">Called up</a>':'<span class="mi-tag up">Called up</span>';return e.mlb?'<a class="mi-tag vet" href="#p'+id+'" onclick="event.stopPropagation()">MLB vet</a>':'<span class="mi-tag vet">MLB vet</span>'}
+  function isPros(e){return !e.deb||e.deb.indexOf("2026")===0}
+  function det(id,e,cols){
+    if(!e.r)return '<tr class="mi-det"><td colspan="'+cols+'"><span class="fine">No pitch tracking for this pitcher: his levels weren’t tracked in 2026.</span></td></tr>';
+    var h='<tr class="mi-det"><td colspan="'+cols+'"><table><thead><tr><th>Pitch</th><th>Usage</th><th>Velo</th><th>Ride</th><th>Run</th><th>Whiff+</th><th>K-Stuff+</th><th>Grade</th><th>Runs/100 vs lvl</th><th>Pitches</th></tr></thead><tbody>';
+    ["L","R"].forEach(function(sd){var rows=e.r.filter(function(r){return r[1]===sd});if(!rows.length)return;
+      h+='<tr><td class="grp" colspan="10">vs '+(sd==="L"?"lefties":"righties")+'</td></tr>'+rows.map(function(r){return '<tr'+(r[12]?' style="opacity:.6"':'')+'><td>'+chip(r[0])+'</td><td>'+(r[2]==null?"–":r[2].toFixed(1)+"%")+'</td><td>'+(r[3]==null?"–":r[3].toFixed(1))+'</td><td>'+(r[4]==null?"–":r[4].toFixed(1)+'"')+'</td><td>'+(r[5]==null?"–":r[5].toFixed(1)+'"')+'</td><td>'+(r[6]==null?"–":r[6])+'</td><td>'+(r[8]==null?"–":r[8])+'</td><td>'+(r[9]==null?"–":r[9])+'</td><td class="'+(r[7]>=0?"up":"dn")+'">'+(r[7]==null?"–":sgn(r[7],2))+'</td><td>'+r[10]+'</td></tr>'}).join("")});
+    return h+'</tbody></table>'+(e.mlb?'<p class="fine" style="margin:8px 0 0"><a href="#p'+id+'">Open his 2026 MLB report card →</a></p>':'')+'</td></tr>';
+  }
+  // ---------- Prospects ----------
+  var F={lv:"all",ro:"all",org:"",vet:false}, SK="st", SD=-1, SHOW=50, OPEN={};
+  var COLS=[["#",null],["Pitcher","n"],["Age","age","r"],["Level",null],["Role",null],["IP","ip","r"],["K%","k","r"],["BB%","bb","r"],["ERA","era","r"],["K-Stuff+","st","r"],["Grade","a","r"],["Best pitch",null],["FB velo","fbv","r"]];
+  function head(el,sk,sd){el.innerHTML=COLS.map(function(c){return '<th scope="col"'+(c[2]?' class="r"':'')+(c[1]?' data-k="'+c[1]+'" aria-sort="'+(c[1]===sk?(sd>0?"ascending":"descending"):"none")+'"><button type="button">'+c[0]+'</button>':'>'+c[0])+'</th>'}).join("")}
+  function val(x,k){return k==="n"?x.e.n:k==="ip"?x.t.ip:k==="k"?x.t.k:k==="bb"?x.t.bb:k==="era"?x.t.era:k==="fbv"?x.f:x.e[k]}
+  function rowsHTML(list,start,open){
+    return list.map(function(x,i){var e=x.e,b=best(e),c=(ORG[e.org]||[0,"#8c97a8"])[1],tr=x.t;
+      var h='<tr tabindex="0" data-mi="'+x.id+'"><td class="rk">'+(start+i+1)+'</td><td><div class="pw">'+face(x.id,e.n,120,null,null)+'<div><span class="pl">'+esc(e.n)+'</span>'+tag(x.id,e)+'<small><i style="background:'+c+'"></i>'+esc(SHORT(e.org))+' · '+esc(e.tm||"")+'</small></div></div></td>'+
+        '<td class="r num">'+(e.age==null?"–":e.age)+'</td><td>'+lvls(e).map(function(l){return '<span class="mi-tag lv" style="margin-left:0;margin-right:4px">'+l+'</span>'}).join("")+'</td><td>'+(e.role||"–")+'</td>'+
+        '<td class="r num">'+(tr.ip?tr.ip.toFixed(1):"–")+'</td><td class="r num">'+(tr.k==null?"–":tr.k.toFixed(1))+'</td><td class="r num">'+(tr.bb==null?"–":tr.bb.toFixed(1))+'</td><td class="r num">'+(tr.era==null?"–":tr.era.toFixed(2))+'</td>'+
+        '<td class="r num"><b class="'+(e.st>=100?"up":"")+'">'+(e.st==null?"–":e.st)+'</b></td><td class="r num">'+(e.a==null?"–":e.a)+'</td><td>'+(b?chip(b[0])+'<span class="lb-side">'+b[3]+'</span>':'–')+'</td><td class="r num">'+(x.f==null?"–":x.f.toFixed(1))+'</td></tr>';
+      if(open[x.id])h+=det(x.id,e,COLS.length);return h}).join("")}
+  function pros(){
+    var L=[];Object.keys(M.P).forEach(function(id){var e=M.P[id];if(!e.lv)return;
+      if(F.lv!=="all"&&e.lv!==F.lv)return;if(F.ro!=="all"&&e.role!==F.ro)return;if(F.org&&e.org!==F.org)return;if(!F.vet&&!isPros(e))return;
+      L.push({id:id,e:e,t:tot(e),f:fbv(e)})});
+    L.sort(function(a,b){var x=val(a,SK),y=val(b,SK);if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return SK==="n"?SD*String(x).localeCompare(String(y)):SD*(x-y)});
+    var podL=L.filter(function(x){return x.e.p>=400&&x.e.st!=null}).sort(function(a,b){return b.e.st-a.e.st||b.e.a-a.e.a}).slice(0,3);
+    $("mi-pod").innerHTML=(podL.length===3?[1,0,2]:[]).map(function(j){var x=podL[j],e=x.e,c=(ORG[e.org]||[0,"#8c97a8"])[1],b=best(e),first=j===0;
+      return '<button type="button" class="lb-card'+(first?' first':'')+'" data-mi="'+x.id+'"><div class="st" style="background:'+c+'"></div><div class="in"><div class="top"><span class="bd">'+(j+1)+'</span><span>'+esc(e.tm||"")+' · '+LVN[e.lv]+'</span></div>'+
+        '<div class="who">'+face(x.id,e.n,first?180:150,"face",c)+'<div><div class="nm">'+esc(e.n)+'</div><div class="ch">'+(b?chip(b[0])+'<span class="lb-side">'+b[3]+' K-Stuff+</span>':'')+'</div></div></div>'+
+        '<div class="val"><b class="up">'+e.st+'</b><span>K-Stuff+ · age '+e.age+' · '+(e.role==="SP"?"starter":"reliever")+'</span></div><div class="mt">'+esc([x.f?x.f.toFixed(1)+" mph fastball":"",x.t.k!=null?x.t.k.toFixed(1)+"% K":"",x.t.bb!=null?x.t.bb.toFixed(1)+"% BB":"","arsenal grade "+e.a].filter(Boolean).join(" · "))+'</div></div></button>'}).join("");
+    head($("mi-head"),SK,SD);
+    $("mi-body").innerHTML=rowsHTML(L.slice(0,SHOW),0,OPEN)||'<tr><td colspan="13" class="mu">No pitchers match these filters.</td></tr>';
+    var mb=$("mi-more");mb.hidden=L.length<=50;mb.textContent=SHOW>50?"Show fewer":"Show all "+L.length;
+  }
+  // ---------- Farm systems ----------
+  var FO="New York Mets", FOPEN={}, FSK="st", FSD=-1;
+  var TR=[["fbv","AAA","Triple-A fastball velo"," mph",1,"Velo-first at Triple-A","Triple-A arms averaged {v} mph on the fastball, {rs} hardest of any system.","Soft-tossing upper levels","Triple-A fastballs averaged {v} mph, {rb} softest of any system."],
+    ["stf","AAA","Triple-A K-Stuff+","",1,"Best stuff at Triple-A","Triple-A arms averaged a {v} K-Stuff+, {rs} best of any system.","Thin stuff at Triple-A","Triple-A arms averaged a {v} K-Stuff+, {rb} lowest of any system."],
+    ["brk","AAA","Slider and sweeper usage","%",1,"Breaking-ball heavy","{v}% sliders, sweepers and slurves at Triple-A, {rs} most of any system.","Light on breaking balls","Only {v}% sliders, sweepers and slurves at Triple-A, {rb} fewest of any system."],
+    ["sw","AAA","Sweeper usage","%",1,"Sweeper system","{v}% of Triple-A pitches were sweepers, {rs} most of any system.","Skips the sweeper","Only {v}% sweepers at Triple-A, {rb} fewest of any system."],
+    ["os","AAA","Changeup and splitter usage","%",1,"Changeup and splitter teachers","{v}% changeups and splitters at Triple-A, {rs} most of any system.","Rarely goes offspeed","Only {v}% changeups and splitters at Triple-A, {rb} fewest of any system."],
+    ["zone","AAA","Zone rate","%",1,"Attacks the zone","{v}% of Triple-A pitches in the zone, {rs} most of any system.","Pitches around the zone","{v}% of Triple-A pitches in the zone, {rb} fewest of any system."],
+    ["fbv","A","FSL fastball velo"," mph",1,"Velo at the lowest level","Florida State League arms averaged {v} mph, {rs} hardest of the 10 tracked systems.","Soft-tossing in Single-A","Florida State League fastballs averaged {v} mph, {rb} softest of the 10 tracked systems."],
+    ["k",null,"Strikeout rate, all levels","%",1,"Strikeout system","{v}% strikeout rate across every affiliate, {rs} highest of any system.","Few strikeouts","{v}% strikeout rate across every affiliate, {rb} lowest of any system."],
+    ["bb",null,"Walk rate, all levels","%",-1,"Throws strikes","{v}% walk rate across every affiliate, {rs} lowest of any system.","Walk problems","{v}% walk rate across every affiliate, {rb} highest of any system."],
+    ["agerel",null,"Age vs level"," yrs",-1,"Young for their levels","Pitchers averaged {v} years vs the typical age at each level, {rs} youngest of any system.","Old for their levels","Pitchers averaged {v} years vs the typical age at each level, {rb} oldest of any system."]];
+  function tv(o,t){var T=M.tr[o];if(!T)return null;var v=t[1]?(T[t[1]]||{})[t[0]]:T[t[0]];return v==null?null:+v}
+  function ranks(t){var arr=Object.keys(M.tr).map(function(o){return [o,tv(o,t)]}).filter(function(x){return x[1]!=null});arr.sort(function(a,b){return t[4]*(b[1]-a[1])});var r={};arr.forEach(function(x,i){r[x[0]]=i+1});return {r:r,n:arr.length,avg:arr.reduce(function(s,x){return s+x[1]},0)/(arr.length||1)}}
+  function fv(t,v){return t[0]==="agerel"?sgn(v,1):t[3]===" mph"?v.toFixed(1):t[0]==="stf"?v.toFixed(1):v.toFixed(1)}
+  function farm(){
+    var o=FO,C=ORG[o]||[0,"#8c97a8"],T=M.tr[o];
+    $("mi-fstripe").style.background=C[1];
+    $("mi-flogo").innerHTML=C[0]?'<img src="https://www.mlbstatic.com/team-logos/'+C[0]+'.svg" alt="'+esc(o)+' logo" onerror="if(this.parentNode)this.outerHTML=\'<b style=&quot;background:'+C[1]+'&quot;>'+esc(o.replace(/^.* /,"").slice(0,2).toUpperCase())+'</b>\'">':'';
+    $("mi-fname").textContent=o;
+    var R={};TR.forEach(function(t,i){R[i]=ranks(t)});
+    function rk(i){var x=R[i],r=x.r[o];return r?ord(r)+" of "+x.n:""}
+    $("mi-fk").innerHTML=T.k.toFixed(1)+'%<small>'+rk(7)+'</small>';
+    $("mi-fbb").innerHTML=T.bb.toFixed(1)+'%<small>'+rk(8)+'</small>';
+    $("mi-fage").innerHTML=sgn(T.agerel,1)+' yrs<small>'+rk(9)+'</small>';
+    $("mi-aff").innerHTML=(M.aff[o]||[]).map(function(a){var l=T.lvl[a[2]];return '<div><div class="meta">'+LVN[a[2]]+'</div><b>'+esc(a[1])+'</b>'+(l?'<span>'+l[0].toFixed(1)+'% K · '+l[1].toFixed(1)+'% BB</span><span>'+l[2].toFixed(2)+' ERA · avg age '+(l[3]==null?"–":l[3].toFixed(1))+' (lvl '+M.lvage[a[2]].toFixed(1)+')</span>':'')+'</div>'}).join("");
+    // identity: three most extreme
+    var c=[];TR.forEach(function(t,i){var x=R[i],r=x.r[o];if(!r)return;var top=r<=x.n/2,ext=top?r:x.n+1-r;if(ext>Math.max(5,x.n/3))return;c.push({t:t,r:r,n:x.n,top:top,ext:ext/x.n})});
+    c.sort(function(a,b){return a.ext-b.ext||(b.top-a.top)});var used={},pick=[];c.forEach(function(x){var g=x.t[0]==="fbv"?"fbv":x.t[0];if(pick.length<3&&!used[g]){used[g]=1;pick.push(x)}});
+    $("mi-fident").innerHTML=pick.map(function(x){var t=x.t,v=tv(o,t),bot=x.n+1-x.r,title=x.top?t[5]:t[7],txt=(x.top?t[6]:t[8]).replace("{v}",fv(t,v)).replace("{rs}",x.r===1?"the":ord(x.r)).replace("{rb}",bot===1?"the":ord(bot));
+      return '<div><div class="rk">'+ord(x.r).toUpperCase()+' OF '+x.n+'</div><h4>'+esc(title)+'</h4><p>'+esc(txt)+'</p></div>'}).join("")||'<div><div class="rk">BALANCED</div><h4>Middle of the pack</h4><p>No trend ranks near the top or bottom of the 30 systems.</p></div>';
+    $("mi-ftr").innerHTML=TR.map(function(t,i){var v=tv(o,t),x=R[i];if(v==null)return '<tr><td>'+t[2]+'</td><td class="r num mu">No tracking</td><td class="r num">'+fv(t,x.avg)+t[3]+'</td><td></td></tr>';var r=x.r[o],pos=(r-1)/Math.max(1,x.n-1)*100;
+      return '<tr><td>'+t[2]+'</td><td class="r num"><b>'+fv(t,v)+t[3]+'</b></td><td class="r num">'+fv(t,x.avg)+t[3]+'</td><td><div class="rkb"><i><b style="left:'+pos.toFixed(0)+'%"></b></i><span>'+ord(r)+' of '+x.n+'</span></div></td></tr>'}).join("");
+    var L=[];Object.keys(M.P).forEach(function(id){var e=M.P[id];if(e.org!==o)return;L.push({id:id,e:e,t:tot(e),f:fbv(e)})});
+    L.sort(function(a,b){var x=val(a,FSK),y=val(b,FSK);if(x==null&&y==null)return (b.t.ip||0)-(a.t.ip||0);if(x==null)return 1;if(y==null)return -1;return FSK==="n"?FSD*String(x).localeCompare(String(y)):FSD*(x-y)});
+    $("mi-fcount").innerHTML='<span>'+L.length+' pitchers</span><span>'+L.filter(function(x){return x.e.st!=null}).length+' with pitch tracking</span>';
+    head($("mi-fhead"),FSK,FSD);
+    var sh=$("mi-fmore").dataset.all?L.length:40;
+    $("mi-fbody").innerHTML=rowsHTML(L.slice(0,sh),0,FOPEN);
+    var mb=$("mi-fmore");mb.hidden=L.length<=40;mb.textContent=mb.dataset.all?"Show fewer":"Show all "+L.length;
+  }
+  // ---------- Watch list ----------
+  var WR="SP";
+  function watch(){
+    var L=[];Object.keys(M.P).forEach(function(id){var e=M.P[id];if(!e.lv||e.deb||e.age==null||e.age>25||e.p<400||e.st==null||e.st<100||e.rv>0||e.role!==WR)return;L.push({id:id,e:e,t:tot(e)})});
+    L.sort(function(a,b){return b.e.st-a.e.st||a.e.rv-b.e.rv});L=L.slice(0,10);
+    $("mi-wbody").innerHTML=L.map(function(x,i){var e=x.e,b=best(e),c=(ORG[e.org]||[0,"#8c97a8"])[1];
+      var why='K-Stuff+ '+e.st+(b?', led by a '+b[3]+' '+(NAMES[b[0]]||b[0]).toLowerCase():'')+', but '+sgn(e.rv,2)+' runs per 100 vs '+LVN[e.lv]+(x.t.bb!=null&&x.t.bb>=11?' and a walk rate of '+x.t.bb.toFixed(1)+'%':'')+'.';
+      return '<tr tabindex="0" data-mi="'+x.id+'"><td class="rk">'+(i+1)+'</td><td><div class="pw">'+face(x.id,e.n,120,null,null)+'<div><span class="pl">'+esc(e.n)+'</span><small><i style="background:'+c+'"></i>'+esc(SHORT(e.org))+' · '+esc(e.tm||"")+'</small></div></div></td><td class="r num">'+e.age+'</td><td class="r num"><b class="up">'+e.st+'</b></td><td class="r num dn">'+sgn(e.rv,2)+'</td><td>'+(b?chip(b[0])+'<span class="lb-side">'+b[3]+'</span>':'')+'</td><td style="font-size:13px;color:var(--muted)">'+esc(why)+'</td></tr>'+(WOPEN[x.id]?det(x.id,e,7):'')}).join("")||'<tr><td colspan="7" class="mu">No pitchers fit yet.</td></tr>';
+  }
+  var WOPEN={};
+  var VIEW="pros";
+  function view(v){VIEW=v;["pros","farm","watch"].forEach(function(k){$("mi-"+k).hidden=k!==v});document.querySelectorAll(".mi-tabs button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.v===v)});if(v==="pros")pros();if(v==="farm")farm();if(v==="watch")watch()}
+  function seg(id,fn){document.querySelectorAll("#"+id+" button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#"+id+" button").forEach(function(o){o.setAttribute("aria-pressed",o===b)});fn(b.dataset.v)})})}
+  function toggle(e,store,redraw){if(e.target.closest("a"))return;var t=e.target.closest("[data-mi]");if(!t)return;var id=t.dataset.mi;if(t.classList.contains("lb-card")){store[id]=1;redraw();var r=document.querySelector('#mi-body tr[data-mi="'+id+'"]');if(r)r.scrollIntoView({block:"center"});return}store[id]=!store[id];redraw()}
+  function sorter(headId,get,set,redraw){$(headId).addEventListener("click",function(e){var th=e.target.closest("th[data-k]");if(!th)return;var k=th.dataset.k,s=get();if(s[0]===k)set(k,-s[1]);else set(k,(k==="n"||k==="age"||k==="bb"||k==="era")?1:-1);redraw()})}
+  function init(){
+    $("mi-load").hidden=true;
+    var orgs=Object.keys(M.tr).sort();
+    $("mi-org").innerHTML='<option value="">All organizations</option>'+orgs.map(function(o){return '<option>'+esc(o)+'</option>'}).join("");
+    $("mi-forg").innerHTML=orgs.map(function(o){return '<option'+(o===FO?' selected':'')+'>'+esc(o)+'</option>'}).join("");
+    seg("mi-lv",function(v){F.lv=v;SHOW=50;pros()});seg("mi-ro",function(v){F.ro=v;SHOW=50;pros()});seg("mi-wr",function(v){WR=v;watch()});
+    $("mi-org").addEventListener("change",function(){F.org=this.value;SHOW=50;pros()});
+    $("mi-vet").addEventListener("change",function(){F.vet=this.checked;pros()});
+    $("mi-forg").addEventListener("change",function(){FO=this.value;FOPEN={};$("mi-fmore").dataset.all="";farm();try{history.replaceState(null,"","#minors-"+FO.toLowerCase().replace(/[^a-z0-9]+/g,"-"))}catch(x){}});
+    $("mi-more").addEventListener("click",function(){SHOW=SHOW>50?50:99999;pros()});
+    $("mi-fmore").addEventListener("click",function(){this.dataset.all=this.dataset.all?"":"1";farm()});
+    sorter("mi-head",function(){return [SK,SD]},function(k,d){SK=k;SD=d},pros);
+    sorter("mi-fhead",function(){return [FSK,FSD]},function(k,d){FSK=k;FSD=d},farm);
+    $("mi-body").addEventListener("click",function(e){toggle(e,OPEN,pros)});
+    $("mi-pod").addEventListener("click",function(e){toggle(e,OPEN,pros)});
+    $("mi-fbody").addEventListener("click",function(e){toggle(e,FOPEN,farm)});
+    $("mi-wbody").addEventListener("click",function(e){toggle(e,WOPEN,watch)});
+    document.querySelectorAll(".mi-tabs button").forEach(function(b){b.addEventListener("click",function(){view(b.dataset.v)})});
+    view(PENDING||"pros");
+  }
+  var PENDING=null;
+  window.kbMinors=function(sub){
+    if(sub&&sub.indexOf("farm:")===0){var o=sub.slice(5);Object.keys(ORG).forEach(function(k){if(k.toLowerCase().replace(/[^a-z0-9]+/g,"-")===o)FO=k});sub="farm"}
+    if(M){if(sub){if(sub==="farm"&&$("mi-forg"))$("mi-forg").value=FO;view(sub)}return}
+    PENDING=sub||null;if(loading)return;loading=true;
+    var emb=document.getElementById("milb-data");
+    if(emb){try{M=JSON.parse(emb.textContent);init();return}catch(e){}}
+    fetch("milb.json").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){M=j;init()}).catch(function(){$("mi-load").textContent="Couldn’t load the minor league data. Try refreshing the page."});
+  };
+  var h0=(location.hash||"").slice(1);if(h0==="minors")window.kbMinors();else if(h0.indexOf("minors-")===0)window.kbMinors("farm:"+h0.slice(7));
 })();
 </script>
