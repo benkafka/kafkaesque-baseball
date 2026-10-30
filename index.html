@@ -2429,7 +2429,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     PENDING=sub||null;if(loading)return;loading=true;
     var emb=document.getElementById("milb-data");
     if(emb){try{M=JSON.parse(emb.textContent);init();return}catch(e){}}
-    fetch("milb.json").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){M=j;init()}).catch(function(){$("mi-load").textContent="Couldn’t load the minor league data. Try refreshing the page."});
+    fetch("milb.json?v=20261030").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){M=j;init()}).catch(function(){$("mi-load").textContent="Couldn’t load the minor league data. Try refreshing the page."});
   };
   var h0=(location.hash||"").slice(1);if(h0==="minors")window.kbMinors();else if(h0.indexOf("minors-")===0)window.kbMinors("farm:"+h0.slice(7));
 })();
