@@ -484,7 +484,7 @@ table.cnt-t{min-width:480px}
 .wf-bar.base{background:#8c97a8}.wf-bar.gain{background:#3fc28a}.wf-bar.gain span{color:#158a5f}.wf-bar.tot{background:#e39a2c}.wf-bar.tot span{color:#c06f10}
 .wf-lbl{text-align:center;font-size:13px;color:var(--muted);margin-top:8px;line-height:1.3}
 .wf .fine{margin:10px 0 0}
-.lab-intro{margin-top:18px}.lab-lede{font-size:17px;line-height:1.55;max-width:860px;margin:0}.lab-proof{border:1px solid var(--line);border-left:4px solid #e39a2c;border-radius:12px;padding:16px 20px}.lab-proof p{margin:6px 0 0;line-height:1.5}
+.lab-intro{margin-top:18px}.lab-dl{margin-left:12px}.lab-lede{font-size:17px;line-height:1.55;max-width:860px;margin:0}.lab-proof{border:1px solid var(--line);border-left:4px solid #e39a2c;border-radius:12px;padding:16px 20px}.lab-proof p{margin:6px 0 0;line-height:1.5}
 .tm-ident{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0}
 .tm-ident > div{background:#121a24;color:#fff;border-radius:14px;padding:20px 22px;border:1px solid #2a3442}
 .tm-ident .rk{font-family:var(--f-data);font-weight:600;font-size:12px;letter-spacing:.08em;color:#e39a2c}
@@ -1120,7 +1120,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <div id="lab-out" hidden>
       <div class="lab-hd">
         <img id="lab-photo" class="lab-photo" alt="" width="80" height="80">
-        <div><h3 id="lab-name"></h3><p class="meta" id="lab-meta"></p><a class="art-go" id="lab-card" href="#report">Full report card →</a></div>
+        <div><h3 id="lab-name"></h3><p class="meta" id="lab-meta"></p><a class="art-go" id="lab-card" href="#report">Full report card →</a><button type="button" class="dl-btn lab-dl" id="lab-dl">Download Pitch Lab card</button></div>
         <div class="lab-total"><span class="meta">Mix changes</span><b id="lab-tot"></b><small>runs over a season</small></div>
       </div>
       <div class="rc-head"><h3 class="sub">Pitch mix</h3><span class="meta">How often to throw each pitch</span></div>
@@ -1174,6 +1174,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <label class="meta" for="tm-select">Team</label>
       <select id="tm-select"></select>
       <button type="button" class="share-btn" id="tm-share">Copy link</button>
+      <button type="button" class="dl-btn" id="tm-dl">Download team card</button>
     </div>
     <div class="panel tm-hero">
       <div class="tm-stripe" id="tm-stripe"></div>
@@ -1701,7 +1702,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     ["zone","Attacks the zone","{v}% of pitches in the zone, {rs} most in the majors.","Lives on the edges","{v}% of pitches in the zone, {rb} fewest in the majors.","pct"],
     ["chase","Gets hitters to chase","Hitters chased {v}% of pitches outside the zone, {rs} most in the majors.","Hitters don't chase them","Hitters chased only {v}% of pitches outside the zone, {rb} fewest in the majors.","pct"]];
   function fmt(v,f){return f==="rv"?sgn(v):f==="mph"?v.toFixed(1):f==="int"?Math.round(v):v.toFixed(0)}
-  function identity(t){
+  function identData(t){
     var r=RK[t.name], out=[];
     ID.forEach(function(x){var k=x[0];if(r[k]==null||t.v[k]==null)return;var rk=r[k],top=rk<=N/2,ext=top?rk:N+1-rk;
       out.push({k:k,ext:ext,rk:rk,top:top,x:x})});
@@ -1711,7 +1712,9 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     return pick.map(function(o){var x=o.x,title=o.top?x[1]:x[3],text=o.top?x[2]:x[4],bot=N+1-o.rk;
       if(title.indexOf("|")>0){var p=title.split("|");title=o.rk===1?p[0]:p[1].replace("{n}",ord(o.rk)+"-best")}
       text=text.replace("{v}",fmt(t.v[o.k],x[5])).replace("{r}",ord(o.rk)).replace("{rs}",o.rk===1?"the":ord(o.rk)).replace("{rb}",bot===1?"the":ord(bot));
-      return '<div><div class="rk">'+ord(o.rk).toUpperCase()+' OF '+N+'</div><h4>'+esc(title)+'</h4><p>'+esc(text)+'</p></div>'}).join("");
+      return {rk:ord(o.rk).toUpperCase()+' OF '+N,title:title,text:text}});
+  }
+  function identity(t){return identData(t).map(function(o){return '<div><div class="rk">'+o.rk+'</div><h4>'+esc(o.title)+'</h4><p>'+esc(o.text)+'</p></div>'}).join("");
   }
   var payRank={};Object.keys(PAY).sort(function(a,b){return PAY[b]-PAY[a]}).forEach(function(k,i){payRank[k]=i+1});
   var sel=document.getElementById("tm-select");
@@ -1753,6 +1756,9 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     document.getElementById("tm-rp").innerHTML=rows(t.staff.filter(function(s){return s.role==="rp"}));
   }
   function slug(n){return "t-"+n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+  window.kbTeamCardData=function(){var t=teams[cur];if(!t)return null;var I=INFO[t.name]||[0,"#b86a00","",t.name],r=RK[t.name],pr=payRank[t.name],pn=Object.keys(PAY).length;
+    function top(role){return t.staff.filter(function(s){return s.role===role}).sort(function(a,b){return b.p-a.p}).slice(0,7)}
+    return {name:t.name,color:I[1],logo:I[0],div:I[2],rank:t.rank,N:N,rv:t.rv,pay:PAY[t.name]?"$"+(PAY[t.name]/1e6).toFixed(1)+"M payroll · "+(pr===1?"most in MLB":pr===pn?"least in MLB":ord(pr)+"-highest"):"",ident:identData(t),sp:top("sp"),rp:top("rp"),spr:r.sp,rpr:r.rp,spv:t.v.sp,rpv:t.v.rp}};
   window.kbShowTeam=function(h){list.forEach(function(t){if(slug(t.name)===h)cur=t.name});sel.value=cur;render()};
   sel.addEventListener("change",function(){cur=sel.value;render();try{history.replaceState(null,"","#"+slug(cur))}catch(e){}});
   document.getElementById("tm-strip").addEventListener("click",function(e){var d=e.target.closest("button[data-tm]");if(!d||!teams[d.dataset.tm])return;cur=d.dataset.tm;sel.value=cur;render();try{history.replaceState(null,"","#"+slug(cur))}catch(x){}});
@@ -1859,6 +1865,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     if(!quiet){try{history.replaceState(null,"","#lab-"+id)}catch(e){}}
   }
   window.kbShowLab=function(id){show(id,true)};
+  window.kbLabCardData=function(){if(!CURL)return null;var d=P[CURL],B=(K.BIO||{})[CURL]||{};return {id:CURL,d:d,m:MIX[CURL],fix:LAB[CURL],N:NAMES,tm:B.tm||d.tm||""}};
   // search
   var index=Object.keys(P).map(function(id){return {id:id,n:P[id].n,k:fold(P[id].n)}}).sort(function(a,b){return a.n.localeCompare(b.n)});
   var input=document.getElementById("lab-input"), sug=document.getElementById("lab-sug"), matches=[], active=-1;
@@ -2038,6 +2045,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function sgn(v,d){return (v>=0?"+":"−")+Math.abs(v).toFixed(d)}
   function tint(level){return level===2?"rgba(31,138,91,.30)":level===1?"rgba(31,138,91,.14)":level===-1?"rgba(210,69,60,.14)":level===-2?"rgba(210,69,60,.30)":null}
   function grade(v,a,b,c,d){if(v==null)return 0;return v>=a?2:v>=b?1:v<=d?-2:v<=c?-1:0}
+  window.kbCardKit={C:C,DISP:DISP,BODY:BODY,DATA:DATA,img:img,fonts:fonts,wrap:wrap,rr:rr,sgn:sgn,BUG:KB_BUG};
 
   function draw(id,photo,logo){
     var d=K.P[id], B=K.BIO[id]||{}, A=K.ARM[id], S=K.SUM[id]||{}, N=K.NAMES;
@@ -2178,6 +2186,134 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       if(!save(cv)){cv=draw(id,null,null);save(cv)}
     });
   });
+})();
+</script>
+<script>
+(function(){
+  var KIT=window.kbCardKit; if(!KIT)return;
+  var C=KIT.C,DISP=KIT.DISP,BODY=KIT.BODY,DATA=KIT.DATA,rr=KIT.rr,wrap=KIT.wrap,sgn=KIT.sgn;
+  var FAM={FF:1,SI:1,FC:1,FA:1,SL:2,ST:2,SV:2,CU:2,KC:2,CS:2,CH:3,FS:3,FO:3,SC:3,KN:3,EP:3};
+  function ord(n){var s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+  function canvas(W,H){var sc=2,cv=document.createElement("canvas");cv.width=W*sc;cv.height=H*sc;var x=cv.getContext("2d");x.scale(sc,sc);x.fillStyle="#e9edf2";x.fillRect(0,0,W,H);return {cv:cv,x:x}}
+  function footer(x,W,H,note){var fy=H-60;x.fillStyle=C.head;rr(x,20,fy,W-40,44,10);x.fill();x.fillStyle="#ffffff";x.font='italic 700 20px '+DISP;
+    if(KIT.BUG.complete&&KIT.BUG.naturalWidth)x.drawImage(KIT.BUG,34,fy+5,34,34);x.fillText("KAFKAESQUE BASEBALL",74,fy+29);var bw=x.measureText("KAFKAESQUE BASEBALL").width;
+    x.fillStyle="#c9d2de";x.font='400 13px '+BODY;x.fillText(note,74+bw+24,fy+28);x.textAlign="right";x.fillText("benkafka.github.io/kafkaesque-baseball · Data: Statcast",W-40,fy+28);x.textAlign="left"}
+  function chips(x,list,X,Y){x.font='600 14px '+BODY;list.forEach(function(c){var w=x.measureText(c).width+22;x.fillStyle="#26323f";rr(x,X,Y,w,28,14);x.fill();x.fillStyle="#e6ebf2";x.fillText(c,X+11,Y+19);X+=w+8})}
+  function panel(x,X,Y,w,h,title,sub){x.fillStyle=C.bg;rr(x,X,Y,w,h,12);x.fill();x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText(title.toUpperCase(),X+20,Y+30);if(sub){x.font='400 13px '+BODY;x.textAlign="right";x.fillText(sub,X+w-20,Y+30);x.textAlign="left"}}
+  function deliver(cv,fname,title,done){
+    try{cv.toBlob(function(b){if(!b){done();return}
+      var mobile=window.matchMedia&&window.matchMedia("(pointer:coarse)").matches;
+      if(!mobile){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=fname;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);done();return}
+      var url=URL.createObjectURL(b),ov=document.createElement("div");ov.className="card-ov";var file=null;try{file=new File([b],fname,{type:"image/png"})}catch(e){}
+      var canShare=file&&navigator.canShare&&navigator.canShare({files:[file]});
+      ov.innerHTML='<div class="card-box"><img alt=""><p>'+(canShare?'Tap Share to save it to Photos or post it.':'Press and hold the image, then choose Save to Photos.')+'</p><div class="card-btns">'+(canShare?'<button type="button" class="dl-btn" data-act="share">Share</button>':'')+'<button type="button" class="share-btn" data-act="close">Close</button></div></div>';
+      ov.querySelector("img").src=url;document.body.appendChild(ov);
+      ov.addEventListener("click",function(e){var t=e.target.closest("[data-act]");if(e.target===ov||(t&&t.dataset.act==="close")){ov.remove();URL.revokeObjectURL(url);return}
+        if(t&&t.dataset.act==="share")navigator.share({files:[file],title:title}).catch(function(){})});
+      done()},"image/png");return true}catch(e){return false}
+  }
+  function run(btn,label,load,draw,name){
+    btn.disabled=true;btn.textContent="Making card…";function done(){btn.disabled=false;btn.textContent=label}
+    Promise.all([KIT.fonts()].concat(load)).then(function(res){
+      var cv=null;try{cv=draw(res.slice(1))}catch(e){console.log(e)}
+      if(!cv){done();return}
+      if(!deliver(cv,name.f,name.t,done)){try{cv=draw([]);deliver(cv,name.f,name.t,done)}catch(e){done()}}
+    });
+  }
+
+  // ---------- Pitch Lab card ----------
+  function drawLab(o,photo){
+    var d=o.d,m=o.m||{},N=o.N,fx=(o.fix||[]).slice(0,4),sides=["L","R"].filter(function(s){return m[s]&&m[s].r&&m[s].r.length});
+    var W=1400,HEAD=190,RH=40,nr=Math.max.apply(null,sides.map(function(s){return m[s].r.length}).concat([1]));
+    var MIXH=sides.length?118+nr*RH:100, FXH=60+(fx.length?fx.length*78:44), H=HEAD+24+MIXH+24+FXH+24+70;
+    var k=canvas(W,H),x=k.x;
+    x.fillStyle=C.head;rr(x,20,20,W-40,HEAD-20,14);x.fill();
+    var px=44,py=38,ps=134;x.save();rr(x,px,py,ps,ps,12);x.clip();x.fillStyle="#26323f";x.fillRect(px,py,ps,ps);
+    if(photo){var r=Math.max(ps/photo.width,ps/photo.height);x.drawImage(photo,px+(ps-photo.width*r)/2,py+(ps-photo.height*r)/2,photo.width*r,photo.height*r)}
+    else{x.fillStyle="#93a1b5";x.font='700 54px '+DISP;x.textAlign="center";x.textBaseline="middle";x.fillText(d.n.split(" ").map(function(w){return w[0]}).join("").slice(0,2),px+ps/2,py+ps/2);x.textAlign="left";x.textBaseline="alphabetic"}
+    x.restore();var tx=px+ps+28;
+    x.fillStyle="#ffffff";x.font='italic 700 56px '+DISP;x.fillText(d.n.toUpperCase(),tx,96);
+    x.fillStyle="#c9d2de";x.font='400 18px '+BODY;x.fillText((o.tm?o.tm+" · ":"")+"2026 · Pitch Lab",tx,128);
+    var role=d.g&&d.g.r==="SP"?"Starter":d.g&&d.g.r==="RP"?"Reliever":"";
+    chips(x,[d.h==="L"?"LHP":"RHP",role,d.g&&d.g.s!=null?"K-Stuff+ "+d.g.s:"",d.g&&d.g.a!=null?"Arsenal grade "+d.g.a:""].filter(Boolean),tx,146);
+    x.textAlign="right";x.fillStyle="#3fc28a";x.font='italic 700 72px '+DISP;x.fillText(m.t!=null?"+"+m.t.toFixed(1):"–",W-50,112);
+    x.fillStyle="#c9d2de";x.font='400 15px '+BODY;x.fillText("runs a season from a better pitch mix",W-50,142);x.textAlign="left";
+    // mix
+    var top=HEAD+24;panel(x,20,top,W-40,MIXH,"Better pitch mix","Gray bar: how often he throws it now · Orange line: how often to throw it");
+    if(!sides.length){x.fillStyle=C.fg;x.font='400 16px '+BODY;x.fillText("Not enough pitches to either side to suggest a mix.",40,top+70)}
+    var cw=(W-40-60)/2;
+    sides.forEach(function(s,i){var X=40+i*(cw+20),S=m[s];
+      x.fillStyle=C.fg;x.font='600 18px '+BODY;x.fillText("vs "+(s==="L"?"left":"right")+"-handed hitters",X,top+68);
+      x.fillStyle=S.g>=0.01?C.ok:C.muted;x.font='400 14px '+BODY;x.fillText(S.g>=0.01?"+"+S.g.toFixed(2)+" runs per 100 pitches · about +"+S.s.toFixed(1)+" runs over a season":"Already close to his best mix",X,top+92);
+      S.r.forEach(function(p,j){var y=top+108+j*RH,tw=cw-130-150,TX=X+130;
+        x.fillStyle=C.fg;x.font='600 15px '+BODY;x.fillText(N[p[0]]||p[0],X,y+25);
+        x.fillStyle=C.panel;rr(x,TX,y+13,tw,16,8);x.fill();
+        x.fillStyle="#b7c0cc";if(p[1]>0.5){rr(x,TX,y+13,Math.max(8,tw*Math.min(100,p[1])/100),16,8);x.fill()}
+        x.fillStyle=C.accent;x.fillRect(TX+tw*Math.min(100,p[2])/100-2,y+8,4,26);
+        var dd=p[2]-p[1];x.textAlign="right";x.font='400 15px '+DATA;x.fillStyle=C.muted;var rt=Math.round(p[2])+"%";x.font='700 15px '+DATA;var rw=x.measureText(rt).width;
+        x.fillStyle=Math.abs(dd)<1?C.fg:dd>0?C.ok:C.hot;x.fillText(rt,X+cw,y+26);x.font='400 15px '+DATA;x.fillStyle=C.muted;x.fillText(Math.round(p[1])+"% → ",X+cw-rw,y+26);x.textAlign="left"});
+    });
+    // fixes
+    var fy=top+MIXH+24;panel(x,20,fy,W-40,FXH,"Pitch fixes","One change at a time, re-graded with K-Stuff+");
+    if(!fx.length){x.fillStyle=C.fg;x.font='400 16px '+BODY;x.fillText("No shape changes clear the bar for him. His pitches already sit near the best versions for his arm slot.",40,fy+70)}
+    fx.forEach(function(f,j){var y=fy+50+j*78;
+      x.font='600 13px '+BODY;var lw=x.measureText(f[0]).width+20;x.fillStyle=f[0]==="New pitch"?"rgba(184,106,0,.14)":C.panel;rr(x,40,y+6,lw,26,13);x.fill();x.fillStyle=f[0]==="New pitch"?C.accent:C.muted;x.fillText(f[0],50,y+24);
+      x.fillStyle=C.fg;x.font='700 17px '+BODY;x.fillText(f[1],40+lw+12,y+25);var pw2=x.measureText(f[1]).width;
+      x.font='400 16px '+BODY;wrap(x,f[2],40+lw+12+pw2+14,y+25,W-40-(40+lw+pw2+26)-240,22,1);
+      x.textAlign="right";x.fillStyle=C.ok;x.font='700 20px '+DATA;x.fillText("+"+f[6].toFixed(1)+" runs/season",W-44,y+26);x.textAlign="left";
+      x.fillStyle=C.muted;x.font='400 13px '+BODY;wrap(x,(f[3]!=null?"K-Stuff+ "+f[3]+" → "+f[4]:"Projected K-Stuff+ "+f[4])+" · +"+f[5].toFixed(2)+" runs/100 · Similar shape: "+f[7],40,y+54,W-120,18,1);
+      if(j<fx.length-1){x.strokeStyle=C.line;x.lineWidth=1;x.beginPath();x.moveTo(40,y+70);x.lineTo(W-40,y+70);x.stroke()}});
+    footer(x,W,H,"Suggestions, not orders · test with video and a coach");
+    return k.cv;
+  }
+  var lb=document.getElementById("lab-dl");
+  if(lb)lb.addEventListener("click",function(){var o=window.kbLabCardData&&window.kbLabCardData();if(!o)return;
+    run(lb,"Download Pitch Lab card",[KIT.img("https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_360,q_auto:best/v1/people/"+o.id+"/headshot/67/current")],
+      function(r){return drawLab(o,r[0]||null)},{f:o.d.n.replace(/[^A-Za-z0-9]+/g,"_")+"_Pitch_Lab_Kafkaesque_Baseball.png",t:o.d.n+" · Pitch Lab"})});
+
+  // ---------- Team card ----------
+  function s2(v,d){return sgn(Math.round(v*100)/100||0,d)}
+  function drawTeam(o,logo){
+    var W=1400,HEAD=200,RH=42,nr=Math.max(o.sp.length,o.rp.length,1),IDH=170,TBH=96+nr*RH,H=HEAD+24+IDH+24+TBH+24+70;
+    var k=canvas(W,H),x=k.x;
+    x.save();rr(x,20,20,W-40,HEAD-20,14);x.clip();x.fillStyle=C.head;x.fillRect(20,20,W-40,HEAD-20);x.fillStyle=o.color;x.fillRect(20,20,W-40,10);x.restore();
+    var ls=128,lx=48;if(logo){var lw=logo.width&&logo.height?ls*logo.width/logo.height:ls;x.drawImage(logo,lx+(ls-lw)/2,50,lw,ls)}
+    var tx=lx+ls+30;
+    x.fillStyle="#ffffff";x.font='italic 700 54px '+DISP;x.fillText(o.name.toUpperCase(),tx,106);
+    x.fillStyle="#c9d2de";x.font='400 18px '+BODY;x.fillText((o.div?o.div+" · ":"")+"2026 pitching staff",tx,138);
+    chips(x,["Staff rank: "+ord(o.rank)+" of "+o.N,o.pay].filter(Boolean),tx,156);
+    x.textAlign="right";x.fillStyle=o.rv>=0?"#3fc28a":"#ff7a70";x.font='italic 700 72px '+DISP;x.fillText(s2(o.rv,2),W-50,118);
+    x.fillStyle="#c9d2de";x.font='400 15px '+BODY;x.fillText("runs per 100 pitches vs league",W-50,148);x.textAlign="left";
+    // identity
+    var top=HEAD+24,n=o.ident.length||1,iw=(W-40-(n-1)*16)/n;
+    o.ident.forEach(function(c,i){var X=20+i*(iw+16);x.fillStyle=C.bg;rr(x,X,top,iw,IDH,12);x.fill();
+      x.fillStyle=C.accent;x.font='600 13px '+DATA;x.fillText(c.rk,X+22,top+34);
+      x.fillStyle=C.fg;x.font='italic 700 24px '+DISP;wrap(x,c.title.toUpperCase(),X+22,top+68,iw-44,26,1);
+      x.fillStyle=C.muted;x.font='400 15px '+BODY;wrap(x,c.text,X+22,top+100,iw-44,21,3)});
+    // tables
+    var ty=top+IDH+24,pw=(W-40-16)/2;
+    [["Rotation",o.sp,o.spr,o.spv],["Bullpen",o.rp,o.rpr,o.rpv]].forEach(function(g,i){var X=20+i*(pw+16);
+      panel(x,X,ty,pw,TBH,g[0],g[2]?ord(g[2])+" of "+o.N+" · "+s2(g[3],2)+" runs per 100":"");
+      var hy=ty+66;x.font='500 11px '+DATA;x.fillStyle=C.muted;
+      [["PITCHER",X+20,"l"],["PITCHES",X+290,"r"],["RUNS/100 VS LG",X+410,"c"],["GRADE",X+580,"r"],["K-STUFF+",X+pw-20,"r"]].forEach(function(c){x.textAlign=c[2]==="l"?"left":c[2]==="r"?"right":"center";x.fillText(c[0],c[1],hy)});x.textAlign="left";
+      g[1].forEach(function(s,j){var y=hy+12+j*RH;
+        x.strokeStyle=C.line;x.lineWidth=1;x.beginPath();x.moveTo(X+20,y);x.lineTo(X+pw-20,y);x.stroke();
+        x.fillStyle=C.fg;x.font='600 15px '+BODY;wrap(x,s.n,X+20,y+27,200,18,1);x.fillStyle=C.muted;x.font='400 12px '+BODY;x.fillText(s.h==="L"?"LHP":"RHP",X+20+Math.min(200,(x.font='600 15px '+BODY,x.measureText(s.n).width))+8,y+27);
+        x.font='400 15px '+DATA;x.fillStyle=C.fg;x.textAlign="right";x.fillText(s.p.toLocaleString(),X+290,y+27);
+        var cx=X+410,bw=Math.min(Math.abs(s.rv)/2,1)*70;x.fillStyle=C.panel;rr(x,cx-70,y+15,140,14,7);x.fill();
+        x.fillStyle=s.rv>=0?C.ok:C.hot;if(bw>1){x.fillRect(s.rv>=0?cx:cx-bw,y+15,bw,14)}x.fillStyle=C.muted;x.fillRect(cx-1,y+11,2,22);
+        x.textAlign="left";x.fillStyle=s.rv>=0?C.ok:C.hot;x.font='600 14px '+DATA;x.fillText(s2(s.rv,2),cx+76,y+27);
+        x.textAlign="right";x.fillStyle=C.fg;x.font='700 15px '+DATA;x.fillText(s.a==null?"–":String(s.a),X+580,y+27);
+        x.font='400 15px '+DATA;x.fillText(s.s==null?"–":String(s.s),X+pw-20,y+27);x.textAlign="left"});
+      if(!g[1].length){x.fillStyle=C.muted;x.font='400 15px '+BODY;x.fillText("No pitchers here.",X+20,hy+40)}
+    });
+    footer(x,W,H,"Run value: runs saved per 100 pitches vs league · Most-used pitchers shown");
+    return k.cv;
+  }
+  var tb=document.getElementById("tm-dl");
+  if(tb)tb.addEventListener("click",function(){var o=window.kbTeamCardData&&window.kbTeamCardData();if(!o)return;
+    run(tb,"Download team card",[o.logo?KIT.img("https://www.mlbstatic.com/team-logos/team-cap-on-dark/"+o.logo+".svg"):Promise.resolve(null)],
+      function(r){return drawTeam(o,r[0]||null)},{f:o.name.replace(/[^A-Za-z0-9]+/g,"_")+"_Pitching_Staff_Kafkaesque_Baseball.png",t:o.name+" pitching staff · Kafkaesque Baseball"})});
 })();
 </script>
 <script>
