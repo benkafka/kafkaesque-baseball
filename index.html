@@ -488,6 +488,69 @@ table.cnt-t{min-width:480px}
 .wf-bar.base{background:#8c97a8}.wf-bar.gain{background:#3fc28a}.wf-bar.gain span{color:#158a5f}.wf-bar.tot{background:#e39a2c}.wf-bar.tot span{color:#c06f10}
 .wf-lbl{text-align:center;font-size:13px;color:var(--muted);margin-top:8px;line-height:1.3}
 .wf .fine{margin:10px 0 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pd-lede{max-width:860px;font-size:16px;line-height:1.5;margin:0 0 18px;color:var(--muted)}
+.pd-grid{display:grid;grid-template-columns:minmax(260px,330px) minmax(0,1fr);gap:20px;align-items:start}
+.pd-side{display:flex;flex-direction:column;gap:16px;padding:18px}
+.pd-side .seg{display:flex;flex-wrap:wrap}.pd-side .seg button{flex:1}
+.pd-f{display:flex;flex-direction:column;gap:6px}
+.pd-f input[type=range]{width:100%;accent-color:var(--accent)}
+.pd-who{display:flex;gap:12px;align-items:center;margin-top:12px}
+.pd-who img{width:56px;height:56px;border-radius:50%;object-fit:cover;background:var(--panel-2)}
+.pd-who b{display:block;font-size:16px}.pd-who span{display:block;font-size:13px;color:var(--muted)}
+.pd-links a{color:var(--accent)}
+.pd-in{width:100%;border-collapse:collapse;font-size:13px}.pd-in th{font-size:11px;color:var(--muted);font-weight:600;text-align:left;padding:2px 3px}
+.pd-in td{padding:3px}.pd-in select,.pd-in input{font:13px var(--f-body);width:100%;box-sizing:border-box;padding:6px 5px;border:1px solid var(--line);border-radius:6px;background:var(--panel-2);color:var(--fg)}
+.pd-in input{max-width:62px}.pd-x{border:0;background:transparent;color:var(--muted);font-size:18px;cursor:pointer;padding:4px 6px}
+.pd-h{margin:0 0 4px;font-size:14px}
+.pd-fl{list-style:none;margin:0;padding:0}.pd-fl li{border-top:1px solid var(--line)}
+.pd-fl button{display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;border:0;padding:8px 0;font:600 14px var(--f-body);color:var(--fg);cursor:pointer}
+.pd-fl button:hover span{color:var(--accent)}
+.pd-fl i,.pd-key i,.pd-chips i{display:inline-block;width:11px;height:11px;border-radius:50%}
+.pd-fl small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.pd-fl b{font-family:var(--f-data)}
+.pd-main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.pd-sec{padding:18px 20px}
+.pd-sec-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 14px;margin-bottom:6px}.pd-sec-h h3{margin:0;font-size:18px}
+.pd-svg{width:100%;height:auto;display:block;font-family:var(--f-body)}
+.pd-svg text{font-size:11px;fill:var(--muted)}
+.pd-svg line.g{stroke:var(--line);stroke-width:1}.pd-svg line.z{stroke:var(--muted);stroke-width:1;opacity:.6}
+.pd-b{cursor:pointer;opacity:.55}.pd-b ellipse{fill-opacity:.05;stroke-width:1.5;stroke-dasharray:0}
+.pd-b.good{opacity:1}.pd-b.good ellipse{fill-opacity:.16}
+.pd-b.bad{opacity:.45}.pd-b.bad ellipse{stroke-dasharray:4 4}
+.pd-b.sel ellipse{stroke:var(--fg);stroke-width:3;stroke-dasharray:0}
+.pd-b:hover ellipse,.pd-b:focus ellipse{fill-opacity:.28}.pd-b:focus{outline:none}
+.pd-b text.lb{font-size:12px;font-weight:600;fill:var(--fg)}
+.pd-me circle{fill:var(--fg);stroke:var(--panel);stroke-width:2}.pd-me text{fill:var(--panel);font-size:10px;font-weight:700}
+.pd-svg circle.tg{fill:var(--panel);stroke:#b86a00;stroke-width:2.5;stroke-dasharray:4 3}.pd-svg text.tgl{fill:#b86a00;font-weight:700;font-size:12px}
+.pd-svg line.ar{stroke:#b86a00;stroke-width:2.5;stroke-dasharray:5 4}
+.pd-key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);margin:6px 0 10px}.pd-key span{display:inline-flex;align-items:center;gap:6px}
+.pd-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pd-chips button{display:inline-flex;align-items:center;gap:6px;font:13px var(--f-body);color:var(--fg);background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:5px 10px;cursor:pointer}
+.pd-chips button[aria-pressed=true]{border-color:var(--fg);font-weight:600}
+.pd-t td{vertical-align:middle}.pd-sm{display:block;font-size:12px;color:var(--muted)}
+.pd-rd{font-size:14px;max-width:340px}
+.pd-lk{font:inherit;font-size:14px;color:var(--accent);background:transparent;border:0;padding:0;cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:2px}
+.pd-pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:600;white-space:nowrap;background:var(--panel-2);color:var(--muted)}
+.pd-pill.good{color:#1f7a50;background:rgba(31,138,91,.13)}.pd-pill.bad{color:#b8382f;background:rgba(210,69,60,.12)}.pd-pill.warn{color:#9a5800;background:rgba(227,154,44,.16)}
+.pd-miss{margin:10px 0 0;font-size:14px}
+.pd-card{padding:0;overflow:hidden}
+.pd-ch{background:#121a24;color:#fff;padding:20px 24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+.pd-ch h3{margin:4px 0 0;font-family:var(--f-display);font-style:italic;font-weight:700;font-size:32px;text-transform:uppercase}
+.pd-ch p{margin:6px 0 0;color:#c9d2de;font-size:15px;max-width:640px;line-height:1.45}
+.pd-k{font-family:var(--f-data);font-weight:600;font-size:12px;letter-spacing:.08em;filter:brightness(1.35)}
+.pd-cv{text-align:right}.pd-cv b{display:block;font-family:var(--f-display);font-style:italic;font-size:40px}.pd-cv b.up{color:#3fc28a}.pd-cv b.dn{color:#ff7a70}.pd-cv span{font-size:13px;color:#c9d2de}
+.pd-cs{padding:18px 24px;border-bottom:1px solid var(--line)}.pd-cs h4,.pd-c2 h4{margin:0 0 8px;font-size:14px}
+.pd-tt{width:100%;border-collapse:collapse;font-size:15px}.pd-tt th,.pd-tt td{padding:9px 10px;border-top:1px solid var(--line);text-align:left}.pd-tt thead th{border-top:0;font-size:12px;color:var(--muted);font-weight:600}
+.pd-tt .r{text-align:right}.pd-tt td.warn{color:#9a5800;font-weight:600}.pd-tt td.up{font-weight:600}
+.pd-c2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:18px 24px;border-bottom:1px solid var(--line)}.pd-c2 p{margin:0 0 6px;font-size:15px;line-height:1.45}
+.pd-bar{display:grid;grid-template-columns:170px 1fr 100px;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.pd-bar i{display:block;height:10px;background:var(--panel-2);border-radius:5px;overflow:hidden}.pd-bar i b{display:block;height:100%;border-radius:5px}.pd-bar i b.up{background:#1f8a5b}.pd-bar i b.dn{background:#d2453c}
+.pd-bar em{font-style:normal;font-family:var(--f-data);text-align:right}.pd-bar small{color:var(--muted)}
+.pd-ex{display:flex;flex-wrap:wrap;gap:10px}.pd-ex a{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--fg);min-width:200px}
+.pd-ex a:hover{border-color:var(--accent)}.pd-ex span{font-size:13px;color:var(--muted)}.pd-ex em{font-style:normal;font-family:var(--f-data);font-size:13px}
+.pd-tt td.mu,.pd-t td.mu{color:var(--muted)}
+@media (max-width:900px){.pd-grid{grid-template-columns:minmax(0,1fr)}.pd-c2{grid-template-columns:minmax(0,1fr)}.pd-bar{grid-template-columns:130px 1fr 90px}}
 .lab-intro{margin-top:18px}.lab-dl{margin-left:12px}.lab-lede{font-size:17px;line-height:1.55;max-width:860px;margin:0}.lab-proof{border:1px solid var(--line);border-left:4px solid #e39a2c;border-radius:12px;padding:16px 20px}.lab-proof p{margin:6px 0 0;line-height:1.5}
 .tm-ident{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0}
 .tm-ident > div{background:#121a24;color:#fff;border-radius:14px;padding:20px 22px;border:1px solid #2a3442}
@@ -753,7 +816,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <a href="#minors">Farm Systems</a>
       <a href="#teams">Teams</a>
       <a href="#leaders">Leaderboards</a>
-      <a href="#shapes">Pitch Shapes</a>
+      <a href="#shapes">Pitch Design</a>
       <a href="#slots">Arm Slots</a>
       <a href="#glossary">Glossary</a>
       <a href="#about">About</a>
@@ -787,11 +850,11 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <span class="art-go">Open leaderboards →</span>
     </a>
     <a class="panel hcard" href="#shapes">
-      <div class="meta">Pitch Shapes</div>
-      <h3>16 shapes, from riding four-seamers to sweepers</h3>
-      <p>How each shape moves, a common grip and who throws it best.</p>
-      <div class="hc-stat"><b>34%</b><span>whiff rate on vertical sliders, the best of any slider shape in 2026</span></div>
-      <span class="art-go">Explore pitch shapes →</span>
+      <div class="meta">Pitch Design</div>
+      <h3>Which pitches fit which arms</h3>
+      <p>Pick a pitcher or enter any arm's numbers. See which shapes fit his arm slot, which of his pitches fight it, and what to change.</p>
+      <div class="hc-stat"><b>−0.53</b><span>runs per 100 on flat four-seamers from three-quarters slots, one of the worst fits in baseball</span></div>
+      <span class="art-go">Check an arm →</span>
     </a>
     <a class="panel hcard" href="#writing">
       <div class="meta">Pitcher List · Substack</div>
@@ -1124,7 +1187,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <div id="lab-out" hidden>
       <div class="lab-hd">
         <img id="lab-photo" class="lab-photo" alt="" width="80" height="80">
-        <div><h3 id="lab-name"></h3><p class="meta" id="lab-meta"></p><a class="art-go" id="lab-card" href="#report">Full report card →</a><button type="button" class="dl-btn lab-dl" id="lab-dl">Download Pitch Lab card</button></div>
+        <div><h3 id="lab-name"></h3><p class="meta" id="lab-meta"></p><a class="art-go" id="lab-card" href="#report">Full report card →</a> <a class="art-go" id="lab-pd" href="#shapes">Pitch design check →</a><button type="button" class="dl-btn lab-dl" id="lab-dl">Download Pitch Lab card</button></div>
         <div class="lab-total"><span class="meta">Mix changes</span><b id="lab-tot"></b><small>runs over a season</small></div>
       </div>
       <div class="rc-head"><h3 class="sub">Pitch mix</h3><span class="meta">How often to throw each pitch</span></div>
@@ -1229,18 +1292,47 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   </section>
 
   <section id="shapes" class="page">
-    <div class="sec-head"><h2>Pitch Shapes</h2><p>Every 2026 pitch, sorted into 16 shapes by velocity and movement</p></div>
-    <div class="shp">
-      <aside class="panel shp-f" aria-label="Shape filters">
-        <div><div class="meta">Pitch group</div><div class="seg" id="sh-grp" role="group" aria-label="Pitch group"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="fb" aria-pressed="false">Fastballs</button><button type="button" data-v="br" aria-pressed="false">Breaking</button><button type="button" data-v="os" aria-pressed="false">Offspeed</button></div></div>
-        <div><div class="meta">Usually suits</div><div class="seg" id="sh-bias" role="group" aria-label="Usually suits"><button type="button" data-v="all" aria-pressed="true">Any</button><button type="button" data-v="P" aria-pressed="false">Pronators</button><button type="button" data-v="S" aria-pressed="false">Supinators</button><button type="button" data-v="E" aria-pressed="false">Either</button></div></div>
-        <div><div class="meta">Throws</div><div class="seg" id="sh-hand" role="group" aria-label="Throws"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="R" aria-pressed="false">RHP</button><button type="button" data-v="L" aria-pressed="false">LHP</button></div></div>
-        <div><div class="meta">Sort by</div><div class="seg" id="sh-sort" role="group" aria-label="Sort by"><button type="button" data-v="n" aria-pressed="true">Most thrown</button><button type="button" data-v="wh" aria-pressed="false">Whiff%</button><button type="button" data-v="rv" aria-pressed="false">Run value</button></div></div>
-        <p class="fine"><b>Pronators</b> naturally turn the hand over at release, so changeups, sinkers and splitters come easier. <b>Supinators</b> naturally get to the side of the ball, so sweepers, curves and cutters come easier. This is a coaching rule of thumb, not a law.</p>
-        <p class="fine">Grip notes are general starting points, not any one pitcher's grip. Work them out with a coach and a TrackMan or Rapsodo.</p>
+    <div class="sec-head"><h2>Pitch Design</h2><p>Which pitch shapes fit which arms · 2026</p></div>
+    <p class="pd-lede">Pick a pitcher, or describe any arm with your own TrackMan or Rapsodo numbers. It shows which of the 16 pitch shapes worked best for arm slots like his in 2026, which of his pitches fight his arm, and what to change.</p>
+    <div class="pd-grid">
+      <aside class="panel pd-side">
+        <div class="seg" id="pd-mode" role="group" aria-label="Mode"><button type="button" data-v="pick" aria-pressed="true">Pick a pitcher</button><button type="button" data-v="build" aria-pressed="false">Build an arm</button></div>
+        <div id="pd-pick">
+          <div class="search">
+            <label class="meta" for="pd-q">Pitcher</label>
+            <input id="pd-q" type="search" placeholder="Type any MLB pitcher’s name" autocomplete="off" spellcheck="false" aria-controls="pd-sug" aria-autocomplete="list">
+            <div id="pd-sug" class="ps-list" role="listbox" hidden></div>
+          </div>
+          <div class="pd-who" id="pd-who"></div>
+        </div>
+        <div id="pd-build" hidden>
+          <div class="pd-f"><span class="meta">Throws</span><div class="seg" id="pd-hand" role="group" aria-label="Throws"><button type="button" data-v="R" aria-pressed="true">RHP</button><button type="button" data-v="L" aria-pressed="false">LHP</button></div></div>
+          <div class="pd-f"><label class="meta" for="pd-aa">Arm angle: <b id="pd-aav">45°</b> <span id="pd-aas"></span></label><input type="range" id="pd-aa" min="0" max="80" step="1" value="45"><span class="fine">0° is sidearm, 90° straight over the top. Most pitchers sit between 25° and 55°.</span></div>
+          <div class="pd-f"><span class="meta">His pitches (optional)</span>
+            <div class="rc-wrap"><table class="pd-in"><thead><tr><th scope="col">Pitch</th><th scope="col">Velo</th><th scope="col">IVB</th><th scope="col">HB</th><th scope="col"><span class="sr">Remove</span></th></tr></thead><tbody id="pd-rows"></tbody></table></div>
+            <button type="button" class="share-btn" id="pd-add">+ Add a pitch</button>
+            <span class="fine">Averages from TrackMan, Rapsodo or Statcast. IVB = induced vertical break. HB = horizontal break, arm side positive, glove side negative. The starting numbers are an example; replace them.</span></div>
+        </div>
+        <p class="fine" id="pd-win"></p>
+        <div><h4 class="pd-h">Fits this arm</h4><ul class="pd-fl" id="pd-fits"></ul></div>
+        <div><h4 class="pd-h">Fights this arm</h4><ul class="pd-fl" id="pd-fights"></ul></div>
       </aside>
-      <div class="panel shp-list" id="sh-list"></div>
+      <div class="pd-main">
+        <div class="panel pd-sec">
+          <div class="pd-sec-h"><h3>The shape map · pitcher’s view</h3><span class="fine">Solid outline: fits this arm · Dashed: struggles · Dark dots: his pitches · Select a shape</span></div>
+          <div id="pd-map"></div>
+          <div class="pd-key"><span><i style="background:#2a78d6"></i>Fastballs</span><span><i style="background:#d9622b"></i>Breaking balls</span><span><i style="background:#158a5f"></i>Offspeed</span><span><i style="background:var(--fg)"></i>His pitches</span><span>Bubble size: how many pitchers throw it</span></div>
+          <div class="pd-chips" id="pd-chips" role="group" aria-label="All 16 shapes"></div>
+        </div>
+        <div class="panel pd-sec" id="pd-ars">
+          <div class="pd-sec-h"><h3 id="pd-ars-h">His arsenal vs his arm slot</h3><span class="fine">Fit: how the shape played for arm slots like his, runs per 100 pitches vs league</span></div>
+          <div class="rc-wrap"><table class="rc pd-t"><thead><tr id="pd-ars-head"></tr></thead><tbody id="pd-ars-b"></tbody></table></div>
+          <p class="pd-miss" id="pd-miss"></p>
+        </div>
+        <div class="panel pd-card" id="pd-card"></div>
+      </div>
     </div>
+    <p class="fine">Fit compares each shape’s 2026 run value (runs saved per 100 pitches vs league) among pitchers whose arm angle is within 8° of this one, both hands combined, with at least 12 such pitchers. Targets are the middle half of that shape from those slots. Shapes come from velocity and movement, not the pitch name. This is a starting point for a bullpen session, not a prescription: it can’t see grip comfort, health or sequencing.</p>
   </section>
 
   <section id="slots" class="page">
@@ -1281,7 +1373,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     <div class="sec-head"><h2>Glossary</h2><p>Every term used on the site</p></div>
     <div class="gl-grp"><h3 class="gl-h">Results</h3><dl class="gloss"><div><dt>Usage</dt><dd>How often a pitcher throws a pitch, as a share of all his pitches to that batter side.</dd></div><div><dt>Whiff%</dt><dd>Swings and misses divided by total swings.</dd></div><div><dt>Whiff+</dt><dd>Whiff% compared with league average for the same pitch type, throwing hand and batter side. 100 is average; 120 means 20% more misses.</dd></div><div><dt>Pitch grade</dt><dd>One 20–80 grade per pitch, the scale scouts use: 50 is average, 60 is plus, 70 is plus-plus, 40 is below average. It blends Whiff+, chase rate, in-zone whiffs, contact quality (xwOBAcon), ground-ball rate and Location+, each weighted by how much it drives run value across 2026. It grades what the pitcher controls, so it's steadier than run value, which includes luck. Small samples are pulled toward 50: a pitch thrown 150 times keeps half its distance from average, one thrown 600 times keeps 80%.</dd></div><div><dt>Arsenal grade</dt><dd>A pitcher's whole mix on the 20–80 scale, weighting each pitch by how often he throws it. Grades on fewer pitches are pulled toward 50 (halfway at 400 pitches), so a reliever needs a bigger edge than a starter to reach the top. Leaderboards rank starters and relievers separately. A starter is anyone who threw 50+ pitches in at least half his games (or in 10+ games). It rates pitch quality, not workload or durability.</dd></div><div><dt>Matchups</dt><dd>Each day's probable starters and lineups come live from MLB. For each starter, his run value by pitch group (fastballs, breaking balls, offspeed) is set against how the other team hit that group from pitchers of the same hand in 2026, ranked 1–30 (1 = best offense). Matchup edge = for each group, how often he throws it × (his run value − their run value), added up, in runs per 100 pitches. Hitter chips show each batter's run value vs. league by pitch group, colored from the pitcher's side; under 150 pitches seen is faded because it's mostly noise. It describes the matchup, not a prediction.</dd></div><div><dt>Pitch mix optimizer</dt><dd>Part of Pitch Lab. Suggests how often to throw each pitch against lefties and righties. Each pitch's value blends its own 2026 run value (trusted more as the sample grows; halfway at 300 pitches) with its K-Stuff+ grade. Usage shifts toward the most valuable pitches, but every extra point of usage is charged against that pitch, because hitters adjust to what they see more. Guardrails: no pitch moves more than 20 points, a pitch needs 50+ thrown to that side before it's suggested more, and every pitcher keeps a real fastball. It treats each pitch on its own, so it can't see how a pitch sets up the next one.</dd></div><div><dt>2027 Watch List</dt><dd>Ten starters and ten relievers who are 29 or younger, threw 600+ pitches in 2026, were average or worse and have never had a strong season since 2021, ranked by projected 2027 run value. The projection leans on K-Stuff+ and Whiff+, then Location+, fastball velo change and contact quality. Tested on 2022 to 2025 with lists built only from earlier seasons: 28 of 40 reliever picks and 22 of 40 starter picks were above average the next year (vs 50% and 38% of similar pitchers). It can't see injuries or role changes.</dd></div><div><dt>Arm slot change</dt><dd>A move of 4 degrees or more in a pitcher's average arm angle from one season to the next (300+ pitches in both). Across 1,955 back-to-back seasons from 2021 to 2026, each degree lower cost a fastball about 0.15" of ride and added about 0.17" of arm-side run, with almost no change in velocity. On its own, a slot change didn't reliably help or hurt results.</dd></div><div><dt>Pitch Lab</dt><dd>Up to four things each pitcher could try, ranked by runs saved. Usage: an Underused weapon he could throw more. Shape tweak: one small change (1 mph, 2 inches of break, 150 rpm or 0.3 ft of extension) re-scored with K-Stuff+, allowed only if pitchers with a similar arm slot already throw that version. New pitch: the typical version of a pitch he doesn't throw (no second changeup or splitter if he already has an offspeed pitch), built from at least 5 pitchers with his arm slot and fastball velo, shown only if it projects to K-Stuff+ 105 or better. Each comes with a similar-shaped pitch from a real pitcher. The model can't tell whether a pitcher can physically make the change. Backtest: on 367 pitches that changed shape from 2025 to 2026, graded by models that never saw that pitcher, predicted whiff change matched actual whiff change (r = 0.23, still significant after controlling for regression to the mean). The direction was right 62% of the time when the model expected a 2+ point swing, and 68% at 5+ points. Run value changes were mostly noise (52%), so treat the runs-saved estimates as rough.</dd></div><div><dt>K-Stuff+</dt><dd><b>K-Stuff+ is my own Stuff+ model, built for this site.</b> It grades the pitch itself, not what happened to it. A model trained on every 2026 pitch learns how velo, movement, spin, release point, extension, arm angle and the gap from his main fastball turn into run value, with separate models for fastballs, breaking balls and offspeed. It never sees location or results. 100 is average; 10 points is 1 standard deviation.<br><br><b>How it's different from FanGraphs Stuff+ and other public models:</b> (1) every pitch gets its own grade against lefties and against righties, and the model knows whether the hitter is on the same side as the pitcher; (2) it uses Statcast's arm angle; (3) it learns from one season at a time, so each year is graded against that year's league; (4) the scale is tighter, so the best single pitches top out in the 120s and 130s and whole arsenals sit closer to 100. The numbers won't match FanGraphs, and they aren't meant to.<br><br>Tested honestly: first-half K-Stuff+ predicted second-half run value better than first-half run value did (r = 0.24 vs 0.17).</dd></div><div><dt>Location+</dt><dd>Grades where a pitcher puts each pitch, not what happened after. Every spot around the plate gets the league's average run value for that pitch group, batter side and count, and each pitch is credited for how good its spot usually is. 100 is average; 10 points is one standard deviation. Pitchers with elite stuff often attack the zone on purpose, which can pull theirs down.</dd></div><div><dt>Run value</dt><dd>How much each pitch changed the expected runs in the inning, from Statcast. Shown per 100 pitches against league average. Positive means it saved runs.</dd></div><div><dt>Run value breakdown</dt><dd>Splits Runs/100 into where the runs came from: strikes (called, swinging and fouls), balls, and contact (balls in play). The three parts add up to Runs/100. It explains pitches that miss bats but still cost runs: usually they get hit hard when hitters connect, or hitters take them for balls.</dd></div><div><dt>Biggest leak</dt><dd>On a pitch that costs runs, the part of the breakdown costing the most: not enough strikes, too many balls, or hurt on contact.</dd></div><div><dt>xwOBAcon</dt><dd>Expected damage on balls in play, built from exit velocity and launch angle. Lower is better for the pitcher. Shown against league average.</dd></div><div><dt>Hard-hit%</dt><dd>Share of balls in play hit 95 mph or harder.</dd></div></dl></div>
     <div class="gl-grp"><h3 class="gl-h">Location</h3><dl class="gloss"><div><dt>Zone%</dt><dd>Share of pitches in the strike zone.</dd></div><div><dt>Chase%</dt><dd>How often hitters swing at a pitch outside the zone. The clearest sign a pitch fools people.</dd></div><div><dt>In-zone whiff%</dt><dd>Misses on swings at strikes. A pitch that gets these beats hitters even when they know it's coming.</dd></div></dl></div>
-    <div class="gl-grp"><h3 class="gl-h">Movement and shape</h3><dl class="gloss"><div><dt>Velo</dt><dd>Average release speed, in mph.</dd></div><div><dt>IVB</dt><dd>Induced vertical break: how much a pitch rises or drops compared with a pitch thrown with no spin, in inches.</dd></div><div><dt>HB</dt><dd>Horizontal break, in inches. Arm side means toward the pitcher's throwing arm (sinkers, changeups); glove side means away from it (sliders, sweepers).</dd></div><div><dt>Off fastball</dt><dd>How much slower a pitch is than the pitcher's main fastball, in mph.</dd></div><div><dt>Pitch shape</dt><dd>A group of pitches that move alike, such as a sweeper or a vertical slider, defined by velocity and break. See Pitch Shapes.</dd></div></dl></div>
+    <div class="gl-grp"><h3 class="gl-h">Movement and shape</h3><dl class="gloss"><div><dt>Velo</dt><dd>Average release speed, in mph.</dd></div><div><dt>IVB</dt><dd>Induced vertical break: how much a pitch rises or drops compared with a pitch thrown with no spin, in inches.</dd></div><div><dt>HB</dt><dd>Horizontal break, in inches. Arm side means toward the pitcher's throwing arm (sinkers, changeups); glove side means away from it (sliders, sweepers).</dd></div><div><dt>Off fastball</dt><dd>How much slower a pitch is than the pitcher's main fastball, in mph.</dd></div><div><dt>Pitch shape</dt><dd>A group of pitches that move alike, such as a sweeper or a vertical slider, defined by velocity and break. See Pitch Design.</dd></div></dl></div>
     <div class="gl-grp"><h3 class="gl-h">Arm and delivery</h3><dl class="gloss"><div><dt>Arm angle</dt><dd>The angle of the arm at release, in degrees, from Statcast body tracking. 0° is straight sideways and 90° is straight up.</dd></div><div><dt>Arm slots</dt><dd>Submarine below 0°, sidearm 0–15°, low three-quarters 15–30°, three-quarters 30–45°, high three-quarters 45–60°, over the top 60°+. A rough guide.</dd></div><div><dt>Pronator / supinator</dt><dd>How a pitcher's hand naturally moves at release. Pronators turn it over, which helps changeups and sinkers. Supinators get to the side of the ball, which helps sweepers and curves.</dd></div></dl></div>
     <div class="gl-grp"><h3 class="gl-h">Flags</h3><dl class="gloss"><div><dt>Underused weapon</dt><dd>Whiff+ 120 or higher, run value +1.0 or better, and thrown less than 25% of the time.</dd></div><div><dt>Misses bats, still gets hurt</dt><dd>Whiff+ 120 or higher, but run value −1.0 or worse.</dd></div><div><dt>Below league average</dt><dd>Run value −1.5 or worse.</dd></div><div><dt>Heavy use, below average</dt><dd>Thrown 25% of the time or more, with run value below zero.</dd></div><div><dt>Hit hard on contact</dt><dd>20+ balls in play and xwOBAcon .040 or more above league.</dd></div><div><dt>Good stuff, bad spots</dt><dd>Whiff+ 110 or higher, Location+ 90 or lower, and run value below zero. The pitch is fine; where it's thrown is the problem.</dd></div><div><dt>Gets by on location</dt><dd>Whiff+ 90 or lower, Location+ 110 or higher, and run value above zero. He wins with command, not nastiness.</dd></div><div><dt>Small sample</dt><dd>Fewer than 30 swings, so the pitch isn't graded yet.</dd></div></dl></div>
     <div class="gl-grp"><h3 class="gl-h">Counts and changes</h3><dl class="gloss"><div><dt>Ahead / Even / Behind</dt><dd>Ahead means more strikes than balls (0-1, 0-2, 1-2); behind means more balls than strikes.</dd></div><div><dt>What changed since 2025</dt><dd>New or dropped pitch, usage up or down 10+ points, velo up or down 1.5+ mph, or 2.5+ inches of new break. An arm slot change is 4°+.</dd></div></dl></div>
@@ -1779,52 +1871,178 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 <script>
 (function(){
   var D,M; try{D=JSON.parse(document.getElementById("shape-data").textContent);M=JSON.parse(document.getElementById("shape-meta").textContent)}catch(e){return}
-  var list=document.getElementById("sh-list"); if(!list)return;
-  var ST={grp:"all",bias:"all",hand:"all",sort:"n"}, OPEN={};
-  var BIAS={P:"Usually suits pronators",S:"Usually suits supinators",E:"Works for pronators and supinators"};
+  if(!document.getElementById("pd-map"))return;
+  var K=window.kbData||{}, P=K.P||{}, ARM=K.ARM||{}, BIO=K.BIO||{}, PN=K.NAMES||{};
+  var COL={fb:"#2a78d6",br:"#d9622b",os:"#158a5f"}, GRP={fb:"Fastball",br:"Breaking ball",os:"Offspeed"};
+  var BIAS={P:"Usually easier for pronators",S:"Usually easier for supinators",E:"Works for pronators and supinators"};
+  var FAMS={FF:["ff_ride","ff_std","ff_flat"],SI:["si_heavy","si_run"],FC:["fc_carry","fc_short"],SL:["sl_gyro","sl_vert","sl_trad","sweeper"],CU:["cu_vert","cu_sweep"],CH:["ch_fade","ch_drop"],FS:["split"]};
+  var FAMOF={FF:"FF",FA:"FF",SI:"SI",FC:"FC",SL:"SL",ST:"SL",SV:"CU",CU:"CU",KC:"CU",CS:"CU",CH:"CH",SC:"CH",FS:"FS",FO:"FS"};
+  var TYPES=[["FF","4-Seam"],["SI","Sinker"],["FC","Cutter"],["SL","Slider"],["ST","Sweeper"],["CU","Curveball"],["CH","Changeup"],["FS","Splitter"]];
+  var TN={};TYPES.forEach(function(t){TN[t[0]]=t[1]});
+  var WIN=8, MINN=12;
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function sg(v,d){d=d==null?2:d;var r=+v.toFixed(d);return (r>=0?"+":"−")+Math.abs(r).toFixed(d)}
+  function fold(t){return (t||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
   function nm(id){var n=D.names[id]||String(id);var p=n.split(", ");return p.length===2?p[1]+" "+p[0]:n}
-  function pts(k){var a=D.f[k]||[];return ST.hand==="all"?a:a.filter(function(p){return p[1]===ST.hand})}
-  function med(a){if(!a.length)return null;a=a.slice().sort(function(x,y){return x-y});var m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2}
-  function stats(a){var P=0,v=0,iv=0,hb=0,rv=0,sw=0,wh=0;a.forEach(function(p){P+=p[9];v+=p[2]*p[9];iv+=p[3]*p[9];hb+=p[4]*p[9];rv+=p[8]*p[9];if(p[6]!=null){sw+=p[7];wh+=p[6]*p[7]}});
-    if(!P)return null;return {n:a.length,v:v/P,iv:iv/P,hb:hb/P,rv:rv/P,wh:sw?wh/sw:null,gap:med(a.filter(function(p){return p[11]!=null}).map(function(p){return p[11]}))}}
-  function sgn(v,d){return (v>=0?"+":"−")+Math.abs(v).toFixed(d)}
-  function chart(k,a){
-    var W=320,H=320,m=30,mb=36,R=25,f=ST.hand==="L"?-1:1;
-    var sx=function(x){return m+(f*x+R)/(2*R)*(W-m-8)},sy=function(y){return H-mb-(y+R)/(2*R)*(H-mb-8)};
-    var g='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Movement of every '+esc(M[k][0])+' in 2026">';
-    [-20,-10,10,20].forEach(function(t){g+='<line class="ax" x1="'+sx(t)+'" y1="'+sy(R)+'" x2="'+sx(t)+'" y2="'+sy(-R)+'"/><line class="ax" x1="'+sx(-R)+'" y1="'+sy(t)+'" x2="'+sx(R)+'" y2="'+sy(t)+'"/>'});
-    g+='<line class="ax0" x1="'+sx(0)+'" y1="'+sy(R)+'" x2="'+sx(0)+'" y2="'+sy(-R)+'"/><line class="ax0" x1="'+sx(-R)+'" y1="'+sy(0)+'" x2="'+sx(R)+'" y2="'+sy(0)+'"/>';
-    g+='<text x="'+m+'" y="'+(H-10)+'">'+(f>0?"← Glove side":"← Arm side")+'</text><text x="'+(W-8)+'" y="'+(H-10)+'" text-anchor="end">'+(f>0?"Arm side →":"Glove side →")+'</text><text x="'+(sx(0)+5)+'" y="'+(sy(R)+12)+'">Rise</text><text x="'+(sx(0)+5)+'" y="'+(sy(-R)-6)+'">Drop</text>';
-    Object.keys(D.f).forEach(function(o){if(o===k)return;pts(o).forEach(function(p){g+='<circle class="bg" cx="'+sx(p[4]).toFixed(1)+'" cy="'+sy(p[3]).toFixed(1)+'" r="2"/>'})});
-    a.forEach(function(p){g+='<circle class="pt" data-id="'+p[0]+'" cx="'+sx(p[4]).toFixed(1)+'" cy="'+sy(p[3]).toFixed(1)+'" r="3.4"><title>'+esc(nm(p[0]))+' · '+p[2].toFixed(1)+' mph</title></circle>'});
-    return g+'</svg>';
+  function slotName(a){return a<30?"low":a<45?"three-quarters":"high"}
+  function classify(t,iv,hb){var f=FAMOF[t];if(!f||iv==null||hb==null)return null;
+    if(f==="FF")return iv>=17?"ff_ride":iv>=14?"ff_std":"ff_flat";
+    if(f==="SI")return iv<7?"si_heavy":"si_run";
+    if(f==="FC")return iv>=9?"fc_carry":"fc_short";
+    if(f==="SL"){if(t==="ST"||-hb>=10)return "sweeper";if(-hb>=5)return "sl_trad";return iv>=0?"sl_gyro":"sl_vert"}
+    if(f==="CU")return -hb>=7?"cu_sweep":"cu_vert";
+    if(f==="CH")return hb>=14?"ch_fade":"ch_drop";
+    return "split"}
+  function q(a,p){if(!a.length)return null;a=a.slice().sort(function(x,y){return x-y});var i=(a.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo)}
+  function stats(rows){var w=0,v=0,iv=0,hb=0,rv=0;rows.forEach(function(r){w+=r[9];v+=r[2]*r[9];iv+=r[3]*r[9];hb+=r[4]*r[9];rv+=r[8]*r[9]});
+    if(!w)return null;return {n:rows.length,v:v/w,iv:iv/w,hb:hb/w,rv:rv/w,rows:rows}}
+  var KEYS=Object.keys(M), ALL={}, BUCK={};
+  KEYS.forEach(function(k){var a=D.f[k]||[];ALL[k]=stats(a);BUCK[k]={};
+    [["low",0,30],["mid",30,45],["high",45,99]].forEach(function(b){BUCK[k][b[0]]=stats(a.filter(function(r){return r[12]!=null&&r[12]>=b[1]&&r[12]<b[2]}))})});
+  // ---------- state ----------
+  var S={mode:"pick",id:null,hand:"R",aa:45,rows:[["FF",94,16,8],["SL",85,2,-5],["CH",86,7,14]],sel:null};
+  var WS={};
+  function pool(){WS={};KEYS.forEach(function(k){var a=(D.f[k]||[]).filter(function(r){return r[12]!=null&&Math.abs(r[12]-S.aa)<=WIN});WS[k]=stats(a)})}
+  function fit(k){var s=WS[k];return s&&s.n>=MINN?s.rv:null}
+  function arsenal(){
+    if(S.mode==="pick"){var d=P[S.id];if(!d)return [];var by={},tot=0;
+      d.r.forEach(function(r){if(r[13]==null||r[14]==null||r[15]==null)return;var w=r[16]||0;tot+=w;var a=by[r[0]]||(by[r[0]]={t:r[0],w:0,v:0,iv:0,hb:0,rv:0,rw:0});a.w+=w;a.v+=r[13]*w;a.iv+=r[14]*w;a.hb+=r[15]*w;if(r[5]!=null){a.rv+=r[5]*w;a.rw+=w}});
+      return Object.keys(by).map(function(t){var a=by[t];return {t:t,v:a.v/a.w,iv:a.iv/a.w,hb:a.hb/a.w,u:a.w/tot*100,n:a.w,rv:a.rw?a.rv/a.rw:null}}).filter(function(p){return p.u>=2&&FAMOF[p.t]}).sort(function(a,b){return b.u-a.u})}
+    return S.rows.filter(function(r){return r[0]&&r[2]!=null&&r[3]!=null&&!isNaN(r[2])&&!isNaN(r[3])}).map(function(r){return {t:r[0],v:r[1],iv:+r[2],hb:+r[3],u:null,n:null,rv:null}})}
+  function read(p){
+    var k=classify(p.t,p.iv,p.hb),f=fit(k),fam=FAMOF[p.t],alts=(FAMS[fam]||[]).filter(function(x){return x!==k&&fit(x)!=null}).sort(function(a,b){return fit(b)-fit(a)}),alt=alts[0];
+    var o={k:k,f:f,alt:null,cls:"",lab:"",txt:""};
+    if(f==null){o.cls="mu";o.lab="Few comps";o.txt="Too few pitchers from slots like his throw this shape to judge it.";return o}
+    if(alt&&fit(alt)-f>=0.15&&f<0.15&&p.rv!=null&&p.rv>=0.5){o.alt=alt;o.cls="mu";o.lab="Weak fit · "+sg(f);o.txt="Works for him anyway ("+sg(p.rv)+"). A "+M[alt][0].toLowerCase()+" fits slots like his better ("+sg(fit(alt))+"), but don’t fix what isn’t broken.";return o}
+    if(alt&&fit(alt)-f>=0.15&&f<0.15){o.alt=alt;o.cls="warn";o.lab="Weak fit · "+sg(f);o.txt="Reshape it toward a "+M[alt][0].toLowerCase()+" ("+sg(fit(alt))+" from "+(S.mode==="pick"?"slots like his":"this slot")+").";return o}
+    if(f>=0.15){o.cls="good";o.lab="Fits · "+sg(f);
+      o.txt=p.rv==null?"Right shape for this arm.":p.rv>=0.5?"Right shape, and it plays. Keep it.":p.rv<=-0.3?"Right shape, but results lag. Look at location and sequencing before the shape.":"Right shape for his arm.";return o}
+    if(f<0){o.cls="bad";o.lab="Fights his slot · "+sg(f);o.txt=p.rv!=null&&p.rv>=0.5?"Works for him anyway. A rare fit, so don’t fix what isn’t broken.":"This shape tends to struggle from slots like his.";return o}
+    o.cls="mu";o.lab="Neutral · "+sg(f);o.txt=p.rv!=null&&p.rv<=-0.3?"Shape is fine for his slot; the results point to location or usage.":"An average fit for his slot.";return o}
+  // ---------- map ----------
+  var L=60,R=700,T=24,B=470;
+  function px(hb){return L+(Math.max(-20,Math.min(20,hb))+20)/40*(R-L)}
+  function py(iv){return T+(22-Math.max(-18,Math.min(22,iv)))/40*(B-T)}
+  var SHORT={cu_sweep:"Slurve",ff_std:"Std. four-seam",sl_trad:"Trad. slider",fc_carry:"Carry cutter",fc_short:"Short cutter"};
+  function map(ars){
+    var h='<svg viewBox="0 0 720 500" role="img" aria-label="Map of pitch shapes by horizontal and vertical break" class="pd-svg">';
+    [-20,-10,0,10,20].forEach(function(v){h+='<line x1="'+px(v)+'" y1="'+T+'" x2="'+px(v)+'" y2="'+B+'" class="'+(v?"g":"z")+'"></line>'});
+    [-10,0,10,20].forEach(function(v){h+='<line x1="'+L+'" y1="'+py(v)+'" x2="'+R+'" y2="'+py(v)+'" class="'+(v?"g":"z")+'"></line><text x="'+(L-8)+'" y="'+(py(v)+4)+'" text-anchor="end">'+(v>0?"+":"")+v+(v?'"':'')+'</text>'});
+    h+='<text x="'+L+'" y="'+(B+22)+'">← Glove side</text><text x="'+R+'" y="'+(B+22)+'" text-anchor="end">Arm side →</text><text x="'+(px(0)+6)+'" y="'+(T+12)+'">Rise</text><text x="'+(px(0)+6)+'" y="'+(B-6)+'">Drop</text>';
+    var order=KEYS.slice().sort(function(a,b){return (fit(a)==null?-9:fit(a))-(fit(b)==null?-9:fit(b))});
+    var mine={};ars.forEach(function(p){var c=classify(p.t,p.iv,p.hb);if(c)mine[c]=1});
+    order.forEach(function(k){var s=ALL[k];if(!s)return;var f=fit(k),good=f!=null&&f>=0.15,bad=f!=null&&f<0,c=COL[M[k][1]],r=(18+Math.min(s.n,250)/250*12),sel=k===S.sel;
+      h+='<g class="pd-b'+(good?" good":bad?" bad":"")+(sel?" sel":"")+'" data-k="'+k+'" tabindex="0" role="button" aria-label="'+esc(M[k][0])+(f!=null?", fit "+sg(f):"")+'"><title>'+esc(M[k][0])+(f!=null?" · "+sg(f)+" from this slot":"")+'</title>'+
+        '<ellipse cx="'+px(s.hb).toFixed(0)+'" cy="'+py(s.iv).toFixed(0)+'" rx="'+(r*1.2).toFixed(0)+'" ry="'+r.toFixed(0)+'" fill="'+c+'" stroke="'+c+'"></ellipse><circle cx="'+px(s.hb).toFixed(0)+'" cy="'+py(s.iv).toFixed(0)+'" r="4" fill="'+c+'"></circle>'+
+        ((good||sel||mine[k])?'<text x="'+px(s.hb).toFixed(0)+'" y="'+(sel?py(s.iv)-r-6:py(s.iv)+r+14+(k==="ch_fade"||k==="si_heavy"?13:0)).toFixed(0)+'" text-anchor="middle" class="lb">'+esc(SHORT[k]||M[k][0])+'</text>':'')+'</g>'});
+    var tg=S.sel&&WS[S.sel]&&WS[S.sel].n>=MINN?WS[S.sel]:S.sel?ALL[S.sel]:null, from=null;
+    if(tg){var fam=null;Object.keys(FAMS).forEach(function(f){if(FAMS[f].indexOf(S.sel)>-1)fam=f});
+      ars.forEach(function(p){if(!from&&FAMOF[p.t]===fam&&classify(p.t,p.iv,p.hb)!==S.sel)from=p});
+      var tx=px(tg.hb),ty=py(tg.iv);
+      if(from){var fx=px(from.hb),fy=py(from.iv),dx=tx-fx,dy=ty-fy,dl=Math.sqrt(dx*dx+dy*dy)||1;
+        if(dl>30)h+='<line x1="'+(fx+dx/dl*15).toFixed(0)+'" y1="'+(fy+dy/dl*15).toFixed(0)+'" x2="'+(tx-dx/dl*15).toFixed(0)+'" y2="'+(ty-dy/dl*15).toFixed(0)+'" class="ar" marker-end="url(#pda)"></line>'}
+      h+='<circle cx="'+tx.toFixed(0)+'" cy="'+ty.toFixed(0)+'" r="11" class="tg"></circle><text x="'+tx.toFixed(0)+'" y="'+(ty+28).toFixed(0)+'" text-anchor="middle" class="tgl">Target</text>'}
+    ars.forEach(function(p){h+='<g class="pd-me"><circle cx="'+px(p.hb).toFixed(0)+'" cy="'+py(p.iv).toFixed(0)+'" r="13"></circle><text x="'+px(p.hb).toFixed(0)+'" y="'+(py(p.iv)+4).toFixed(0)+'" text-anchor="middle">'+esc(p.t)+'</text></g>'});
+    h+='<defs><marker id="pda" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#b86a00"></path></marker></defs></svg>';
+    document.getElementById("pd-map").innerHTML=h;
   }
-  function body(k,a,s){
-    var mt=M[k], off=mt[1]!=="fb"||k.indexOf("fc")===0;
-    var h='<p class="sh-def">'+esc(mt[5])+' <span>'+esc(mt[4])+'</span></p>';
-    h+='<dl class="tm-stats sh-stats"><div><dt>Velo</dt><dd>'+s.v.toFixed(1)+'<small>mph'+(off&&s.gap!=null?' · '+s.gap.toFixed(1)+' off FB':'')+'</small></dd></div>';
-    h+='<div><dt>Vertical break</dt><dd>'+s.iv.toFixed(1)+'"</dd></div><div><dt>Horizontal break</dt><dd>'+Math.abs(s.hb).toFixed(1)+'"<small>'+(s.hb>=0?"arm side":"glove side")+'</small></dd></div>';
-    h+='<div><dt>Whiff%</dt><dd>'+(s.wh==null?"–":s.wh.toFixed(1)+'%')+'</dd></div></dl>';
-    var best=a.filter(function(p){return p[9]>=150}).sort(function(x,y){return y[8]-x[8]}).slice(0,5);
-    h+='<div class="sh-cols"><figure class="mv-fig mv-plot">'+chart(k,a)+'<figcaption class="fine">Orange: every '+(ST.hand==="L"?"lefty’s ":ST.hand==="R"?"righty’s ":"pitcher’s ")+esc(mt[0].toLowerCase())+'. Gray: all other pitches. Pitcher’s view. Select a dot for his card.</figcaption></figure><div class="sh-side">';
-    h+='<div class="sh-grip"><div class="meta">Common grip</div>'+esc(mt[6])+'<small>'+BIAS[mt[2]]+'</small></div>';
-    if(best.length)h+='<div><div class="meta">Best in MLB by run value</div><ul class="sh-best">'+best.map(function(p){return '<li><button type="button" data-id="'+p[0]+'"><b>'+esc(nm(p[0]))+'</b><span class="'+(p[8]>=0?"up":"dn")+'">'+sgn(p[8],2)+'</span></button></li>'}).join("")+'</ul></div>';
-    return h+'</div></div>';
+  // ---------- card ----------
+  function nf(v){return (v<0?"−":"")+Math.abs(v).toFixed(1)}
+  function hbT(v){return Math.abs(v).toFixed(1)+'" '+(v>=0?"arm":"glove")}
+  function rng(lo,hi,f){return f(lo)+" to "+f(hi)}
+  function move(lab,now,lo,hi,kind,shapeHb){
+    var note,cls="up";
+    if(now==null){note="";cls=""}else if(now>=lo&&now<=hi){note="Already there"}else{cls="warn";var d=now<lo?lo-now:hi-now,a=Math.abs(d).toFixed(1);
+      if(kind==="v")note=(d>0?"Add ":"Take off ")+a+" mph";
+      else if(kind==="iv")note=d>0?a+'" more ride (less drop)':a+'" more drop (less ride)';
+      else note=d<0?(shapeHb<0?a+'" more sweep':a+'" less run'):(shapeHb<0?a+'" less sweep':a+'" more run')}
+    return '<tr><th scope="row">'+lab+'</th><td class="r num">'+(now==null?"":kind==="hb"?hbT(now):nf(now)+(kind==="v"?" mph":'"'))+'</td><td class="r num"><b>'+(kind==="hb"?(lo<0&&hi<0?Math.abs(hi).toFixed(1)+" to "+Math.abs(lo).toFixed(1)+'" glove':lo>=0?lo.toFixed(1)+" to "+hi.toFixed(1)+'" arm':hbT(lo)+" to "+hbT(hi)):nf(lo)+" to "+nf(hi)+(kind==="v"?" mph":'"'))+'</b></td><td class="'+cls+'">'+note+'</td></tr>'}
+  function card(ars){
+    var k=S.sel,el=document.getElementById("pd-card");if(!k||!M[k]){el.innerHTML="";return}
+    var m=M[k],w=WS[k],f=fit(k),use=w&&w.n>=MINN?w:ALL[k],fam=null;Object.keys(FAMS).forEach(function(x){if(FAMS[x].indexOf(k)>-1)fam=x});
+    var mine=null;ars.forEach(function(p){if(!mine&&FAMOF[p.t]===fam)mine=p});
+    var who=S.mode==="pick"&&P[S.id]?P[S.id].n.split(" ").slice(-1)[0]:"this arm";
+    var h='<div class="pd-ch"><div><div class="pd-k" style="color:'+COL[m[1]]+'">'+GRP[m[1]].toUpperCase()+' · '+ALL[k].n+' PITCHERS IN 2026</div><h3>'+esc(m[0])+'</h3><p>'+esc(m[4])+' '+esc(m[5])+'</p></div>'+
+      '<div class="pd-cv"><b class="'+(f==null?"":f>=0?"up":"dn")+'">'+(f==null?"–":sg(f))+'</b><span>runs per 100 from slots like '+(S.mode==="pick"?"his":"this")+(w?' · '+w.n+' pitchers':'')+'</span></div></div>';
+    if(use&&use.rows.length>=4){
+      var vs=use.rows.map(function(r){return r[2]}),is=use.rows.map(function(r){return r[3]}),hs=use.rows.map(function(r){return r[4]});
+      var mineSame=mine&&classify(mine.t,mine.iv,mine.hb)!==null?mine:null;
+      h+='<div class="pd-cs"><h4>'+(mineSame?'Target shape for '+esc(who):'Target shape')+'</h4><div class="rc-wrap"><table class="pd-tt"><thead><tr><th></th>'+(mineSame?'<th class="r">His '+esc((TN[mineSame.t]||mineSame.t).toLowerCase())+' now</th>':'<th></th>')+'<th class="r">Target</th><th></th></tr></thead><tbody>'+
+        move("Velo",mineSame&&mineSame.v!=null?+mineSame.v:null,q(vs,.25),q(vs,.75),"v",use.hb)+
+        move("Vertical break",mineSame?mineSame.iv:null,q(is,.25),q(is,.75),"iv",use.hb)+
+        move("Horizontal break",mineSame?mineSame.hb:null,q(hs,.25),q(hs,.75),"hb",use.hb)+'</tbody></table></div>';
+      h+='<p class="fine">Target = the middle half of '+esc(m[0].toLowerCase())+'s thrown '+(use===w?'from arm slots within '+WIN+'° of '+(S.mode==="pick"?"his":"this one"):'by all 2026 pitchers')+'.</p></div>'}
+    var b=BUCK[k],mx=0;["low","mid","high"].forEach(function(x){if(b[x]&&b[x].n>=5)mx=Math.max(mx,Math.abs(b[x].rv))});mx=mx||1;
+    h+='<div class="pd-c2"><div><h4>Plays best from</h4>'+[["high","High slot (45°+)"],["mid","Three-quarters (30–45°)"],["low","Low slot (under 30°)"]].map(function(x){var s=b[x[0]];
+      if(!s||s.n<5)return '<div class="pd-bar"><span>'+x[1]+'</span><i></i><em class="mu">'+(s?s.n:0)+' pitchers</em></div>';
+      return '<div class="pd-bar"><span>'+x[1]+'</span><i><b class="'+(s.rv>=0?"up":"dn")+'" style="width:'+(Math.abs(s.rv)/mx*100).toFixed(0)+'%"></b></i><em class="'+(s.rv>=0?"up":"dn")+'">'+sg(s.rv)+' <small>· '+s.n+'</small></em></div>'}).join("")+'</div>'+
+      '<div><h4>Common grip</h4><p>'+esc(m[6])+'</p><p class="fine">'+BIAS[m[2]]+'.</p></div></div>';
+    var best=(w&&w.n>=MINN?w.rows:ALL[k].rows).filter(function(r){return r[9]>=100}).sort(function(a,b){return b[8]-a[8]}).slice(0,4);
+    if(best.length)h+='<div class="pd-cs"><h4>Learn from: the best '+esc(m[0].toLowerCase())+'s '+(w&&w.n>=MINN?'from slots like '+(S.mode==="pick"?"his":"this"):'in 2026')+'</h4><div class="pd-ex">'+best.map(function(r){return '<a href="#p'+r[0]+'"><b>'+esc(nm(r[0]))+'</b><span>'+(r[12]!=null?r[12].toFixed(0)+'° slot · ':'')+r[2].toFixed(1)+' mph · '+nf(r[3])+'" IVB · '+hbT(r[4])+'</span><em class="'+(r[8]>=0?"up":"dn")+'">'+sg(r[8])+' runs/100</em></a>'}).join("")+'</div></div>';
+    el.innerHTML=h;
   }
-  function render(){
-    var keys=Object.keys(M).filter(function(k){var m=M[k];return (ST.grp==="all"||m[1]===ST.grp)&&(ST.bias==="all"||m[2]===ST.bias)});
-    var rows=keys.map(function(k){var a=pts(k);return {k:k,a:a,s:stats(a)}}).filter(function(r){return r.s});
-    rows.sort(function(x,y){return ST.sort==="wh"?(y.s.wh||0)-(x.s.wh||0):ST.sort==="rv"?y.s.rv-x.s.rv:y.s.n-x.s.n});
-    if(!rows.length){list.innerHTML='<p class="sh-empty">No shapes match these filters.</p>';return}
-    list.innerHTML=rows.map(function(r){var s=r.s;
-      return '<details data-k="'+r.k+'"'+(OPEN[r.k]?" open":"")+'><summary><span class="car">›</span><b>'+esc(M[r.k][0])+'</b><span class="opt">'+s.n+' pitchers</span><span>'+(s.wh==null?"–":s.wh.toFixed(1)+"% whiff")+'</span><span class="opt '+(s.rv>=0?"up":"dn")+'">'+sgn(s.rv,2)+' RV</span></summary><div class="sh-body">'+(OPEN[r.k]?body(r.k,r.a,s):"")+'</div></details>'}).join("");
+  // ---------- everything ----------
+  function draw(){
+    pool();var ars=arsenal();
+    document.getElementById("pd-aas").textContent="("+slotName(S.aa)+")";
+    var tot=0;KEYS.forEach(function(k){if(WS[k])tot+=WS[k].n});
+    document.getElementById("pd-win").textContent="Compared with 2026 pitchers whose arm angle is within "+WIN+"° of "+S.aa.toFixed(0)+"° ("+Math.max(0,S.aa-WIN).toFixed(0)+"–"+(S.aa+WIN).toFixed(0)+"°).";
+    var ranked=KEYS.filter(function(k){return fit(k)!=null}).sort(function(a,b){return fit(b)-fit(a)});
+    function li(k){var f=fit(k);return '<li><button type="button" data-k="'+k+'"><i style="background:'+COL[M[k][1]]+'"></i><span>'+esc(M[k][0])+'<small>'+WS[k].n+' pitchers from this slot</small></span><b class="'+(f>=0?"up":"dn")+'">'+sg(f)+'</b></button></li>'}
+    document.getElementById("pd-fits").innerHTML=ranked.filter(function(k){return fit(k)>0}).slice(0,5).map(li).join("")||'<li class="fine">Not enough pitchers from this slot.</li>';
+    document.getElementById("pd-fights").innerHTML=ranked.filter(function(k){return fit(k)<0}).slice(-3).reverse().map(li).join("")||'<li class="fine">Nothing clearly struggles from this slot.</li>';
+    // arsenal table
+    var pick=S.mode==="pick", who=pick&&P[S.id]?P[S.id].n:"This arm";
+    document.getElementById("pd-ars-h").textContent=(pick?who+"’s arsenal":"Your pitches")+" vs "+(pick?"his":"this")+" arm slot";
+    document.getElementById("pd-ars-head").innerHTML='<th scope="col">Pitch</th><th scope="col">Shape</th><th scope="col">Fits '+(pick?"his":"this")+' slot?</th>'+(pick?'<th scope="col" class="r">His runs/100</th>':'')+'<th scope="col">Read</th>';
+    var first=null,reads=ars.map(function(p){var r=read(p);if(!first&&r.alt)first=r.alt;return {p:p,r:r}});
+    document.getElementById("pd-ars-b").innerHTML=reads.map(function(x){var p=x.p,r=x.r;
+      return '<tr><td><b>'+esc(TN[p.t]||PN[p.t]||p.t)+'</b>'+(p.u!=null?'<small class="pd-sm">'+p.u.toFixed(0)+'% of pitches</small>':'')+'</td><td>'+(r.k?'<button type="button" class="pd-lk" data-k="'+r.k+'">'+esc(M[r.k][0])+'</button>':'–')+'</td><td><span class="pd-pill '+r.cls+'">'+r.lab+'</span></td>'+
+        (pick?'<td class="r num '+(p.rv==null?"":p.rv>=0?"up":"dn")+'">'+(p.rv==null?"–":sg(p.rv))+'</td>':'')+'<td class="pd-rd">'+esc(r.txt)+(r.alt?' <button type="button" class="pd-lk" data-k="'+r.alt+'">See the target →</button>':'')+'</td></tr>'}).join("")||'<tr><td colspan="5" class="mu">'+(pick?'No pitch data for this pitcher.':'Add his pitches on the left to check each one against his slot.')+'</td></tr>';
+    var have={};ars.forEach(function(p){have[FAMOF[p.t]]=1});
+    var miss=[];Object.keys(FAMS).forEach(function(f){if(have[f])return;FAMS[f].forEach(function(k){var v=fit(k);if(v!=null&&v>=0.25)miss.push(k)})});
+    miss.sort(function(a,b){return fit(b)-fit(a)});miss=miss.slice(0,2);
+    document.getElementById("pd-miss").innerHTML=ars.length&&miss.length?'<b>Not in '+(pick?"his":"this")+' mix but fits the slot:</b> '+miss.map(function(k){return '<button type="button" class="pd-lk" data-k="'+k+'">'+esc(M[k][0].toLowerCase())+'</button> ('+sg(fit(k))+')'}).join(", ")+'.':'';
+    if(!S.sel||S.auto){S.sel=first||miss[0]||(reads[0]&&reads[0].r.k)||ranked[0]||"ff_ride";S.auto=true}
+    map(ars);card(ars);
+    document.getElementById("pd-chips").innerHTML=KEYS.map(function(k){return '<button type="button" data-k="'+k+'" aria-pressed="'+(k===S.sel)+'"><i style="background:'+COL[M[k][1]]+'"></i>'+esc(M[k][0])+'</button>'}).join("");
   }
-  list.addEventListener("toggle",function(e){var d=e.target;if(!d.dataset||!d.dataset.k)return;OPEN[d.dataset.k]=d.open;var b=d.querySelector(".sh-body");if(d.open&&!b.innerHTML){var a=pts(d.dataset.k);b.innerHTML=body(d.dataset.k,a,stats(a))}},true);
-  list.addEventListener("click",function(e){var t=e.target.closest("[data-id]");if(t&&window.kbShowPitcher)window.kbShowPitcher(String(t.getAttribute("data-id")))});
-  [["sh-grp","grp"],["sh-bias","bias"],["sh-hand","hand"],["sh-sort","sort"]].forEach(function(c){var el=document.getElementById(c[0]);if(!el)return;
-    el.addEventListener("click",function(e){var b=e.target.closest("button[data-v]");if(!b)return;ST[c[1]]=b.dataset.v;el.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()})});
-  render();
+  function select(k){if(!M[k])return;S.sel=k;S.auto=false;draw();var c=document.getElementById("pd-card");if(c&&c.getBoundingClientRect().top>window.innerHeight*0.8)c.scrollIntoView({behavior:"smooth",block:"start"})}
+  document.getElementById("shapes").addEventListener("click",function(e){var b=e.target.closest("[data-k]");if(b&&b.closest("#shapes")){e.preventDefault();select(b.dataset.k)}});
+  document.getElementById("pd-map").addEventListener("keydown",function(e){var g=e.target.closest("[data-k]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();select(g.dataset.k)}});
+  // ---------- pitcher mode ----------
+  function who(){var id=S.id,d=P[id];if(!d){document.getElementById("pd-who").innerHTML="";return}var B=BIO[id]||{},A=ARM[id];
+    document.getElementById("pd-who").innerHTML='<img src="https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_120,q_auto:best/v1/people/'+id+'/headshot/67/current" alt="" onerror="this.style.visibility=\'hidden\'"><div><b>'+esc(d.n)+'</b><span>'+esc([B.tm,d.h==="L"?"LHP":"RHP",d.g&&d.g.r==="SP"?"Starter":d.g&&d.g.r==="RP"?"Reliever":""].filter(Boolean).join(" · "))+'</span><span>Arm angle '+S.aa.toFixed(1)+'° ('+slotName(S.aa)+')'+(A?'':' · estimated')+'</span><span class="pd-links"><a href="#p'+id+'">Report card</a> · <a href="#lab-'+id+'">Pitch Lab</a></span></div>'}
+  function setPitcher(id,quiet){if(!P[id])return;S.mode="pick";S.id=id;var A=ARM[id],aa=A&&A[1]!=null?A[1]:null;
+    if(aa==null)KEYS.forEach(function(k){(D.f[k]||[]).forEach(function(r){if(aa==null&&String(r[0])===String(id)&&r[12]!=null)aa=r[12]})});
+    S.aa=aa==null?40:aa;S.hand=P[id].h;S.sel=null;S.auto=true;mode("pick");who();draw();
+    document.getElementById("pd-q").value="";if(!quiet){try{history.replaceState(null,"","#shapes-"+id)}catch(e){}}}
+  window.kbShapesPitcher=function(id){setPitcher(String(id),true)};
+  var index=Object.keys(P).map(function(id){return {id:id,n:P[id].n,k:fold(P[id].n)}}).sort(function(a,b){return a.n.localeCompare(b.n)});
+  var inp=document.getElementById("pd-q"),sug=document.getElementById("pd-sug"),mt=[],act=-1;
+  function list(){if(!mt.length){sug.hidden=true;return}sug.innerHTML=mt.map(function(m,i){return '<button type="button" role="option" data-pid="'+m.id+'"'+(i===act?' class="on" aria-selected="true"':'')+'>'+esc(m.n)+'</button>'}).join("");sug.hidden=false}
+  inp.addEventListener("input",function(){var v=fold(inp.value.trim());act=-1;mt=v?index.filter(function(m){return m.k.indexOf(v)>-1}).slice(0,8):[];if(v&&!mt.length){sug.innerHTML='<div class="none">No 2026 pitcher with 300+ pitches matches that name. Try Build an arm.</div>';sug.hidden=false;return}list()});
+  inp.addEventListener("keydown",function(e){if(e.key==="ArrowDown"&&mt.length){act=Math.min(mt.length-1,act+1);list();e.preventDefault()}else if(e.key==="ArrowUp"&&mt.length){act=Math.max(0,act-1);list();e.preventDefault()}else if(e.key==="Enter"&&mt.length){setPitcher(mt[Math.max(0,act)].id);sug.hidden=true;e.preventDefault()}else if(e.key==="Escape"){sug.hidden=true}});
+  sug.addEventListener("click",function(e){var b=e.target.closest("[data-pid]");if(b){e.stopPropagation();setPitcher(b.dataset.pid);sug.hidden=true}});
+  document.addEventListener("click",function(e){if(!e.target.closest("#pd-pick .search"))sug.hidden=true});
+  // ---------- build mode ----------
+  function rowsUI(){document.getElementById("pd-rows").innerHTML=S.rows.map(function(r,i){
+    return '<tr data-i="'+i+'"><td><select aria-label="Pitch type" data-f="0">'+TYPES.map(function(t){return '<option value="'+t[0]+'"'+(t[0]===r[0]?' selected':'')+'>'+t[1]+'</option>'}).join("")+'</select></td>'+
+      [1,2,3].map(function(j){return '<td><input type="number" inputmode="decimal" step="0.1" data-f="'+j+'" aria-label="'+["","Velo","IVB","HB"][j]+'" value="'+(r[j]==null?"":r[j])+'"></td>'}).join("")+
+      '<td><button type="button" class="pd-x" data-rm="'+i+'" aria-label="Remove pitch">×</button></td></tr>'}).join("")}
+  document.getElementById("pd-rows").addEventListener("input",function(e){var t=e.target,tr=t.closest("tr");if(!tr)return;var i=+tr.dataset.i,f=+t.dataset.f;S.rows[i][f]=f===0?t.value:(t.value===""?null:+t.value);S.auto=true;draw()});
+  document.getElementById("pd-rows").addEventListener("click",function(e){var b=e.target.closest("[data-rm]");if(!b)return;S.rows.splice(+b.dataset.rm,1);rowsUI();S.auto=true;draw()});
+  document.getElementById("pd-add").addEventListener("click",function(){if(S.rows.length>=8)return;S.rows.push(["CU",null,null,null]);rowsUI()});
+  var aaIn=document.getElementById("pd-aa");
+  aaIn.addEventListener("input",function(){S.aa=+aaIn.value;document.getElementById("pd-aav").textContent=S.aa+"°";S.auto=true;draw()});
+  document.querySelectorAll("#pd-hand button").forEach(function(b){b.addEventListener("click",function(){S.hand=b.dataset.v;document.querySelectorAll("#pd-hand button").forEach(function(o){o.setAttribute("aria-pressed",o===b)})})});
+  function mode(v){S.mode=v;document.getElementById("pd-pick").hidden=v!=="pick";document.getElementById("pd-build").hidden=v!=="build";document.querySelectorAll("#pd-mode button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.v===v)})}
+  document.querySelectorAll("#pd-mode button").forEach(function(b){b.addEventListener("click",function(){var v=b.dataset.v;if(v===S.mode)return;mode(v);
+    if(v==="build"){S.aa=+aaIn.value;document.getElementById("pd-aav").textContent=S.aa+"°";rowsUI();try{history.replaceState(null,"","#shapes")}catch(e){}}else if(S.id){var A=ARM[S.id];S.aa=A&&A[1]!=null?A[1]:S.aa}
+    S.sel=null;S.auto=true;draw()})});
+  // start
+  var h0=(location.hash||"").slice(1),m0=h0.match(/^shapes-(\d+)$/);
+  setPitcher(m0&&P[m0[1]]?m0[1]:(P["804636"]?"804636":index[0].id),true);
 })();
 </script>
 
@@ -1850,7 +2068,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     d.r.forEach(function(r){if(r[12]&&r[12].indexOf("Underused weapon")>-1&&r[11]!==1)items.push('<li><div class="plab-top"><span class="flag f-ok">Usage</span><b>'+esc(NAMES[r[0]]||r[0])+' vs '+(r[1]==="L"?"LHH":"RHH")+'</b><span class="plab-gain">'+sg(r[5],2)+' runs/100 now</span></div><span>Beats league average on whiffs and run value but is used only '+r[2].toFixed(0)+'% of the time.</span></li>')});
     (LAB[id]||[]).forEach(function(x){
       var st=x[3]!=null?'K-Stuff+ '+x[3]+' → '+x[4]:'Projected K-Stuff+ '+x[4];
-      items.push('<li><div class="plab-top"><span class="flag '+(x[0]==="New pitch"?"f-warn":"f-mute")+'">'+esc(x[0])+'</span><b>'+esc(x[1])+'</b><span class="plab-gain">+'+x[6].toFixed(1)+' runs/season</span></div><span>'+esc(x[2])+'</span><span class="fine">'+st+' · +'+x[5].toFixed(2)+' runs/100 · Similar shape: '+esc(x[7])+'</span></li>')});
+      items.push('<li><div class="plab-top"><span class="flag '+(x[0]==="New pitch"?"f-warn":"f-mute")+'">'+esc(x[0])+'</span><b>'+esc(x[1])+'</b><span class="plab-gain">+'+x[6].toFixed(1)+' runs/season</span></div><span>'+esc(x[2])+'</span><span class="fine">'+st+' · +'+x[5].toFixed(2)+' runs/100 · Similar shape: '+esc(x[7])+' · <a href="#shapes-'+id+'">See it in Pitch Design →</a></span></li>')});
     return items.length?items.join(""):'<li class="fine">No shape changes clear the bar for him. His pitches already sit near the best versions for his arm slot, or the samples are too small.</li>';
   }
   var CURL=null;
@@ -1862,7 +2080,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var ph=document.getElementById("lab-photo");ph.style.visibility="";ph.onerror=function(){ph.style.visibility="hidden"};ph.src=HS(id);ph.alt=d.n;
     var role=d.g&&d.g.r==="SP"?"Starter":d.g&&d.g.r==="RP"?"Reliever":"";
     document.getElementById("lab-meta").textContent=[d.h==="L"?"LHP":"RHP",role,d.p.toLocaleString()+" pitches",d.g&&d.g.s!=null?"K-Stuff+ "+d.g.s:"",d.g&&d.g.a!=null?"Arsenal grade "+d.g.a:""].filter(Boolean).join(" · ");
-    document.getElementById("lab-card").setAttribute("href","#p"+id);
+    document.getElementById("lab-card").setAttribute("href","#p"+id);document.getElementById("lab-pd").setAttribute("href","#shapes-"+id);
     document.getElementById("lab-tot").textContent=m.t!=null?"+"+m.t.toFixed(1):"–";
     document.getElementById("lab-mix").innerHTML=(card("L",m.L)+card("R",m.R))||'<p class="fine">Not enough pitches to either side to suggest a mix.</p>';
     document.getElementById("lab-fixes").innerHTML=fixes(id);
@@ -1998,7 +2216,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 <script>
 (function(){
   var PAGES=["home","writing","report","lab","breakouts","minors","teams","leaders","shapes","slots","glossary","about"];
-  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",minors:"Farm Systems",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Shapes",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
+  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",minors:"Farm Systems",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Design",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
   var raw=window.kbShowPitcher;
   function go(pg){
     PAGES.forEach(function(p){var el=document.getElementById(p);if(el)el.classList.toggle("on",p===pg)});
@@ -2012,6 +2230,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var h=(location.hash||"").slice(1);
     var pm=h.match(/^p(\d+)(?:-(\d{4}))?$/);
     if(pm){raw(pm[1],true,pm[2]?+pm[2]:0);go("report");return}
+    if(/^shapes-\d+$/.test(h)){if(window.kbShapesPitcher)window.kbShapesPitcher(h.slice(7));go("shapes");return}
     if(/^lab-\d+$/.test(h)){if(window.kbShowLab)window.kbShowLab(h.slice(4));go("lab");return}
     if(h.indexOf("minors-")===0){if(window.kbMinors)window.kbMinors("farm:"+h.slice(7));go("minors");return}
     if(h.indexOf("t-")===0){if(window.kbShowTeam)window.kbShowTeam(h);go("teams");return}
