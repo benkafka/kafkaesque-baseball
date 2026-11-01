@@ -59,6 +59,8 @@ a{color:inherit}
 .nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
 .nav a{font-size:13px;font-weight:500;text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:6px}
 .nav a:hover{color:var(--fg);background:var(--panel-2)}
+.nav-sep{align-self:center;color:var(--line);font-size:16px;padding:0 4px;user-select:none}
+.pd-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 18px;background:none;border:0}.pd-tabs a{text-decoration:none;font-size:14px;padding:8px 14px}.pd-tabs a[aria-current=page]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 
 /* hero */
 .hero{padding-block:44px 28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:end}
@@ -832,14 +834,16 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 <path d="M130 50 C136 36 144 28 154 22" fill="none" stroke="#121a24" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="155" cy="21" rx="4.5" ry="3.5" fill="#121a24"/><ellipse cx="120" cy="60" rx="25" ry="16" fill="#121a24"/><ellipse cx="107" cy="56" rx="4" ry="3" fill="#f6f1e6"/><ellipse cx="133" cy="56" rx="4" ry="3" fill="#f6f1e6"/><path d="M76 90 C78 66 162 66 164 90 C150 98 90 98 76 90 Z" fill="#121a24"/><path d="M84 86 C86 76 96 72 104 73 C100 80 96 86 90 89 Z" fill="#f6f1e6"/><path d="M156 86 C154 76 144 72 136 73 C140 80 144 86 150 89 Z" fill="#f6f1e6"/><path d="M120 84 C84 82 52 108 52 148 C52 190 86 220 120 220 C154 220 188 190 188 148 C188 108 156 82 120 84 Z" fill="url(#kb-sh)"/><ellipse cx="88" cy="118" rx="26" ry="18" fill="url(#kb-hl)" transform="rotate(-30 88 118)"/><path d="M120 86 L120 219" stroke="#121a24" stroke-width="3" /><path d="M104 96 C70 118 70 182 104 206" fill="none" stroke="#f6f1e6" stroke-width="1.6" stroke-linecap="round"/><path d="M98.2 94.7 L98.2 100.4 L103.9 100.9" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M88.1 105.0 L89.6 110.5 L95.2 109.6" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M80.8 117.6 L83.4 122.6 L88.7 120.5" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M76.2 131.6 L79.7 136.0 L84.5 133.0" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M74.3 146.5 L78.5 150.2 L82.7 146.4" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M74.9 161.6 L79.7 164.5 L83.2 160.1" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M78.2 176.2 L83.4 178.2 L86.0 173.2" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M84.0 189.8 L89.6 190.7 L91.1 185.2" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M92.6 201.8 L98.2 201.3 L98.3 195.6" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M136 96 C170 118 170 182 136 206" fill="none" stroke="#f6f1e6" stroke-width="1.6" stroke-linecap="round"/><path d="M136.1 100.9 L141.8 100.4 L141.8 94.7" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M144.8 109.6 L150.4 110.5 L151.9 105.0" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M151.3 120.5 L156.6 122.6 L159.2 117.6" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M155.5 133.0 L160.3 136.0 L163.8 131.6" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M157.3 146.4 L161.5 150.2 L165.7 146.5" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M156.8 160.1 L160.3 164.5 L165.1 161.6" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M154.0 173.2 L156.6 178.2 L161.8 176.2" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M148.9 185.2 L150.4 190.7 L156.0 189.8" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M141.7 195.6 L141.8 201.3 L147.4 201.8" fill="none" stroke="#f6f1e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="98" cy="128" r="7.5" fill="#121a24"/><circle cx="142" cy="128" r="7.5" fill="#121a24"/><circle cx="100" cy="170" r="6.5" fill="#121a24"/><circle cx="140" cy="170" r="6.5" fill="#121a24"/></svg><b>Kafkaesque Baseball</b><span>Pitching · Beta</span></a>
     <nav class="nav" aria-label="Sections">
       <a href="#writing">Writing</a>
+      <span class="nav-sep" aria-hidden="true">|</span>
       <a href="#report">Pitcher Search</a>
       <a href="#lab">Pitch Lab</a>
-      <a href="#breakouts">2027 Watch List</a>
-      <a href="#minors">Farm Systems</a>
-      <a href="#teams">Teams</a>
-      <a href="#leaders">Leaderboards</a>
       <a href="#shapes">Pitch Design</a>
-      <a href="#slots">Arm Slots</a>
+      <span class="nav-sep" aria-hidden="true">|</span>
+      <a href="#minors">Farm Systems</a>
+      <a href="#teams">MLB Pitching Staffs</a>
+      <span class="nav-sep" aria-hidden="true">|</span>
+      <a href="#leaders">Leaderboards</a>
+      <a href="#breakouts">2027 Watch List</a>
       <a href="#glossary">Glossary</a>
       <a href="#about">About</a>
     </nav>
@@ -858,11 +862,11 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <span class="art-go">Search a pitcher →</span>
     </a>
     <a class="panel hcard" href="#teams">
-      <div class="meta">Teams</div>
+      <div class="meta">MLB Pitching Staffs</div>
       <h3>All 30 staffs, ranked</h3>
       <p>Every pitching staff graded pitch by pitch, next to what it costs.</p>
       <ol class="hc-list" id="hc-teams"></ol>
-      <span class="art-go">See all teams →</span>
+      <span class="art-go">See all staffs →</span>
     </a>
     <a class="panel hcard" href="#leaders">
       <div class="meta">Leaderboards</div>
@@ -1258,7 +1262,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   </section>
 
   <section id="teams" class="page">
-    <div class="sec-head"><h2>Teams</h2><p>All 30 pitching staffs, ranked by run value</p></div>
+    <div class="sec-head"><h2>MLB Pitching Staffs</h2><p>All 30 pitching staffs, ranked by run value</p></div>
     <div class="tm-top">
       <label class="meta" for="tm-select">Team</label>
       <select id="tm-select"></select>
@@ -1315,6 +1319,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 
   <section id="shapes" class="page">
     <div class="sec-head"><h2>Pitch Design</h2><p>Which pitch shapes fit which arms · 2026</p></div>
+    <div class="seg pd-tabs" role="group" aria-label="Pitch Design views"><a href="#shapes" class="share-btn" aria-current="page">Pitch fit tool</a><a href="#slots" class="share-btn">Arm slot changes</a></div>
     <div id="pd-start">
       <p class="pd-lede pd-lede0"><b>Every arm slot has pitches that come naturally and pitches that fight it.</b> Pick a pitcher or describe any arm, and see which shapes fit, which of his pitches don’t, and what to change.</p>
       <div class="pd-doors">
@@ -1377,7 +1382,8 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   </section>
 
   <section id="slots" class="page">
-    <div class="sec-head"><h2>Arm Slot Changes</h2><p>What happens when a pitcher raises or drops his arm angle · 2021 to 2026</p></div>
+    <div class="sec-head"><h2>Pitch Design</h2><p>Arm slot changes · what happens when a pitcher raises or drops his arm angle, 2021 to 2026</p></div>
+    <div class="seg pd-tabs" role="group" aria-label="Pitch Design views"><a href="#shapes" class="share-btn">Pitch fit tool</a><a href="#slots" class="share-btn" aria-current="page">Arm slot changes</a></div>
     <div class="panel">
       <p class="bo-lede">Statcast measures the angle of a pitcher's arm when he lets go of the ball. When that angle changes by 4 degrees or more from one season to the next, it's one of the biggest changes a pitcher can make, whether a team asked for it or it happened on its own. This page tracks every one since 2021 (335 in all) and what came with it.</p>
       <div class="bo-test">
@@ -2276,11 +2282,11 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 <script>
 (function(){
   var PAGES=["home","writing","report","lab","breakouts","minors","teams","leaders","shapes","slots","glossary","about"];
-  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",minors:"Farm Systems",teams:"Teams",leaders:"Leaderboards",shapes:"Pitch Design",slots:"Arm Slot Changes",glossary:"Glossary",about:"About"};
+  var TITLES={home:"Kafkaesque Baseball",writing:"Writing",report:"Pitcher Search",lab:"Pitch Lab",breakouts:"2027 Watch List",minors:"Farm Systems",teams:"MLB Pitching Staffs",leaders:"Leaderboards",shapes:"Pitch Design",slots:"Arm Slot Changes · Pitch Design",glossary:"Glossary",about:"About"};
   var raw=window.kbShowPitcher;
   function go(pg){
     PAGES.forEach(function(p){var el=document.getElementById(p);if(el)el.classList.toggle("on",p===pg)});
-    document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==="#"+pg)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+    document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==="#"+(pg==="slots"?"shapes":pg))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
     if(pg==="minors"&&window.kbMinors)window.kbMinors();
     document.title=pg==="home"?"Kafkaesque Baseball":TITLES[pg]+" · Kafkaesque Baseball";
     window.scrollTo(0,0);
