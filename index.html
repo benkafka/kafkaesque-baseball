@@ -226,7 +226,11 @@ table.fa-t{min-width:880px}
 .fa-t tr.o-mut td{background:rgba(138,79,208,.09)} .fa-t tr.o-mut td:first-child{box-shadow:inset 4px 0 0 var(--o-mut)}
 .fa-t tr.o-ply td{background:rgba(201,130,26,.11)} .fa-t tr.o-ply td:first-child{box-shadow:inset 4px 0 0 var(--o-ply)}
 .fa-t tr.o-club .o-pill{color:var(--o-club)} .fa-t tr.o-mut .o-pill{color:var(--o-mut)} .fa-t tr.o-ply .o-pill{color:var(--o-ply)}
+.fa-t tr.o-done td{background:rgba(255,212,0,.32)} .fa-t tr.o-done td:last-child{font-weight:700;color:var(--fg)} .fa-t tr.o-done td:first-child{box-shadow:inset 4px 0 0 #e0b000} .fa-t tr.o-done .o-pill{color:#9a7400}
 .o-pill{font-weight:600}
+.fa-key .ok-done::before{background:rgba(242,196,32,.45);border-color:#e0b000}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fa-t tr.o-done td{background:rgba(242,196,32,.16)} :root:not([data-theme="light"]) .fa-t tr.o-done .o-pill{color:#f2c420}}
+:root[data-theme="dark"] .fa-t tr.o-done td{background:rgba(242,196,32,.16)} :root[data-theme="dark"] .fa-t tr.o-done .o-pill{color:#f2c420}
 .fa-key{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0 2px;font-size:12px;color:var(--muted)}
 .fa-key span{display:inline-flex;align-items:center;gap:6px}
 .fa-key span::before{content:"";width:12px;height:12px;border-radius:3px;border:1px solid var(--line)}
@@ -817,7 +821,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <div class="seg fa-st" role="group" aria-label="Status"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="avail" aria-pressed="false">Available</button><button type="button" data-v="signed" aria-pressed="false">Signed</button></div>
         <div class="seg fa-role" role="group" aria-label="Role"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="SP" aria-pressed="false">Starters</button><button type="button" data-v="RP" aria-pressed="false">Relievers</button></div>
       </div>
-      <div class="fa-key"><span class="ok-club">Club option</span><span class="ok-mut">Mutual option</span><span class="ok-ply">Player option or opt-out</span><span class="ok-fa">No color: straight free agent</span></div>
+      <div class="fa-key"><span class="ok-done">Signed or deal locked in</span><span class="ok-club">Club option</span><span class="ok-mut">Mutual option</span><span class="ok-ply">Player option or opt-out</span><span class="ok-fa">No color: straight free agent</span></div>
       <div class="rc-wrap">
         <table class="rc fa-t">
           <thead><tr>
@@ -2399,7 +2403,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var shown=rows.slice(0,SHOW);
     document.getElementById("fa-body").innerHTML=shown.map(function(p){
       var link='#p'+p.id+(p.y===2026?'':'-'+p.y);
-      var oc=p.note==="club option"?"o-club":p.note==="mutual option"?"o-mut":(p.note==="player option"||p.note==="opt-out")?"o-ply":"";
+      var oc=off(p)?"o-done":p.note==="club option"?"o-club":p.note==="mutual option"?"o-mut":(p.note==="player option"||p.note==="opt-out")?"o-ply":"";
       return '<tr'+(oc?' class="'+oc+'"':'')+'><td><a href="'+link+'">'+esc(p.n)+'</a>'+(p.y!==2026?'<span class="fa-tag">'+p.y+' data</span>':'')+'<small>'+(p.h==="L"?"LHP":"RHP")+' · '+(p.r==="SP"?"Starter":"Reliever")+(p.tm?' · '+esc(p.tm):'')+(p.note?' · <span class="o-pill">'+esc(p.note)+'</span>':'')+'</small></td>'+
         '<td>'+p.age+'</td>'+aavCell(p)+'<td class="'+gc(p.a)+'">'+(p.a==null?'–':p.a)+'</td><td class="'+(p.s==null?"mu":p.s>=105?"up":p.s<=95?"dn":"")+'">'+(p.s==null?'–':p.s)+'</td>'+
         '<td class="'+(p.rv==null?"mu":p.rv>=0?"up":"dn")+'">'+sgn(p.rv)+'</td><td>'+(p.bp?esc(p.bp)+' <small>'+p.bg+' grade</small>':'–')+'</td><td>'+stTxt(p)+'</td></tr>'}).join("")||'<tr><td colspan="8" class="mu">No pitchers in this group yet.</td></tr>';
