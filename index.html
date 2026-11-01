@@ -551,6 +551,28 @@ table.cnt-t{min-width:480px}
 .pd-ex a:hover{border-color:var(--accent)}.pd-ex span{font-size:13px;color:var(--muted)}.pd-ex em{font-style:normal;font-family:var(--f-data);font-size:13px}
 .pd-tt td.mu,.pd-t td.mu{color:var(--muted)}
 @media (max-width:900px){.pd-grid{grid-template-columns:minmax(0,1fr)}.pd-c2{grid-template-columns:minmax(0,1fr)}.pd-bar{grid-template-columns:130px 1fr 90px}}
+.pd-lede0{font-size:18px;color:var(--fg);opacity:.85}
+.pd-doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-bottom:28px}
+.pd-door{padding:24px;display:flex;flex-direction:column;gap:12px;border-radius:14px}
+.pd-door h3{margin:0;font-family:var(--f-display);font-style:italic;font-weight:700;font-size:28px;text-transform:uppercase}
+.pd-door p{margin:0;font-size:15px;color:var(--muted);line-height:1.45}
+.pd-door .search{max-width:none}
+.pd-door-dark{background:#121a24;color:#fff}.pd-door-dark p{color:#c9d2de}
+.pd-k2{font-family:var(--f-data);font-weight:600;font-size:12px;letter-spacing:.08em}.pd-k2.acc{color:#e39a2c}
+.pd-cta{align-self:flex-start;margin-top:auto;font:600 15px var(--f-body);padding:12px 18px;border-radius:10px;border:0;background:#e39a2c;color:#121a24;cursor:pointer}
+.pd-cta:hover{background:#f0ad48}
+.pd-cheat-h{margin-bottom:12px}
+.pd-cheat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.pd-slot{font:inherit;text-align:left;color:var(--fg);display:flex;flex-direction:column;gap:8px;padding:20px;cursor:pointer;border:1px solid var(--line)}
+.pd-slot:hover{border-color:var(--accent)}
+.pd-slot-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.pd-slot-h b{font-family:var(--f-display);font-style:italic;font-size:24px;text-transform:uppercase}.pd-slot-h span{font-family:var(--f-data);font-size:13px;color:var(--muted)}
+.pd-slot .pd-k2{margin-top:6px}.pd-k2.up{color:#1f7a50}.pd-k2.dn{color:#b8382f}
+.pd-slot ul{list-style:none;margin:0;padding:0}.pd-slot li{display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:15px;font-weight:600}
+.pd-slot li i{width:10px;height:10px;border-radius:50%}.pd-slot li b{font-family:var(--f-data)}
+.pd-go{margin-top:auto;padding-top:6px;font-weight:600;color:var(--accent)}
+.pd-same{margin:18px 0 0;font-size:15px}
+.pd-back{font:600 14px var(--f-body);color:var(--accent);background:transparent;border:0;padding:0 0 14px;cursor:pointer}
+@media (max-width:900px){.pd-doors,.pd-cheat{grid-template-columns:minmax(0,1fr)}}
 .lab-intro{margin-top:18px}.lab-dl{margin-left:12px}.lab-lede{font-size:17px;line-height:1.55;max-width:860px;margin:0}.lab-proof{border:1px solid var(--line);border-left:4px solid #e39a2c;border-radius:12px;padding:16px 20px}.lab-proof p{margin:6px 0 0;line-height:1.5}
 .tm-ident{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0}
 .tm-ident > div{background:#121a24;color:#fff;border-radius:14px;padding:20px 22px;border:1px solid #2a3442}
@@ -1293,7 +1315,25 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
 
   <section id="shapes" class="page">
     <div class="sec-head"><h2>Pitch Design</h2><p>Which pitch shapes fit which arms · 2026</p></div>
-    <p class="pd-lede">Pick a pitcher, or describe any arm with your own TrackMan or Rapsodo numbers. It shows which of the 16 pitch shapes worked best for arm slots like his in 2026, which of his pitches fight his arm, and what to change.</p>
+    <div id="pd-start">
+      <p class="pd-lede pd-lede0"><b>Every arm slot has pitches that come naturally and pitches that fight it.</b> Pick a pitcher or describe any arm, and see which shapes fit, which of his pitches don’t, and what to change.</p>
+      <div class="pd-doors">
+        <div class="panel pd-door">
+          <div class="pd-k2 acc">OPTION 1</div><h3>Check a pitcher</h3><p>Any MLB arm from 2026. His arm slot and pitches fill in for you.</p>
+          <div class="search"><label class="meta" for="pd-q0">Pitcher</label><input id="pd-q0" type="search" placeholder="Type any MLB pitcher’s name" autocomplete="off" spellcheck="false" aria-controls="pd-sug0" aria-autocomplete="list"><div id="pd-sug0" class="ps-list" role="listbox" hidden></div></div>
+          <div class="quick" id="pd-quick"></div>
+        </div>
+        <div class="pd-door pd-door-dark">
+          <div class="pd-k2 acc">OPTION 2</div><h3>Build an arm</h3><p>Have TrackMan or Rapsodo numbers? Enter an arm angle and his pitches (velo, vertical break, horizontal break). Built for college, JUCO and amateur arms.</p>
+          <button type="button" class="pd-cta" id="pd-build0">Start building →</button>
+        </div>
+      </div>
+      <div class="pd-sec-h pd-cheat-h"><h3>The slot cheat sheet</h3><span class="fine">Runs saved per 100 pitches vs league, 2026 · min. 15 pitchers per slot</span></div>
+      <div class="pd-cheat" id="pd-cheat"></div>
+      <p class="pd-same"><b>Same pitch, different arm:</b> the running sinker is one of the best shapes from a high slot and the worst from a low one. That’s why the arm comes first.</p>
+    </div>
+    <div id="pd-tool" hidden>
+    <button type="button" class="pd-back" id="pd-back">← All arm slots</button>
     <div class="pd-grid">
       <aside class="panel pd-side">
         <div class="seg" id="pd-mode" role="group" aria-label="Mode"><button type="button" data-v="pick" aria-pressed="true">Pick a pitcher</button><button type="button" data-v="build" aria-pressed="false">Build an arm</button></div>
@@ -1333,6 +1373,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       </div>
     </div>
     <p class="fine">Fit compares each shape’s 2026 run value (runs saved per 100 pitches vs league) among pitchers whose arm angle is within 8° of this one, both hands combined, with at least 12 such pitchers. Targets are the middle half of that shape from those slots. Shapes come from velocity and movement, not the pitch name. This is a starting point for a bullpen session, not a prescription: it can’t see grip comfort, health or sequencing.</p>
+    </div>
   </section>
 
   <section id="slots" class="page">
@@ -2015,16 +2056,18 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     document.getElementById("pd-who").innerHTML='<img src="https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_120,q_auto:best/v1/people/'+id+'/headshot/67/current" alt="" onerror="this.style.visibility=\'hidden\'"><div><b>'+esc(d.n)+'</b><span>'+esc([B.tm,d.h==="L"?"LHP":"RHP",d.g&&d.g.r==="SP"?"Starter":d.g&&d.g.r==="RP"?"Reliever":""].filter(Boolean).join(" · "))+'</span><span>Arm angle '+S.aa.toFixed(1)+'° ('+slotName(S.aa)+')'+(A?'':' · estimated')+'</span><span class="pd-links"><a href="#p'+id+'">Report card</a> · <a href="#lab-'+id+'">Pitch Lab</a></span></div>'}
   function setPitcher(id,quiet){if(!P[id])return;S.mode="pick";S.id=id;var A=ARM[id],aa=A&&A[1]!=null?A[1]:null;
     if(aa==null)KEYS.forEach(function(k){(D.f[k]||[]).forEach(function(r){if(aa==null&&String(r[0])===String(id)&&r[12]!=null)aa=r[12]})});
-    S.aa=aa==null?40:aa;S.hand=P[id].h;S.sel=null;S.auto=true;mode("pick");who();draw();
-    document.getElementById("pd-q").value="";if(!quiet){try{history.replaceState(null,"","#shapes-"+id)}catch(e){}}}
+    S.aa=aa==null?40:aa;S.hand=P[id].h;S.sel=null;S.auto=true;mode("pick");showTool();who();draw();
+    document.getElementById("pd-q").value="";document.getElementById("pd-q0").value="";if(!quiet){try{history.replaceState(null,"","#shapes-"+id)}catch(e){}}}
   window.kbShapesPitcher=function(id){setPitcher(String(id),true)};
   var index=Object.keys(P).map(function(id){return {id:id,n:P[id].n,k:fold(P[id].n)}}).sort(function(a,b){return a.n.localeCompare(b.n)});
-  var inp=document.getElementById("pd-q"),sug=document.getElementById("pd-sug"),mt=[],act=-1;
-  function list(){if(!mt.length){sug.hidden=true;return}sug.innerHTML=mt.map(function(m,i){return '<button type="button" role="option" data-pid="'+m.id+'"'+(i===act?' class="on" aria-selected="true"':'')+'>'+esc(m.n)+'</button>'}).join("");sug.hidden=false}
-  inp.addEventListener("input",function(){var v=fold(inp.value.trim());act=-1;mt=v?index.filter(function(m){return m.k.indexOf(v)>-1}).slice(0,8):[];if(v&&!mt.length){sug.innerHTML='<div class="none">No 2026 pitcher with 300+ pitches matches that name. Try Build an arm.</div>';sug.hidden=false;return}list()});
-  inp.addEventListener("keydown",function(e){if(e.key==="ArrowDown"&&mt.length){act=Math.min(mt.length-1,act+1);list();e.preventDefault()}else if(e.key==="ArrowUp"&&mt.length){act=Math.max(0,act-1);list();e.preventDefault()}else if(e.key==="Enter"&&mt.length){setPitcher(mt[Math.max(0,act)].id);sug.hidden=true;e.preventDefault()}else if(e.key==="Escape"){sug.hidden=true}});
-  sug.addEventListener("click",function(e){var b=e.target.closest("[data-pid]");if(b){e.stopPropagation();setPitcher(b.dataset.pid);sug.hidden=true}});
-  document.addEventListener("click",function(e){if(!e.target.closest("#pd-pick .search"))sug.hidden=true});
+  function bindSearch(inp,sug,wrapSel){var mt=[],act=-1;
+    function list(){if(!mt.length){sug.hidden=true;return}sug.innerHTML=mt.map(function(m,i){return '<button type="button" role="option" data-pid="'+m.id+'"'+(i===act?' class="on" aria-selected="true"':'')+'>'+esc(m.n)+'</button>'}).join("");sug.hidden=false}
+    inp.addEventListener("input",function(){var v=fold(inp.value.trim());act=-1;mt=v?index.filter(function(m){return m.k.indexOf(v)>-1}).slice(0,8):[];if(v&&!mt.length){sug.innerHTML='<div class="none">No 2026 pitcher with 300+ pitches matches that name. Try Build an arm.</div>';sug.hidden=false;return}list()});
+    inp.addEventListener("keydown",function(e){if(e.key==="ArrowDown"&&mt.length){act=Math.min(mt.length-1,act+1);list();e.preventDefault()}else if(e.key==="ArrowUp"&&mt.length){act=Math.max(0,act-1);list();e.preventDefault()}else if(e.key==="Enter"&&mt.length){setPitcher(mt[Math.max(0,act)].id);sug.hidden=true;e.preventDefault()}else if(e.key==="Escape"){sug.hidden=true}});
+    sug.addEventListener("click",function(e){var b=e.target.closest("[data-pid]");if(b){e.stopPropagation();setPitcher(b.dataset.pid);sug.hidden=true}});
+    document.addEventListener("click",function(e){if(!e.target.closest(wrapSel))sug.hidden=true})}
+  bindSearch(document.getElementById("pd-q"),document.getElementById("pd-sug"),"#pd-pick .search");
+  bindSearch(document.getElementById("pd-q0"),document.getElementById("pd-sug0"),"#pd-start .search");
   // ---------- build mode ----------
   function rowsUI(){document.getElementById("pd-rows").innerHTML=S.rows.map(function(r,i){
     return '<tr data-i="'+i+'"><td><select aria-label="Pitch type" data-f="0">'+TYPES.map(function(t){return '<option value="'+t[0]+'"'+(t[0]===r[0]?' selected':'')+'>'+t[1]+'</option>'}).join("")+'</select></td>'+
@@ -2040,9 +2083,26 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   document.querySelectorAll("#pd-mode button").forEach(function(b){b.addEventListener("click",function(){var v=b.dataset.v;if(v===S.mode)return;mode(v);
     if(v==="build"){S.aa=+aaIn.value;document.getElementById("pd-aav").textContent=S.aa+"°";rowsUI();try{history.replaceState(null,"","#shapes")}catch(e){}}else if(S.id){var A=ARM[S.id];S.aa=A&&A[1]!=null?A[1]:S.aa}
     S.sel=null;S.auto=true;draw()})});
+  // ---------- start screen ----------
+  function showTool(){document.getElementById("pd-start").hidden=true;document.getElementById("pd-tool").hidden=false}
+  function showStart(){document.getElementById("pd-start").hidden=false;document.getElementById("pd-tool").hidden=true}
+  function goBuild(aa){mode("build");if(aa!=null){aaIn.value=aa}S.aa=+aaIn.value;document.getElementById("pd-aav").textContent=S.aa+"°";rowsUI();S.sel=null;S.auto=true;showTool();draw();try{history.replaceState(null,"","#shapes")}catch(e){}window.scrollTo(0,0)}
+  window.kbShapesStart=function(){showStart()};
+  var SLOTS=[["low","Low slot","Under 30°",20],["mid","Three-quarters","30° to 45°",38],["high","High slot","45° and up",55]];
+  function cheat(){return SLOTS.map(function(s){var b=s[0],ks=KEYS.filter(function(k){var x=BUCK[k][b];return x&&x.n>=15}).sort(function(x,y){return BUCK[y][b].rv-BUCK[x][b].rv});
+    function li(k,good){var x=BUCK[k][b];return '<li><i style="background:'+COL[M[k][1]]+'"></i><span>'+esc(SHORT[k]==="Slurve"?"Slurve":M[k][0])+'</span><b class="'+(x.rv>=0?"up":"dn")+'">'+sg(x.rv)+'</b></li>'}
+    return '<button type="button" class="panel pd-slot" data-aa="'+s[3]+'"><span class="pd-slot-h"><b>'+s[1]+'</b><span>'+s[2]+'</span></span><span class="pd-k2 up">COMES NATURALLY</span><ul>'+ks.slice(0,3).map(function(k){return li(k,true)}).join("")+'</ul><span class="pd-k2 dn">FIGHTS THE ARM</span><ul>'+ks.slice(-2).reverse().map(function(k){return li(k,false)}).join("")+'</ul><span class="pd-go">Build an arm from this slot →</span></button>'}).join("")}
+  document.getElementById("pd-cheat").innerHTML=cheat();
+  document.getElementById("pd-cheat").addEventListener("click",function(e){var b=e.target.closest("[data-aa]");if(b)goBuild(+b.dataset.aa)});
+  document.getElementById("pd-build0").addEventListener("click",function(){goBuild(45)});
+  document.getElementById("pd-back").addEventListener("click",function(){showStart();try{history.replaceState(null,"","#shapes")}catch(e){}window.scrollTo(0,0)});
+  var QP=["Jonah Tong","Nolan McLean","Paul Skenes","Tarik Skubal"],qh="";
+  QP.forEach(function(n){var m=index.filter(function(x){return x.n===n})[0];if(m)qh+='<button type="button" class="lab-chip" data-pid="'+m.id+'">'+esc(n.split(" ").slice(-1)[0])+'</button>'});
+  document.getElementById("pd-quick").innerHTML=qh?'<span class="meta">Try</span>'+qh:'';
+  document.getElementById("pd-quick").addEventListener("click",function(e){var b=e.target.closest("[data-pid]");if(b)setPitcher(b.dataset.pid)});
   // start
   var h0=(location.hash||"").slice(1),m0=h0.match(/^shapes-(\d+)$/);
-  setPitcher(m0&&P[m0[1]]?m0[1]:(P["804636"]?"804636":index[0].id),true);
+  if(m0&&P[m0[1]])setPitcher(m0[1],true);else showStart();
 })();
 </script>
 
@@ -2238,6 +2298,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     if(h==="matchups"||h==="today"){go("home");var t=document.getElementById("today");if(t)setTimeout(function(){t.scrollIntoView()},0);return}
     if(h==="models"){go("slots");return}
     if(h==="lab"&&window.kbLabIntro)window.kbLabIntro();
+    if(h==="shapes"&&window.kbShapesStart)window.kbShapesStart();
     go(PAGES.indexOf(h)>-1?h:"home");
   }
   window.addEventListener("hashchange",route);
