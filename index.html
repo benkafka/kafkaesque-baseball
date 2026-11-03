@@ -575,6 +575,7 @@ table.cnt-t{min-width:480px}
 .pd-same{margin:18px 0 0;font-size:15px}
 .pd-back{font:600 14px var(--f-body);color:var(--accent);background:transparent;border:0;padding:0 0 14px;cursor:pointer}
 @media (max-width:900px){.pd-doors,.pd-cheat{grid-template-columns:minmax(0,1fr)}}
+.pd-cv .pd-cta{margin:0 0 10px}
 .lab-intro{margin-top:18px}.lab-dl{margin-left:12px}.lab-lede{font-size:17px;line-height:1.55;max-width:860px;margin:0}.lab-proof{border:1px solid var(--line);border-left:4px solid #e39a2c;border-radius:12px;padding:16px 20px}.lab-proof p{margin:6px 0 0;line-height:1.5}
 .tm-ident{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0}
 .tm-ident > div{background:#121a24;color:#fff;border-radius:14px;padding:20px 22px;border:1px solid #2a3442}
@@ -1997,20 +1998,23 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function nf(v){return (v<0?"−":"")+Math.abs(v).toFixed(1)}
   function hbT(v){return Math.abs(v).toFixed(1)+'" '+(v>=0?"arm":"glove")}
   function rng(lo,hi,f){return f(lo)+" to "+f(hi)}
+  var TROWS=[];
   function move(lab,now,lo,hi,kind,shapeHb){
     var note,cls="up";
     if(now==null){note="";cls=""}else if(now>=lo&&now<=hi){note="Already there"}else{cls="warn";var d=now<lo?lo-now:hi-now,a=Math.abs(d).toFixed(1);
       if(kind==="v")note=(d>0?"Add ":"Take off ")+a+" mph";
       else if(kind==="iv")note=d>0?a+'" more ride (less drop)':a+'" more drop (less ride)';
       else note=d<0?(shapeHb<0?a+'" more sweep':a+'" less run'):(shapeHb<0?a+'" less sweep':a+'" more run')}
-    return '<tr><th scope="row">'+lab+'</th><td class="r num">'+(now==null?"":kind==="hb"?hbT(now):nf(now)+(kind==="v"?" mph":'"'))+'</td><td class="r num"><b>'+(kind==="hb"?(lo<0&&hi<0?Math.abs(hi).toFixed(1)+" to "+Math.abs(lo).toFixed(1)+'" glove':lo>=0?lo.toFixed(1)+" to "+hi.toFixed(1)+'" arm':hbT(lo)+" to "+hbT(hi)):nf(lo)+" to "+nf(hi)+(kind==="v"?" mph":'"'))+'</b></td><td class="'+cls+'">'+note+'</td></tr>'}
+    var nowT=now==null?"":kind==="hb"?hbT(now):nf(now)+(kind==="v"?" mph":'"'),tgT=kind==="hb"?(lo<0&&hi<0?Math.abs(hi).toFixed(1)+" to "+Math.abs(lo).toFixed(1)+'" glove':lo>=0?lo.toFixed(1)+" to "+hi.toFixed(1)+'" arm':hbT(lo)+" to "+hbT(hi)):nf(lo)+" to "+nf(hi)+(kind==="v"?" mph":'"');
+    TROWS.push([lab,nowT,tgT,note,cls]);
+    return '<tr><th scope="row">'+lab+'</th><td class="r num">'+nowT+'</td><td class="r num"><b>'+tgT+'</b></td><td class="'+cls+'">'+note+'</td></tr>'}
   function card(ars){
-    var k=S.sel,el=document.getElementById("pd-card");if(!k||!M[k]){el.innerHTML="";return}
+    var k=S.sel,el=document.getElementById("pd-card");TROWS=[];S.card=null;if(!k||!M[k]){el.innerHTML="";return}
     var m=M[k],w=WS[k],f=fit(k),use=w&&w.n>=MINN?w:ALL[k],fam=null;Object.keys(FAMS).forEach(function(x){if(FAMS[x].indexOf(k)>-1)fam=x});
     var mine=null;ars.forEach(function(p){if(!mine&&FAMOF[p.t]===fam)mine=p});
     var who=S.mode==="pick"&&P[S.id]?P[S.id].n.split(" ").slice(-1)[0]:"this arm";
     var h='<div class="pd-ch"><div><div class="pd-k" style="color:'+COL[m[1]]+'">'+GRP[m[1]].toUpperCase()+' · '+ALL[k].n+' PITCHERS IN 2026</div><h3>'+esc(m[0])+'</h3><p>'+esc(m[4])+' '+esc(m[5])+'</p></div>'+
-      '<div class="pd-cv"><b class="'+(f==null?"":f>=0?"up":"dn")+'">'+(f==null?"–":sg(f))+'</b><span>runs per 100 from slots like '+(S.mode==="pick"?"his":"this")+(w?' · '+w.n+' pitchers':'')+'</span></div></div>';
+      '<div class="pd-cv"><button type="button" class="pd-cta" id="pd-dl">Download design sheet</button><b class="'+(f==null?"":f>=0?"up":"dn")+'">'+(f==null?"–":sg(f))+'</b><span>runs per 100 from slots like '+(S.mode==="pick"?"his":"this")+(w?' · '+w.n+' pitchers':'')+'</span></div></div>';
     if(use&&use.rows.length>=4){
       var vs=use.rows.map(function(r){return r[2]}),is=use.rows.map(function(r){return r[3]}),hs=use.rows.map(function(r){return r[4]});
       var mineSame=mine&&classify(mine.t,mine.iv,mine.hb)!==null?mine:null;
@@ -2026,6 +2030,11 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       '<div><h4>Common grip</h4><p>'+esc(m[6])+'</p><p class="fine">'+BIAS[m[2]]+'.</p></div></div>';
     var best=(w&&w.n>=MINN?w.rows:ALL[k].rows).filter(function(r){return r[9]>=100}).sort(function(a,b){return b[8]-a[8]}).slice(0,4);
     if(best.length)h+='<div class="pd-cs"><h4>Learn from: the best '+esc(m[0].toLowerCase())+'s '+(w&&w.n>=MINN?'from slots like '+(S.mode==="pick"?"his":"this"):'in 2026')+'</h4><div class="pd-ex">'+best.map(function(r){return '<a href="#p'+r[0]+'"><b>'+esc(nm(r[0]))+'</b><span>'+(r[12]!=null?r[12].toFixed(0)+'° slot · ':'')+r[2].toFixed(1)+' mph · '+nf(r[3])+'" IVB · '+hbT(r[4])+'</span><em class="'+(r[8]>=0?"up":"dn")+'">'+sg(r[8])+' runs/100</em></a>'}).join("")+'</div></div>';
+    var who2=S.mode==="pick"&&P[S.id]?P[S.id]:null;
+    S.card={k:k,name:m[0],grp:m[1],desc:m[4]+' '+m[5],fit:f,n:w?w.n:0,grip:m[6],bias:BIAS[m[2]],mine:mineSame?TN[mineSame.t]||mineSame.t:null,rows:TROWS.slice(),
+      bars:[["high","High slot (45°+)"],["mid","Three-quarters"],["low","Low slot (under 30°)"]].map(function(x){var s=b[x[0]];return [x[1],s&&s.n>=5?s.rv:null,s?s.n:0]}),
+      best:best.slice(0,3).map(function(r){return [nm(r[0]),(r[12]!=null?r[12].toFixed(0)+'° slot · ':'')+r[2].toFixed(1)+' mph · '+nf(r[3])+'" IVB · '+hbT(r[4]),r[8]]}),
+      who:who2?who2.n:"Custom arm",id:who2?S.id:null,tm:who2?((BIO[S.id]||{}).tm||""):"",hand:who2?who2.h:S.hand,aa:S.aa,reads:(S.reads||[]).map(function(x){return [TN[x.p.t]||PN[x.p.t]||x.p.t,x.r.k?M[x.r.k][0]:"",x.r.lab,x.r.cls,x.r.txt,x.p.u]})};
     el.innerHTML=h;
   }
   // ---------- everything ----------
@@ -2042,7 +2051,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var pick=S.mode==="pick", who=pick&&P[S.id]?P[S.id].n:"This arm";
     document.getElementById("pd-ars-h").textContent=(pick?who+"’s arsenal":"Your pitches")+" vs "+(pick?"his":"this")+" arm slot";
     document.getElementById("pd-ars-head").innerHTML='<th scope="col">Pitch</th><th scope="col">Shape</th><th scope="col">Fits '+(pick?"his":"this")+' slot?</th>'+(pick?'<th scope="col" class="r">His runs/100</th>':'')+'<th scope="col">Read</th>';
-    var first=null,reads=ars.map(function(p){var r=read(p);if(!first&&r.alt)first=r.alt;return {p:p,r:r}});
+    var first=null,reads=ars.map(function(p){var r=read(p);if(!first&&r.alt)first=r.alt;return {p:p,r:r}});S.reads=reads;
     document.getElementById("pd-ars-b").innerHTML=reads.map(function(x){var p=x.p,r=x.r;
       return '<tr><td><b>'+esc(TN[p.t]||PN[p.t]||p.t)+'</b>'+(p.u!=null?'<small class="pd-sm">'+p.u.toFixed(0)+'% of pitches</small>':'')+'</td><td>'+(r.k?'<button type="button" class="pd-lk" data-k="'+r.k+'">'+esc(M[r.k][0])+'</button>':'–')+'</td><td><span class="pd-pill '+r.cls+'">'+r.lab+'</span></td>'+
         (pick?'<td class="r num '+(p.rv==null?"":p.rv>=0?"up":"dn")+'">'+(p.rv==null?"–":sg(p.rv))+'</td>':'')+'<td class="pd-rd">'+esc(r.txt)+(r.alt?' <button type="button" class="pd-lk" data-k="'+r.alt+'">See the target →</button>':'')+'</td></tr>'}).join("")||'<tr><td colspan="5" class="mu">'+(pick?'No pitch data for this pitcher.':'Add his pitches on the left to check each one against his slot.')+'</td></tr>';
@@ -2089,6 +2098,57 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   document.querySelectorAll("#pd-mode button").forEach(function(b){b.addEventListener("click",function(){var v=b.dataset.v;if(v===S.mode)return;mode(v);
     if(v==="build"){S.aa=+aaIn.value;document.getElementById("pd-aav").textContent=S.aa+"°";rowsUI();try{history.replaceState(null,"","#shapes")}catch(e){}}else if(S.id){var A=ARM[S.id];S.aa=A&&A[1]!=null?A[1]:S.aa}
     S.sel=null;S.auto=true;draw()})});
+
+  // ---------- design sheet download ----------
+  function sheet(c,photo){
+    var KIT=window.kbCardKit,LIB=window.kbCardLib,C=KIT.C,DISP=KIT.DISP,BODY=KIT.BODY,DATA=KIT.DATA,rr=KIT.rr,wrap=KIT.wrap;
+    var W=1400,HEAD=170,H=1110,k=LIB.canvas(W,H),x=k.x,G={fb:"#2a78d6",br:"#e06a2e",os:"#1baf7a"};
+    x.fillStyle=C.head;rr(x,20,20,W-40,HEAD-20,14);x.fill();
+    var px0=44,ps=110,tx=44;
+    if(c.id){x.save();rr(x,px0,40,ps,ps,12);x.clip();x.fillStyle="#26323f";x.fillRect(px0,40,ps,ps);
+      if(photo){var r=Math.max(ps/photo.width,ps/photo.height);x.drawImage(photo,px0+(ps-photo.width*r)/2,40+(ps-photo.height*r)/2,photo.width*r,photo.height*r)}
+      else{x.fillStyle="#93a1b5";x.font='700 44px '+DISP;x.textAlign="center";x.textBaseline="middle";x.fillText(c.who.split(" ").map(function(w){return w[0]}).join("").slice(0,2),px0+ps/2,40+ps/2);x.textAlign="left";x.textBaseline="alphabetic"}
+      x.restore();tx=px0+ps+26}
+    x.fillStyle="#e39a2c";x.font='600 13px '+DATA;x.fillText("PITCH DESIGN SHEET · 2026 DATA",tx,62);
+    x.fillStyle="#ffffff";x.font='italic 700 50px '+DISP;x.fillText(c.who.toUpperCase(),tx,112);
+    x.fillStyle="#c9d2de";x.font='400 18px '+BODY;x.fillText([c.tm,c.hand==="L"?"LHP":"RHP","Arm angle "+c.aa.toFixed(1)+"° ("+slotName(c.aa)+" slot)"].filter(Boolean).join(" · "),tx,142);
+    // left: the work
+    var top=HEAD+24,lw=780;x.fillStyle=C.bg;rr(x,20,top,lw,560,12);x.fill();
+    x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText(c.mine?"TARGET SHAPE FOR HIS "+c.mine.toUpperCase():"A NEW PITCH THAT FITS THIS SLOT",44,top+32);
+    x.fillStyle=G[c.grp];x.font='italic 700 40px '+DISP;x.fillText(c.name.toUpperCase(),44,top+80);
+    x.fillStyle=C.fg;x.font='400 16px '+BODY;var nl=wrap(x,c.desc,44,top+110,lw-48,22,2);
+    var fy=top+110+nl*22+10;x.font='600 16px '+BODY;x.fillStyle=c.fit==null?C.muted:c.fit>=0?C.ok:C.hot;x.fillText((c.fit==null?"Few comps":sg(c.fit)+" runs per 100 pitches")+" from arm slots like this"+(c.n?" ("+c.n+" pitchers)":""),44,fy);
+    var ty=fy+30;x.font='500 12px '+DATA;x.fillStyle=C.muted;x.fillText("",44,ty);x.textAlign="right";x.fillText(c.mine?"NOW":"",380,ty);x.fillText("TARGET",560,ty);x.textAlign="left";x.fillText(c.mine?"CUE":"",590,ty);
+    c.rows.forEach(function(r,i){var y=ty+14+i*52;x.strokeStyle=C.line;x.lineWidth=1;x.beginPath();x.moveTo(44,y);x.lineTo(lw-4,y);x.stroke();
+      x.fillStyle=C.fg;x.font='600 16px '+BODY;x.fillText(r[0],44,y+32);x.font='400 16px '+DATA;x.textAlign="right";x.fillText(r[1],380,y+32);x.font='700 16px '+DATA;x.fillText(r[2],560,y+32);x.textAlign="left";
+      if(r[3]){x.fillStyle=r[4]==="warn"?C.accent:C.ok;x.font='700 15px '+BODY;wrap(x,r[3],590,y+32,lw-600,18,1)}});
+    var gy=ty+14+c.rows.length*52+30;x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText("GRIP",44,gy);
+    x.fillStyle=C.fg;x.font='400 15px '+BODY;var gl=wrap(x,c.grip,44,gy+24,lw-48,21,3);x.fillStyle=C.muted;x.font='400 13px '+BODY;x.fillText(c.bias+".",44,gy+24+gl*21+4);
+    // right: arsenal check
+    var rx=20+lw+16,rw=W-40-lw-16;x.fillStyle=C.bg;rr(x,rx,top,rw,560,12);x.fill();
+    x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText("ARSENAL CHECK VS HIS SLOT",rx+22,top+32);
+    if(!c.reads.length){x.fillStyle=C.muted;x.font='400 15px '+BODY;wrap(x,"No pitches entered. Add his pitches in Build an arm to check each one.",rx+22,top+70,rw-44,21,3)}
+    c.reads.slice(0,6).forEach(function(r,i){var y=top+52+i*84,col=r[3]==="good"?C.ok:r[3]==="bad"?C.hot:r[3]==="warn"?C.accent:C.muted;
+      x.fillStyle=C.fg;x.font='700 16px '+BODY;x.fillText(r[0]+(r[5]!=null?"  "+Math.round(r[5])+"%":""),rx+22,y+18);x.fillStyle=C.muted;x.font='400 13px '+BODY;x.fillText(r[1],rx+22,y+36);
+      x.font='600 13px '+BODY;var pw=x.measureText(r[2]).width+18;x.fillStyle=r[3]==="good"?"rgba(31,138,91,.13)":r[3]==="bad"?"rgba(210,69,60,.12)":r[3]==="warn"?"rgba(227,154,44,.18)":C.panel;rr(x,rx+rw-22-pw,y+2,pw,24,12);x.fill();x.fillStyle=col;x.fillText(r[2],rx+rw-22-pw+9,y+19);
+      x.fillStyle=C.fg;x.font='400 14px '+BODY;wrap(x,r[4],rx+22,y+58,rw-44,18,2)});
+    // bottom: slot bars + comps
+    var by=top+560+24,bw=(W-40-16)/2;x.fillStyle=C.bg;rr(x,20,by,bw,250,12);x.fill();rr(x,20+bw+16,by,bw,250,12);x.fill();
+    x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText(("Where the "+c.name+" plays best").toUpperCase(),44,by+32);
+    var mx=Math.max.apply(null,c.bars.map(function(b){return b[1]==null?0:Math.abs(b[1])}).concat([0.01]));
+    c.bars.forEach(function(b,i){var y=by+70+i*54;x.fillStyle=C.fg;x.font='600 15px '+BODY;x.fillText(b[0],44,y);
+      x.fillStyle=C.panel;rr(x,250,y-12,bw-330,14,7);x.fill();if(b[1]!=null){x.fillStyle=b[1]>=0?C.ok:C.hot;rr(x,250,y-12,Math.max(8,(bw-330)*Math.abs(b[1])/mx),14,7);x.fill()}
+      x.textAlign="right";x.font='600 15px '+DATA;x.fillStyle=b[1]==null?C.muted:b[1]>=0?C.ok:C.hot;x.fillText(b[1]==null?"too few":sg(b[1]),bw+2,y);x.textAlign="left";
+      x.fillStyle=C.muted;x.font='400 12px '+BODY;x.fillText(b[2]+" pitchers",44,y+18)});
+    var cx=20+bw+16;x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText("LEARN FROM: BEST VERSIONS FROM SLOTS LIKE THIS",cx+24,by+32);
+    c.best.forEach(function(b,i){var y=by+66+i*58;x.fillStyle=C.fg;x.font='700 16px '+BODY;x.fillText(b[0],cx+24,y);x.textAlign="right";x.fillStyle=b[2]>=0?C.ok:C.hot;x.font='600 15px '+DATA;x.fillText(sg(b[2])+" runs/100",cx+bw-24,y);x.textAlign="left";x.fillStyle=C.muted;x.font='400 13px '+BODY;x.fillText(b[1],cx+24,y+20)});
+    if(!c.best.length){x.fillStyle=C.muted;x.font='400 15px '+BODY;x.fillText("Not enough qualified pitchers from this slot.",cx+24,by+70)}
+    LIB.footer(x,W,H,"A starting point for a bullpen session, not a prescription");
+    return k.cv;
+  }
+  document.getElementById("pd-card").addEventListener("click",function(e){var bt=e.target.closest("#pd-dl");if(!bt||!S.card||!window.kbCardLib)return;e.stopPropagation();var c=S.card;
+    window.kbCardLib.run(bt,"Download design sheet",[c.id?window.kbCardKit.img("https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_360,q_auto:best/v1/people/"+c.id+"/headshot/67/current"):Promise.resolve(null)],
+      function(r){return sheet(c,r[0]||null)},{f:(c.who+"_"+c.name).replace(/[^A-Za-z0-9]+/g,"_")+"_Design_Sheet_Kafkaesque_Baseball.png",t:c.who+" · "+c.name+" design sheet"})});
   // ---------- start screen ----------
   function showTool(){document.getElementById("pd-start").hidden=true;document.getElementById("pd-tool").hidden=false}
   function showStart(){document.getElementById("pd-start").hidden=false;document.getElementById("pd-tool").hidden=true}
@@ -2511,6 +2571,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     });
   }
 
+  window.kbCardLib={canvas:canvas,footer:footer,chips:chips,panel:panel,run:run};
   // ---------- Pitch Lab card ----------
   function drawLab(o,photo){
     var d=o.d,m=o.m||{},N=o.N,fx=(o.fix||[]).slice(0,4),sides=["L","R"].filter(function(s){return m[s]&&m[s].r&&m[s].r.length});
