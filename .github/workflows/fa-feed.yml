@@ -195,7 +195,14 @@ jobs:
                   return None
               if re.search(r"option|opt(s|ed|ing)?[- ]?(out|in)\b|minor[- ]league", t, re.I):
                   return None
+              # speculation and departures are not deals
+              if re.search(r"\b(wants?|wanted|hop(e|es|ing)|interest\w*|eye[sd]?|eyeing|link(s|ed)?|pursu\w*|target\w*|meet(s|ing)? with|talks?|open to|"
+                           r"favorites?|odds|best fits?|landing spots?|walk|walks|let|lets|leave|leaves|depart\w*|declin\w*|non-?tender\w*|releas\w*|part ways|lose|loses|lost)\b", t, re.I):
+                  return None
+              pos = t.lower().find(last)
               m = AGREE.search(t)
+              if m and pos > m.start():
+                  m = None  # the pitcher has to be the one agreeing, not someone named later
               if m:
                   after = t[m.end():]
                   hits = []
@@ -207,9 +214,18 @@ jobs:
                       return NICK[min(hits)[2]]
               m = TEAMV.search(t)
               if m:
-                  return NICK[m.group(1)]
+                  # "Tigers bring back X": X has to be the next name after the verb
+                  nxt = re.sub(r"^\s*(back\s+)?((veteran|closer|reliever|starter|right-hander|left-hander|righty|lefty|rhp|lhp|ace|free agent)\s+)*", "", t[m.end():], flags=re.I)
+                  if nxt.lower().startswith(norm(name).lower()) or nxt.lower().startswith(last):
+                      return NICK[m.group(1)]
               return None
-          agreed = dict(old.get("agreed", {}))
+          agreed = {}
+          for pid, v in old.get("agreed", {}).items():
+              o = next((p for p in everyone if str(p["id"]) == pid), None)
+              if o is None or agreed_team(v.get("title", ""), o["n"]):
+                  agreed[pid] = v
+              else:
+                  print("dropped agreed:", o["n"], "|", v.get("title"))
           for o in everyone:
               pid = str(o["id"])
               if pid in signed or pid in stayed or pid in agreed:
