@@ -576,6 +576,31 @@ table.cnt-t{min-width:480px}
 .pd-back{font:600 14px var(--f-body);color:var(--accent);background:transparent;border:0;padding:0 0 14px;cursor:pointer}
 @media (max-width:900px){.pd-doors,.pd-cheat{grid-template-columns:minmax(0,1fr)}}
 .pd-cv .pd-cta{margin:0 0 10px}
+.pct{margin:22px 0;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.pc-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:flex-start}.pc-top .fine{margin:4px 0 0}
+.pc-key{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;padding:0;font-size:12px;color:var(--muted)}.pc-key li{display:flex;align-items:center;gap:6px}
+.pc-key i{display:inline-block;width:12px;height:12px;border-radius:50%}.pc-key i.hi{background:#1f8a6b}.pc-key i.mid{background:#7d8899}.pc-key i.lo{background:#d9622b}
+.pc-key i.pv{width:9px;height:9px;border:2px solid var(--fg);background:var(--panel)}.pc-key i.av{width:2px;height:14px;border-radius:0;background:var(--muted)}
+.pc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:14px}
+.pc-g{border:1px solid var(--line);border-radius:12px;padding:12px 16px 4px}
+.pc-gh{display:flex;justify-content:space-between;align-items:baseline}.pc-gh h4{margin:0;font-family:var(--f-display);font-style:italic;font-size:20px;text-transform:uppercase}
+.pc-gh span{font-family:var(--f-data);font-weight:700;font-size:13px}
+.pc-gh .hi,.pc-d.hi{color:#1f8a6b}.pc-gh .lo,.pc-d.lo{color:#d9622b}.pc-gh .mid{color:var(--muted)}
+.pc-row{display:grid;grid-template-columns:minmax(0,1fr) 44px;grid-template-areas:"l d" "b b";gap:2px 10px;align-items:center;padding:8px 0 4px;border-top:1px solid var(--line)}.pc-l{grid-area:l;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.pc-bar{grid-area:b}.pc-d{grid-area:d}
+.pc-gh+.pc-row{margin-top:8px}
+.pc-l b{font-size:14px}.pc-l span{font-family:var(--f-data);font-size:12px;color:var(--muted)}
+.pc-bar{position:relative;height:30px}
+.pc-bar i{position:absolute;display:block}
+.pc-trk{left:0;right:0;top:11px;height:8px;border-radius:4px;background:var(--panel-2)}
+.pc-fill{left:0;top:11px;height:8px;border-radius:4px}
+.pc-fill.hi,.pc-dot.hi{background:#1f8a6b}.pc-fill.mid,.pc-dot.mid{background:#7d8899}.pc-fill.lo,.pc-dot.lo{background:#d9622b}
+.pc-avg{left:50%;top:5px;width:2px;height:20px;background:var(--muted);opacity:.55}
+.pc-prev{top:9px;width:8px;height:8px;margin-left:-6px;border-radius:50%;border:2px solid var(--fg);background:var(--panel)}
+.pc-dot{position:absolute;top:2px;width:26px;height:26px;margin-left:-13px;border-radius:50%;color:#fff;font:700 12px var(--f-data);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--panel)}
+.pc-na{position:absolute;left:0;top:7px;font-size:12px;color:var(--muted)}
+.pc-d{font-family:var(--f-data);font-size:12px;font-weight:600;text-align:right;color:var(--muted)}
+.pc-read{margin:14px 0 0;font-size:15px;line-height:1.5}
+@media (max-width:980px){.pc-grid{grid-template-columns:minmax(0,1fr)}}
 .lab-intro{margin-top:18px}.lab-dl{margin-left:12px}.lab-lede{font-size:17px;line-height:1.55;max-width:860px;margin:0}.lab-proof{border:1px solid var(--line);border-left:4px solid #e39a2c;border-radius:12px;padding:16px 20px}.lab-proof p{margin:6px 0 0;line-height:1.5}
 .tm-ident{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0}
 .tm-ident > div{background:#121a24;color:#fff;border-radius:14px;padding:20px 22px;border:1px solid #2a3442}
@@ -1098,6 +1123,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <div><span class="meta">What makes him nasty?</span><p id="rc-nasty"></p></div>
         <div><span class="meta">Biggest strength</span><p id="rc-sum"></p></div>
       </div>
+      <section class="pct" id="rc-pct" hidden aria-label="Percentile profile"></section>
       <div class="mvmt">
         <figure class="mv-fig">
           <div class="mv-plot" id="mv-plot"></div>
@@ -1695,9 +1721,62 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     drawMove(d);
     drawGrades(d);
     drawLab(id,d);
+    drawPct(id,d);
     if(!past){drawCounts(id,d);drawYoy(id)}
     if(!silent){try{history.replaceState(null,"","#p"+id+(past?"-"+YR:""))}catch(e){}}
     if(NOTES[id]&&!past){noteEl.textContent=NOTES[id];noteEl.hidden=false}else{noteEl.hidden=true}
+  }
+  // ---------- percentile profile ----------
+  var PCT={}, PMIN=500;
+  var PM=[["Stuff",[["fbv","Fastball velo",0],["ks","K-Stuff+",0],["best","Best pitch",0],["whiff","Whiff+",0]]],
+          ["Command",[["loc","Location+",0],["zone","Zone%",0],["chase","Chase%",0]]],
+          ["Results",[["rv","Runs per 100",0],["xw","xwOBA on contact",1],["izw","In-zone whiff%",0]]]];
+  function pmet(d){
+    var rows=d.r.filter(function(r){return r[16]});
+    function W(i){var s=0,w=0;rows.forEach(function(r){if(r[i]!=null){s+=r[i]*r[16];w+=r[16]}});return w?s/w:null}
+    var by={},tp={},xs=0,xn=0;
+    rows.forEach(function(r){
+      if(r[0]==="FF"||r[0]==="SI"||r[0]==="FC"){var b=by[r[0]]||(by[r[0]]=[0,0]);b[0]+=r[16];b[1]+=r[13]*r[16]}
+      if(r[29]!=null){var t=tp[r[0]]||(tp[r[0]]=[0,0]);t[0]+=r[16];t[1]+=r[29]*r[16]}
+      if(r[9]!=null&&r[6]){xs+=r[9]*r[6];xn+=r[6]}});
+    var fk=null;Object.keys(by).forEach(function(k){if(!fk||by[k][0]>by[fk][0])fk=k});
+    var bk=null;Object.keys(tp).forEach(function(k){if(tp[k][0]>=100&&(!bk||tp[k][1]/tp[k][0]>tp[bk][1]/tp[bk][0]))bk=k});
+    return {fbv:fk?by[fk][1]/by[fk][0]:null,fbk:fk,ks:W(29),best:bk?tp[bk][1]/tp[bk][0]:null,bestk:bk,whiff:W(4),loc:W(23),zone:W(17),chase:W(19),rv:W(5),xw:xn?xs/xn:null,izw:W(21)}}
+  function ptable(y,src){if(PCT[y])return PCT[y];var t={};Object.keys(src).forEach(function(k){if(src[k].p>=PMIN)t[k]=pmet(src[k])});
+    var v={};PM.forEach(function(g){g[1].forEach(function(m){v[m[0]]=Object.keys(t).map(function(k){return t[k][m[0]]}).filter(function(x){return x!=null}).sort(function(a,b){return a-b})})});
+    return (PCT[y]={t:t,v:v,n:Object.keys(t).length})}
+  function prank(T,key,val,low){if(val==null)return null;var a=T.v[key];if(!a||!a.length)return null;var lo=0,hi=a.length;
+    var below=0,eq=0;for(var i=0;i<a.length;i++){if(a[i]<val)below++;else if(a[i]===val)eq++}
+    var p=(below+eq/2)/a.length*100;return Math.max(1,Math.min(99,Math.round(low?100-p:p)))}
+  function pfmt(k,v,m){if(v==null)return "–";
+    if(k==="fbv")return v.toFixed(1)+" mph";if(k==="zone"||k==="chase"||k==="izw")return v.toFixed(1)+"%";
+    if(k==="rv")return (v>=0?"+":"−")+Math.abs(v).toFixed(2);if(k==="xw")return v.toFixed(3).replace(/^0/,"");
+    if(k==="best")return (NAMES[m.bestk]||m.bestk||"")+" · "+Math.round(v);return String(Math.round(v))}
+  function pcol(p){return p==null?"mid":p>=70?"hi":p<=30?"lo":"mid"}
+  function pord(n){var s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+  function fetchPrev(y,cb){if(SEA[y]){cb();return}fetch(SBASE+y+".json").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){SEA[y]=j;cb()}).catch(function(){})}
+  function drawPct(id,d){
+    var el=document.getElementById("rc-pct");if(!el)return;
+    var src=YR===2026?P26:SEA[YR].P,T=ptable(YR,src),m=pmet(d),py=YR-1,prevOK=yearsOf(id).indexOf(py)>-1,PT=null,pm=null;
+    if(prevOK){if(SEA[py]&&SEA[py].P&&SEA[py].P[id]){PT=ptable(py,SEA[py].P);pm=pmet(SEA[py].P[id])}
+      else{var cid=id,cy=YR;fetchPrev(py,function(){if(CUR===cid&&YR===cy)drawPct(cid,P[cid])})}}
+    var gs=[],all=[];
+    var html=PM.map(function(g){var ps=[];
+      var rows=g[1].map(function(x){var k=x[0],p=prank(T,k,m[k],x[2]),p0=pm?prank(PT,k,pm[k],x[2]):null;if(p!=null){ps.push(p);all.push([x[1],p])}
+        var c=pcol(p),dl=p!=null&&p0!=null?p-p0:null;
+        return '<div class="pc-row"><div class="pc-l"><b>'+x[1]+'</b><span>'+esc(pfmt(k,m[k],m))+'</span></div><div class="pc-bar" '+(p==null?'aria-hidden="true"':'role="img" aria-label="'+x[1]+': '+pord(p)+' percentile'+(p0!=null?', '+pord(p0)+' in '+py:'')+'"')+'><i class="pc-trk"></i>'+(p!=null?'<i class="pc-fill '+c+'" style="width:'+p+'%"></i>':'')+'<i class="pc-avg"></i>'+(p0!=null?'<i class="pc-prev" style="left:'+p0+'%" title="'+py+': '+pord(p0)+'"></i>':'')+(p!=null?'<b class="pc-dot '+c+'" style="left:'+p+'%">'+p+'</b>':'<span class="pc-na">n/a</span>')+'</div>'+
+          '<div class="pc-d '+(dl==null?"":dl>=5?"hi":dl<=-5?"lo":"")+'">'+(dl==null?"":(dl>0?"↑ ":dl<0?"↓ ":"→ ")+Math.abs(dl))+'</div></div>'}).join("");
+      var avg=ps.length?Math.round(ps.reduce(function(a,b){return a+b},0)/ps.length):null;gs.push([g[0],avg]);
+      return '<div class="pc-g"><div class="pc-gh"><h4>'+g[0]+'</h4>'+(avg!=null?'<span class="'+pcol(avg)+'">'+pord(avg)+' avg</span>':'')+'</div>'+rows+'</div>'}).join("");
+    var ok=gs.filter(function(g){return g[1]!=null}).sort(function(a,b){return b[1]-a[1]}),read="";
+    if(ok.length>1){var top=all.slice().sort(function(a,b){return b[1]-a[1]}),hi=top[0],lo=top[top.length-1],s=ok[0],w=ok[ok.length-1];
+      read=(w[1]>=60?"<b>Strong across the board.</b> All three groups rank above average. ":s[1]<=40?"<b>Below average across the board.</b> ":s[1]-w[1]<12?"<b>Balanced profile.</b> No group stands far above the others. ":"<b>"+s[0]+" is the strength, "+w[0].toLowerCase()+" is the gap.</b> ")+
+        "His best mark is "+hi[0]+" ("+pord(hi[1])+"); his lowest is "+lo[0]+" ("+pord(lo[1])+").";
+      if(pm&&SEA[py].P[id].p<800)read+=" His "+py+" came in a "+SEA[py].P[id].p+"-pitch sample, so big arrows partly reflect that small sample."}
+    el.innerHTML='<div class="pc-top"><div><span class="meta">Percentile profile · '+YR+'</span><p class="fine">Ranked among '+T.n+' pitchers with '+PMIN+'+ pitches'+(d.p<PMIN?' (he is under the cutoff, so read with care)':'')+'. xwOBA on contact is flipped, so higher is better.</p></div>'+
+      '<ul class="pc-key"><li><i class="hi"></i>Top 30%</li><li><i class="mid"></i>Middle</li><li><i class="lo"></i>Bottom 30%</li>'+(pm?'<li><i class="pv"></i>Where he was in '+py+'</li>':'')+'<li><i class="av"></i>League average</li></ul></div>'+
+      '<div class="pc-grid">'+html+'</div>'+(read?'<p class="pc-read">'+read+'</p>':'');
+    el.hidden=false;
   }
   var input=document.getElementById("ps-input"), list=document.getElementById("ps-list"), matches=[], active=-1;
   function renderList(){
@@ -2742,7 +2821,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var dt=s.d?new Date(s.d+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}):"";
     if(s.k==="stay")return '<span class="st-opt" title="'+esc(s.x||"")+'">'+(/player|opt-out/.test(p.note)?'Opted in':'Stayed')+' · '+esc(s.t||"")+'</span>'+(s.why?'<small class="st-why">'+esc(s.why)+'</small>':'');
     if(s.k==="opt")return '<span class="st-opt" title="'+esc(s.x||"")+'">'+(/player|opt-out/.test(p.note)?'Opted in':'Option picked up')+' · '+esc(s.t||"")+'</span>'+(s.why?'<small class="st-why">'+esc(s.why)+'</small>':'');
-    return '<span class="st-sign" title="'+esc(s.x||"")+'">'+esc(s.t||"Signed")+(dt?' · '+dt:'')+(s.$?' · '+esc(s.$):'')+'</span>'}
+    return '<span class="st-sign" title="'+esc(s.x||"")+'">'+(s.ag?'Agreed · ':'')+esc(s.t||"Signed")+(dt?' · '+dt:'')+(s.$?' · '+esc(s.$):'')+'</span>'+(s.ag?'<small class="st-why">Reported'+(s.src?' by '+esc(s.src):'')+', not official yet</small>':'')}
   function val(p,k){return p[k]}
   function draw(){
     var rows=L.filter(function(p){var s=status(p);return (F_RO==="all"||p.r===F_RO)&&(F_ST==="all"||(F_ST==="avail"?!off(p):off(p)))});
@@ -2795,6 +2874,10 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       if(today>=DL&&ROS[p.id]){ST[p.id]={k:club||/mutual/.test(p.note)?"opt":"stay",t:ROS[p.id],d:DL,x:"Still on the 40-man roster after the option deadline",why:"Still on the 40-man roster after the deadline"};return}
       if(today<DL)ST[p.id]={k:"pend"};
     });
+    // agreed deals reported in the news but not official yet
+    var AG=j.agreed||{};
+    Object.keys(AG).forEach(function(pid){if(!ids[pid]||MAN[pid])return;var cur=ST[pid];if(cur&&(cur.k==="sign"||cur.k==="opt"||cur.k==="stay"))return;
+      var a=AG[pid];ST[pid]={k:"sign",t:a.t,d:a.d,x:a.title,ag:1,src:a.src};if(a.yrs&&a.tot&&!CT[pid])CT[pid]={yrs:a.yrs,tot:a.tot}});
     var n=L.filter(off).length;
     var up=j.updated?new Date(j.updated):null;note.textContent="Updates on its own every 3 hours from MLB's transaction feed, 40-man rosters and option news"+(up&&!isNaN(up)?" (last change "+up.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+")":"")+". "+(n?n+" off the market so far.":"None off the market yet.")+" Option decisions are due by early November.";
     draw();
