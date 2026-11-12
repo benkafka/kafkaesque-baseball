@@ -48,6 +48,12 @@ jobs:
           want = {o["id"] for o in opts}
           rosters = {}
           teams = json.loads(get("https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2026")).get("teams", [])
+          NICK = {tm.get("teamName", ""): tm.get("name", "") for tm in teams if tm.get("teamName")}
+          _locs = [tm.get("franchiseName") or tm.get("locationName") or "" for tm in teams]
+          for tm in teams:
+              loc = tm.get("franchiseName") or tm.get("locationName") or ""
+              if loc and _locs.count(loc) == 1 and loc not in NICK:
+                  NICK[loc] = tm.get("name", "")
           for tm in teams:
               try:
                   r = json.loads(get(f"https://statsapi.mlb.com/api/v1/teams/{tm['id']}/roster?rosterType=40Man"))
@@ -178,11 +184,70 @@ jobs:
                       break
               time.sleep(1)
 
-          new = {"transactions": keep, "rosters": rosters, "news": news, "contracts": contracts}
+
+          # 5. Agreed deals from news (MLB only lists a signing once it's official, often days later)
+          AGREE = re.compile(r"\b(agree[sd]?|agreed to|reach(es|ed)? (an? )?(agreement|deal)|sign(s|ed|ing)? with|to sign with|lands? with|inks?|finaliz\w*|returns? to)\b", re.I)
+          TEAMV = re.compile(r"\b(" + "|".join(re.escape(n) for n in sorted(NICK, key=len, reverse=True)) + r")\b\s+(agree|agrees|sign|signs|ink|inks|land|lands|add|adds|bring back|re-sign|re-signs)\b")
+          def agreed_team(title, name):
+              t = norm(title).replace("\u2019", "'")
+              last = norm(name).split()[-1].lower()
+              if last not in t.lower() or MAYBE.search(re.sub(re.escape(norm(name)), " ", t, flags=re.I)):
+                  return None
+              if re.search(r"option|opt(s|ed|ing)?[- ]?(out|in)\b|minor[- ]league", t, re.I):
+                  return None
+              m = AGREE.search(t)
+              if m:
+                  after = t[m.end():]
+                  hits = []
+                  for nk in NICK:
+                      mm = re.search(r"\b" + re.escape(nk) + r"\b", after)
+                      if mm:
+                          hits.append((mm.start(), -len(nk), nk))
+                  if hits:
+                      return NICK[min(hits)[2]]
+              m = TEAMV.search(t)
+              if m:
+                  return NICK[m.group(1)]
+              return None
+          agreed = dict(old.get("agreed", {}))
+          for o in everyone:
+              pid = str(o["id"])
+              if pid in signed or pid in stayed or pid in agreed:
+                  continue
+              q = urllib.parse.quote(f'"{o["n"]}" agree OR agrees OR signs OR deal when:14d')
+              try:
+                  feed = ET.fromstring(get(f"https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en"))
+              except Exception as e:
+                  print("agree failed", o["n"], e)
+                  continue
+              best = None
+              for it in feed.iter("item"):
+                  title = re.sub(r"\s+-\s+[^-]+$", "", (it.findtext("title") or "").strip())
+                  tm = agreed_team(title, o["n"])
+                  if not tm:
+                      continue
+                  try:
+                      d = datetime.datetime.strptime(it.findtext("pubDate")[5:25].strip(), "%d %b %Y %H:%M:%S").date().isoformat()
+                  except Exception:
+                      d = datetime.date.today().isoformat()
+                  if d < "2026-10-28":
+                      continue
+                  src = (it.find("source").text if it.find("source") is not None else "") or ""
+                  if best is None or d > best["d"]:
+                      best = {"t": tm, "d": d, "title": title[:200], "src": src[:60]}
+                      tr = terms(title, o["n"], "deal")
+                      if tr:
+                          best.update(tr)
+              if best:
+                  agreed[pid] = best
+                  print("agreed:", o["n"], "->", best["t"], "|", best["title"])
+              time.sleep(1)
+
+          new = {"transactions": keep, "rosters": rosters, "news": news, "contracts": contracts, "agreed": agreed}
           if any(old.get(k) != v for k, v in new.items()):
               new["updated"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
               json.dump(new, open("fa_transactions.json", "w"), separators=(",", ":"))
-          print(len(keep), "transactions,", len(rosters), "option players on 40-man rosters,", len(news), "news decisions,", len(contracts), "contracts")
+          print(len(keep), "transactions,", len(rosters), "option players on 40-man rosters,", len(news), "news decisions,", len(contracts), "contracts,", len(agreed), "agreed deals")
           PY
 
       - name: Save it to the site
