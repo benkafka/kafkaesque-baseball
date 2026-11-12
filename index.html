@@ -1836,19 +1836,20 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var src=YR===2026?P26:SEA[YR].P,T=ptable(YR,src),m=pmet(d,id,YR),py=YR-1,prevOK=yearsOf(id).indexOf(py)>-1,PT=null,pm=null;
     if(prevOK){if(SEA[py]&&SEA[py].P&&SEA[py].P[id]){PT=ptable(py,SEA[py].P);pm=pmet(SEA[py].P[id],id,py)}
       else{var cid=id,cy=YR;fetchPrev(py,function(){if(CUR===cid&&YR===cy)drawPct(cid,P[cid])})}}
-    var gs=[],all=[];
-    var html=PM.map(function(g){var ps=[];
+    var gs=[],all=[],CARD=[];
+    var html=PM.map(function(g){var ps=[],cg={t:g[0],rows:[]};CARD.push(cg);
       var rows=g[1].map(function(x){var k=x[0],p=prank(T,k,m[k],x[2]),p0=pm?prank(PT,k,pm[k],x[2]):null;if(p!=null){ps.push(p);all.push([x[1],p])}
-        var c=pcol(p),dl=p!=null&&p0!=null?p-p0:null;
+        var c=pcol(p),dl=p!=null&&p0!=null?p-p0:null;cg.rows.push([x[1],pfmt(k,m[k],m),p,p0,dl]);
         return '<div class="pc-row"><div class="pc-l"><b>'+x[1]+'</b><span>'+esc(pfmt(k,m[k],m))+'</span></div><div class="pc-bar" '+(p==null?'aria-hidden="true"':'role="img" aria-label="'+x[1]+': '+pord(p)+' percentile'+(p0!=null?', '+pord(p0)+' in '+py:'')+'"')+'><i class="pc-trk"></i>'+(p!=null?'<i class="pc-fill '+c+'" style="width:'+p+'%"></i>':'')+'<i class="pc-avg"></i>'+(p0!=null?'<i class="pc-prev" style="left:'+p0+'%" title="'+py+': '+pord(p0)+'"></i>':'')+(p!=null?'<b class="pc-dot '+c+'" style="left:'+p+'%">'+p+'</b>':'<span class="pc-na">n/a</span>')+'</div>'+
           '<div class="pc-d '+(dl==null?"":dl>=5?"hi":dl<=-5?"lo":"")+'">'+(dl==null?"":(dl>0?"↑ ":dl<0?"↓ ":"→ ")+Math.abs(dl))+'</div></div>'}).join("");
-      var avg=ps.length?Math.round(ps.reduce(function(a,b){return a+b},0)/ps.length):null;gs.push([g[0],avg]);
+      var avg=ps.length?Math.round(ps.reduce(function(a,b){return a+b},0)/ps.length):null;gs.push([g[0],avg]);cg.avg=avg;
       return '<div class="pc-g"><div class="pc-gh"><h4>'+g[0]+'</h4>'+(avg!=null?'<span class="'+pcol(avg)+'">'+pord(avg)+' avg</span>':'')+'</div>'+rows+'</div>'}).join("");
     var ok=gs.filter(function(g){return g[1]!=null}).sort(function(a,b){return b[1]-a[1]}),read="";
     if(ok.length>1){var top=all.slice().sort(function(a,b){return b[1]-a[1]}),hi=top[0],lo=top[top.length-1],s=ok[0],w=ok[ok.length-1];
       read=(w[1]>=60?"<b>Strong across the board.</b> All three groups rank above average. ":s[1]<=40?"<b>Below average across the board.</b> ":s[1]-w[1]<12?"<b>Balanced profile.</b> No group stands far above the others. ":"<b>"+s[0]+" is the strength, "+w[0].toLowerCase()+" is the gap.</b> ")+
         "His best mark is "+hi[0]+" ("+pord(hi[1])+"); his lowest is "+lo[0]+" ("+pord(lo[1])+").";
       if(pm&&SEA[py].P[id].p<800)read+=" His "+py+" came in a "+SEA[py].P[id].p+"-pitch sample, so big arrows partly reflect that small sample."}
+    window.kbPctCard={id:id,yr:YR,g:CARD,n:T.n,read:read};
     el.innerHTML='<div class="pc-top"><div><span class="meta">Percentile profile · '+YR+'</span><p class="fine">Ranked among '+T.n+' pitchers with '+PMIN+'+ pitches'+(d.p<PMIN?' (he is under the cutoff, so read with care)':'')+'. xwOBA on contact, FB% and pulled FB% are flipped, so a higher percentile is always better.</p></div>'+
       '<ul class="pc-key"><li><i class="hi"></i>Top 30%</li><li><i class="mid"></i>Middle</li><li><i class="lo"></i>Bottom 30%</li>'+(pm?'<li><i class="pv"></i>Where he was in '+py+'</li>':'')+'<li><i class="av"></i>League average</li></ul></div>'+
       '<div class="pc-grid">'+html+'</div>'+(read?'<p class="pc-read">'+read+'</p>':'');
@@ -2526,115 +2527,99 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function grade(v,a,b,c,d){if(v==null)return 0;return v>=a?2:v>=b?1:v<=d?-2:v<=c?-1:0}
   window.kbCardKit={C:C,DISP:DISP,BODY:BODY,DATA:DATA,img:img,fonts:fonts,wrap:wrap,rr:rr,sgn:sgn,BUG:KB_BUG};
 
+  var PCOL2={FF:"#d8343f",SI:"#f08a24",FC:"#8c5a3c",SL:"#e8c21a",ST:"#c79a00",SV:"#8e5bd6",CU:"#2bb3d9",KC:"#2f5fb8",CS:"#5aa6e0",CH:"#2fa84f",FS:"#159c8f",FO:"#0f7d73",SC:"#7aa83a",KN:"#9aa3ad",EP:"#c7a2e0",FA:"#d8343f"};
+  function pc(p){return p==null?"#9aa5b5":p>=70?"#1f8a6b":p<=30?"#d9622b":"#7d8899"}
+  function ordn(n){var s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
   function draw(id,photo,logo){
-    var d=K.P[id], B=K.BIO[id]||{}, A=K.ARM[id], S=K.SUM[id]||{}, N=K.NAMES;
-    var rowsL=d.r.filter(function(r){return r[1]==="L"}), rowsR=d.r.filter(function(r){return r[1]==="R"});
-    var W=1400, HEAD=190, MID=400, TH=44, RH=42, GH=34;
-    var tableH=TH+(rowsL.length?GH+rowsL.length*RH:0)+(rowsR.length?GH+rowsR.length*RH:0);
-    var H=HEAD+24+MID+24+tableH+24+70, sc=2;
+    var d=K.P[id], B=K.BIO[id]||{}, A=K.ARM[id], N=K.NAMES, cyr=K.yr?K.yr():2026;
+    var PC=window.kbPctCard&&window.kbPctCard.id===id&&window.kbPctCard.yr===cyr?window.kbPctCard:null;
+    var gp=(d.g&&d.g.p||[]).filter(function(g){return g[1]!=null});
+    var nP=0,seenP={};d.r.forEach(function(r){if(r[14]!=null&&!seenP[r[0]]){seenP[r[0]]=1;nP++}});
+    var W=1400, HEAD=190, MID=Math.max(580,52+400+58+Math.ceil(nP/2)*24+16), nG=Math.ceil(gp.length/2), GR=gp.length?78+nG*50:0;
+    var TB=nP?84+nP*38:0, top=HEAD+24, top2=top+MID+24, top3=top2+(GR?GR+24:0), H=top3+(TB?TB+24:0)+70, sc=2;
     var cv=document.createElement("canvas");cv.width=W*sc;cv.height=H*sc;var x=cv.getContext("2d");x.scale(sc,sc);
     x.fillStyle="#e9edf2";x.fillRect(0,0,W,H);
-    // header
+    // ---------- header ----------
     x.fillStyle=C.head;rr(x,20,20,W-40,HEAD-20,14);x.fill();
     var px=44,py=38,ps=134;
     x.save();rr(x,px,py,ps,ps,12);x.clip();x.fillStyle="#26323f";x.fillRect(px,py,ps,ps);
-    if(photo){var r=Math.max(ps/photo.width,ps/photo.height);x.drawImage(photo,px+(ps-photo.width*r)/2,py+(ps-photo.height*r)/2,photo.width*r,photo.height*r)}
+    if(photo){var r0=Math.max(ps/photo.width,ps/photo.height);x.drawImage(photo,px+(ps-photo.width*r0)/2,py+(ps-photo.height*r0)/2,photo.width*r0,photo.height*r0)}
     else{x.fillStyle="#93a1b5";x.font='700 54px '+DISP;x.textAlign="center";x.textBaseline="middle";x.fillText(d.n.split(" ").map(function(w){return w[0]}).join("").slice(0,2),px+ps/2,py+ps/2);x.textAlign="left";x.textBaseline="alphabetic"}
     x.restore();
     var tx=px+ps+28;
     x.fillStyle="#ffffff";x.font='italic 700 56px '+DISP;x.fillText(d.n.toUpperCase(),tx,96);
-    x.fillStyle="#c9d2de";x.font='400 18px '+BODY;var cyr=K.yr?K.yr():2026;x.fillText(((cyr!==2026?d.tm:B.tm)||"")+" · "+cyr+" season · "+d.p.toLocaleString()+" pitches",tx,128);
-    var chips=[d.h==="L"?"LHP":"RHP",B.ht,B.wt?B.wt+" lb":"",A&&A[3]?A[3]:"",d.g&&d.g.a!=null?"Arsenal grade "+d.g.a:""].filter(Boolean), cx0=tx;
+    x.fillStyle="#c9d2de";x.font='400 18px '+BODY;x.fillText(((cyr!==2026?d.tm:B.tm)||"")+" · "+cyr+" season · "+d.p.toLocaleString()+" pitches",tx,128);
+    var chips=[d.h==="L"?"LHP":"RHP",d.g&&d.g.r==="SP"?"Starter":d.g&&d.g.r==="RP"?"Reliever":"",A&&A[1]!=null?A[1].toFixed(1)+"° arm angle":"",A&&A[3]?A[3]:""].filter(Boolean), cx0=tx;
     x.font='600 14px '+BODY;
     chips.forEach(function(c){var w=x.measureText(c).width+22;x.fillStyle="#26323f";rr(x,cx0,146,w,28,14);x.fill();x.fillStyle="#e6ebf2";x.fillText(c,cx0+11,165);cx0+=w+8});
-    if(logo){var lh=120,lw=logo.width&&logo.height?lh*logo.width/logo.height:lh;x.drawImage(logo,W-44-lw,45,lw,lh)}
-    // panels
-    var top=HEAD+24, pw=(W-40-2*16)/3;
-    function panel(i,title){var X=20+i*(pw+16);x.fillStyle=C.bg;rr(x,X,top,pw,MID,12);x.fill();x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText(title.toUpperCase(),X+20,top+30);return X}
-    // arm angle
-    var ax=panel(0,"Arm angle");
-    if(A&&A[1]!=null){
-      x.fillStyle=C.fg;x.font='700 46px '+DISP;x.fillText(A[1].toFixed(1)+"°",ax+20,top+80);
-      x.font='600 16px '+BODY;x.fillText(A[3]||"",ax+20,top+104);
-      if(A[2]!=null){x.fillStyle=Math.abs(A[2])>=4?C.accent:C.muted;x.font='400 13px '+DATA;x.fillText(Math.abs(A[2])>=1?sgn(A[2],1)+"° vs "+((K.yr?K.yr():2026)-1)+" (dashed)":"Same slot as "+((K.yr?K.yr():2026)-1),ax+20,top+126)}
-      var f=d.h==="L"?-1:1, ccx=ax+pw/2+(f>0?-50:50), ccy=top+318, L=118;
-      function pt(a,r){var t=a*Math.PI/180;return [ccx+f*r*Math.cos(t),ccy-r*Math.sin(t)]}
-      x.strokeStyle=C.line;x.lineWidth=2;x.beginPath();
-      if(f>0)x.arc(ccx,ccy,L+12,-Math.PI/2,20*Math.PI/180,false);else x.arc(ccx,ccy,L+12,Math.PI-20*Math.PI/180,1.5*Math.PI,false);
-      x.stroke();
-      x.fillStyle=C.muted;x.font='400 12px '+DATA;x.textAlign="center";
-      [0,45,90].forEach(function(a){var p=pt(a,L+30);x.fillText(a+"°",p[0],p[1]+4)});x.textAlign="left";
-      var hx=ccx-f*26;x.strokeStyle="rgba(86,99,122,.45)";x.lineCap="round";x.lineWidth=9;
-      x.beginPath();x.arc(hx,ccy-42,19,0,Math.PI*2);x.stroke();
-      x.beginPath();x.moveTo(hx,ccy-20);x.lineTo(hx,ccy+62);x.stroke();
-      x.beginPath();x.moveTo(hx-f*22,ccy+4);x.lineTo(ccx,ccy);x.stroke();
-      if(A[0]!=null&&A[2]!=null&&Math.abs(A[2])>=1){var o=pt(A[0],L);x.setLineDash([8,8]);x.strokeStyle=C.muted;x.lineWidth=4;x.beginPath();x.moveTo(ccx,ccy);x.lineTo(o[0],o[1]);x.stroke();x.setLineDash([])}
-      var e=pt(A[1],L);x.strokeStyle=C.accent;x.lineWidth=12;x.beginPath();x.moveTo(ccx,ccy);x.lineTo(e[0],e[1]);x.stroke();
-      x.fillStyle=C.bg;x.lineWidth=5;x.beginPath();x.arc(e[0],e[1],12,0,Math.PI*2);x.fill();x.stroke();
-      x.fillStyle=C.accent;x.beginPath();x.arc(ccx,ccy,7,0,Math.PI*2);x.fill();x.lineCap="butt";
-    } else {x.fillStyle=C.muted;x.font='400 15px '+BODY;x.fillText("No arm angle on file.",ax+20,top+70)}
-    // movement
-    var mx=panel(1,"Pitch movement · pitcher's view");
-    var agg={},tot=0;d.r.forEach(function(r){if(r[14]==null||r[15]==null)return;var w=r[16]||1,a=agg[r[0]]||(agg[r[0]]={t:r[0],w:0,iv:0,hb:0});a.w+=w;a.iv+=r[14]*w;a.hb+=r[15]*w;tot+=w});
-    var pts=Object.keys(agg).map(function(k){var a=agg[k];return {t:k,iv:a.iv/a.w,hb:a.hb/a.w,u:a.w/tot*100}}).sort(function(a,b){return b.u-a.u});
-    var R=25, ox=mx+44, oy=top+46, sz=Math.min(pw-64,MID-90), fl=d.h==="L"?-1:1;
-    function sx(v){return ox+(fl*v+R)/(2*R)*sz} function sy(v){return oy+(R-v)/(2*R)*sz}
-    x.strokeStyle=C.line;x.lineWidth=1;[-20,-10,10,20].forEach(function(t){x.beginPath();x.moveTo(sx(t*fl),sy(R));x.lineTo(sx(t*fl),sy(-R));x.stroke();x.beginPath();x.moveTo(sx(-R*fl),sy(t));x.lineTo(sx(R*fl),sy(t));x.stroke()});
-    x.strokeStyle=C.muted;x.beginPath();x.moveTo(sx(0),sy(R));x.lineTo(sx(0),sy(-R));x.stroke();x.beginPath();x.moveTo(ox,sy(0));x.lineTo(ox+sz,sy(0));x.stroke();
-    x.fillStyle=C.muted;x.font='400 11px '+DATA;x.fillText(fl>0?"← Glove side":"← Arm side",ox,oy+sz+18);x.textAlign="right";x.fillText(fl>0?"Arm side →":"Glove side →",ox+sz,oy+sz+18);x.textAlign="left";
-    x.fillText("Rise",sx(0)+5,oy+12);x.fillText("Drop",sx(0)+5,oy+sz-6);
-    pts.slice().reverse().forEach(function(p){var r=Math.max(7,Math.sqrt(p.u)*2.6);x.fillStyle=C["s"+(FAM[p.t]||3)];x.strokeStyle="#fff";x.lineWidth=2;x.beginPath();x.arc(sx(Math.max(-R,Math.min(R,p.hb))),sy(Math.max(-R,Math.min(R,p.iv))),r,0,Math.PI*2);x.fill();x.stroke()});
-    x.font='600 12px '+BODY;x.fillStyle=C.fg;
-    pts.forEach(function(p){var r=Math.max(7,Math.sqrt(p.u)*2.6),X=sx(Math.max(-R,Math.min(R,p.hb))),Y=sy(Math.max(-R,Math.min(R,p.iv)));var lft=X>ox+sz-80;x.textAlign=lft?"right":"left";x.fillText(N[p.t]||p.t,lft?X-r-4:X+r+4,Y+4)});x.textAlign="left";
-    // scouting text
-    var sxp=panel(2,"What makes him nasty?");
-    x.fillStyle=C.fg;x.font='400 16px '+BODY;
-    var n1=wrap(x,S.n||"Not enough pitches on any one offering to say yet.",sxp+20,top+58,pw-40,23,8);
-    var y2=top+58+n1*23+22;x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText("BIGGEST STRENGTH",sxp+20,y2);
-    x.fillStyle=C.fg;x.font='400 16px '+BODY;wrap(x,S.s||"",sxp+20,y2+26,pw-40,23,Math.max(1,Math.floor((top+MID-20-(y2+26))/23)+1));
-    // table
-    var ty=top+MID+24;x.fillStyle=C.bg;rr(x,20,ty,W-40,tableH,12);x.fill();
-    var cols=[["Pitch",40,"l"],["Usage",225,"r"],["Velo",305,"r"],["IVB",380,"r"],["HB",455,"r"],["Whiff+",555,"r"],["Location+",665,"r"],["Runs/100 vs lg",805,"r"],["xwOBAcon vs lg",950,"r"],["Chase% vs lg",1080,"r"],["Flag",1105,"l"]];
-    x.font='500 12px '+DATA;x.fillStyle=C.muted;cols.forEach(function(c){x.textAlign=c[2]==="l"?"left":"right";x.fillText(c[0].toUpperCase(),c[1],ty+28)});x.textAlign="left";
-    var y=ty+TH;
-    function cell(X,Y,w,lvl){var t=tint(lvl);if(t){x.fillStyle=t;rr(x,X,Y+6,w,RH-12,6);x.fill()}}
-    function group(label,rows){
-      if(!rows.length)return;
-      x.fillStyle=C.panel;x.fillRect(20,y,W-40,GH);x.fillStyle=C.fg;x.font='600 14px '+BODY;x.fillText(label,40,y+22);y+=GH;
-      rows.forEach(function(r){
-        var small=r[11]===1;
-        x.strokeStyle=C.line;x.lineWidth=1;x.beginPath();x.moveTo(30,y+RH);x.lineTo(W-30,y+RH);x.stroke();
-        var xd=(r[9]!=null&&r[10]!=null)?r[9]-r[10]:null, ch=(r[19]!=null&&r[20]!=null)?r[19]-r[20]:null;
-        if(!small){
-          cell(495,y,70,grade(r[4],130,110,90,70));
-          if(r[23]!=null)cell(595,y,80,grade(r[23],115,105,95,85));
-          cell(705,y,110,grade(r[5],1.5,0.5,-0.5,-1.5));
-          if(xd!=null&&r[6]>=20)cell(850,y,110,grade(-xd,0.040,0.015,-0.015,-0.040));
-          if(ch!=null)cell(980,y,110,grade(ch,6,2.5,-2.5,-6));
-        }
-        x.fillStyle=small?C.muted:C.fg;x.font='600 15px '+BODY;x.fillText(N[r[0]]||r[0],40,y+27);
-        x.font='400 15px '+DATA;x.textAlign="right";
-        x.fillText(r[2].toFixed(1)+"%",225,y+27);
-        x.fillText(r[13]==null?"–":r[13].toFixed(1),305,y+27);
-        x.fillText(r[14]==null?"–":r[14].toFixed(1)+'"',380,y+27);
-        x.fillText(r[15]==null?"–":r[15].toFixed(1)+'"',455,y+27);
-        x.fillText(r[4]==null?"–":String(Math.round(r[4])),555,y+27);
-        x.fillText(r[23]==null?"–":String(r[23]),665,y+27);
-        x.fillText(r[5]==null?"–":sgn(r[5],2),805,y+27);
-        x.fillText(xd==null||r[6]<20?"–":(xd>=0?"+":"−")+Math.abs(xd).toFixed(3).replace(/^0/,""),950,y+27);
-        x.fillText(ch==null?"–":sgn(ch,1),1080,y+27);
-        x.textAlign="left";
-        var fl=(r[12]||"").split(" + "), fg=fl.filter(function(f){return !/Small/.test(f)})[0]||fl[0];
-        if(fg){x.font='600 13px '+BODY;x.fillStyle=/Underused|Gets by/.test(fg)?C.ok:/Misses|bad spots/.test(fg)?C.accent:/Small/.test(fg)?C.muted:C.hot;wrap(x,fg,1105,y+26,255,15,1)}
-        y+=RH;
-      });
+    var rx=W-44;
+    if(logo){var lh=110,lw=logo.width&&logo.height?lh*logo.width/logo.height:lh;x.drawImage(logo,rx-lw,48,lw,lh);rx-=lw+30}
+    [["K-STUFF+",d.g&&d.g.s],["ARSENAL GRADE",d.g&&d.g.a]].forEach(function(s){if(s[1]==null)return;x.textAlign="right";x.fillStyle="#3fc28a";x.font='italic 700 64px '+DISP;x.fillText(String(s[1]),rx,118);x.fillStyle="#c9d2de";x.font='600 12px '+DATA;x.fillText(s[0],rx,142);x.textAlign="left";rx-=150});
+    function panel(X,Y,w,h,title,sub){x.fillStyle=C.bg;rr(x,X,Y,w,h,12);x.fill();x.fillStyle=C.muted;x.font='500 13px '+DATA;x.fillText(title.toUpperCase(),X+20,Y+30);if(sub){x.font='400 12px '+BODY;x.textAlign="right";x.fillText(sub,X+w-20,Y+30);x.textAlign="left"}}
+    // ---------- movement ----------
+    var MX=20,MW=540;panel(MX,top,MW,MID,"Pitch movement",(d.h==="L"?"LHP":"RHP")+" · pitcher's view");
+    var agg={},tot=0;d.r.forEach(function(r){if(r[14]==null||r[15]==null)return;var w=r[16]||1,a=agg[r[0]]||(agg[r[0]]={t:r[0],w:0,iv:0,hb:0,v:0});a.w+=w;a.iv+=r[14]*w;a.hb+=r[15]*w;a.v+=(r[13]||0)*w;tot+=w});
+    var pts=Object.keys(agg).map(function(k){var a=agg[k];return {t:k,iv:a.iv/a.w,hb:a.hb/a.w,v:a.v/a.w,u:a.w/tot*100}}).sort(function(a,b){return b.u-a.u});
+    var R=25, sz=400, ox=MX+80, oy=top+52, fl=d.h==="L"?-1:1;
+    function sx(v){return ox+(v+R)/(2*R)*sz} function sy(v){return oy+(R-v)/(2*R)*sz}
+    x.strokeStyle=C.line;x.lineWidth=1;[-20,-15,-10,-5,5,10,15,20].forEach(function(t){x.beginPath();x.moveTo(sx(t),sy(R));x.lineTo(sx(t),sy(-R));x.stroke();x.beginPath();x.moveTo(sx(-R),sy(t));x.lineTo(sx(R),sy(t));x.stroke()});
+    x.strokeRect(sx(-R),sy(R),sz,sz);
+    x.strokeStyle="#9aa5b5";x.beginPath();x.moveTo(sx(0),sy(R));x.lineTo(sx(0),sy(-R));x.stroke();x.beginPath();x.moveTo(sx(-R),sy(0));x.lineTo(sx(R),sy(0));x.stroke();
+    x.fillStyle=C.muted;x.font='400 11px '+DATA;x.textAlign="center";[-20,-10,0,10,20].forEach(function(t){x.fillText(String(t),sx(t),sy(-R)+16)});x.textAlign="right";[-20,-10,0,10,20].forEach(function(t){x.fillText(String(t),ox-8,sy(t)+4)});
+    x.font='400 12px '+BODY;x.textAlign="left";x.fillText(fl>0?"← Glove side":"← Arm side",sx(-R),sy(-R)+34);x.textAlign="right";x.fillText(fl>0?"Arm side →":"Glove side →",sx(R),sy(-R)+34);x.textAlign="center";x.fillText("Horizontal break (in)",sx(0),sy(-R)+34);
+    x.save();x.translate(MX+22,sy(0));x.rotate(-Math.PI/2);x.fillText("Induced vertical break (in)",0,0);x.restore();x.textAlign="left";
+    if(A&&A[1]!=null){var ang=A[1]*Math.PI/180,ln=R*0.92,ex=fl*Math.cos(ang)*ln,ey=Math.sin(ang)*ln;x.setLineDash([7,6]);x.strokeStyle="rgba(18,26,36,.55)";x.lineWidth=2;x.beginPath();x.moveTo(sx(0),sy(0));x.lineTo(sx(ex),sy(ey));x.stroke();x.setLineDash([]);
+      x.fillStyle=C.fg;x.font='600 13px '+DATA;x.textAlign=fl>0?"left":"right";x.fillText(A[1].toFixed(1)+"°",sx(ex)+(fl>0?6:-6),sy(ey)-6);x.textAlign="left"}
+    pts.slice().reverse().forEach(function(p){x.fillStyle=PCOL2[p.t]||"#8c97a8";x.strokeStyle="rgba(18,26,36,.6)";x.lineWidth=1.6;x.beginPath();x.arc(sx(Math.max(-R,Math.min(R,fl*p.hb))),sy(Math.max(-R,Math.min(R,p.iv))),13,0,Math.PI*2);x.fill();x.stroke()});
+    var ly0=sy(-R)+62;
+    pts.forEach(function(p,i){var lab=(N[p.t]||p.t),sub=" ("+p.v.toFixed(1)+", "+Math.round(p.u)+"%)";x.font='600 13px '+BODY;var w1=x.measureText(lab).width;
+      var lx=MX+30+(i%2)*((MW-60)/2),ly=ly0+Math.floor(i/2)*24;
+      x.fillStyle=PCOL2[p.t]||"#8c97a8";x.beginPath();x.arc(lx+6,ly-4,6,0,Math.PI*2);x.fill();x.fillStyle=C.fg;x.font='600 13px '+BODY;x.fillText(lab,lx+18,ly);x.fillStyle=C.muted;x.font='400 12px '+DATA;x.fillText(sub,lx+18+w1,ly)});
+    // ---------- percentiles ----------
+    var PX=MX+MW+16,PW=W-20-PX;panel(PX,top,PW,MID,"Percentiles",PC?"Ranked among "+PC.n+" pitchers with 500+ pitches · hollow dot = last season":"");
+    if(PC){var cw=(PW-40-2*16)/3;
+      PC.g.forEach(function(g,i){var X=PX+20+i*(cw+16),Y=top+52;
+        x.fillStyle=C.fg;x.font='italic 700 22px '+DISP;x.fillText(g.t.toUpperCase(),X,Y+18);if(g.avg!=null){x.textAlign="right";x.fillStyle=pc(g.avg);x.font='700 13px '+DATA;x.fillText(ordn(g.avg)+" avg",X+cw,Y+16);x.textAlign="left"}
+        g.rows.forEach(function(r,j){var y=Y+36+j*60;x.strokeStyle=C.line;x.lineWidth=1;x.beginPath();x.moveTo(X,y);x.lineTo(X+cw,y);x.stroke();
+          x.fillStyle=C.fg;x.font='600 14px '+BODY;x.fillText(r[0],X,y+20);var lw2=x.measureText(r[0]).width;x.fillStyle=C.muted;x.font='400 12px '+DATA;x.fillText(r[1],X+lw2+8,y+20);
+          if(r[4]!=null){x.textAlign="right";x.fillStyle=r[4]>=5?"#1f8a6b":r[4]<=-5?"#d9622b":C.muted;x.font='600 12px '+DATA;x.fillText((r[4]>0?"↑ ":r[4]<0?"↓ ":"→ ")+Math.abs(r[4]),X+cw,y+20);x.textAlign="left"}
+          var by=y+40,bw=cw-14,bx=X+2;x.fillStyle="#eceff4";rr(x,bx,by-4,bw,8,4);x.fill();
+          if(r[2]!=null){x.fillStyle=pc(r[2]);rr(x,bx,by-4,Math.max(8,bw*r[2]/100),8,4);x.fill()}
+          x.fillStyle="#b7c0cc";x.fillRect(bx+bw/2-1,by-9,2,18);
+          if(r[3]!=null){x.strokeStyle=C.fg;x.lineWidth=2;x.fillStyle="#fff";x.beginPath();x.arc(bx+bw*r[3]/100,by,4.5,0,Math.PI*2);x.fill();x.stroke()}
+          if(r[2]!=null){var dx=bx+bw*r[2]/100;x.fillStyle="#fff";x.beginPath();x.arc(dx,by,15,0,Math.PI*2);x.fill();x.fillStyle=pc(r[2]);x.beginPath();x.arc(dx,by,13,0,Math.PI*2);x.fill();x.fillStyle="#fff";x.font='700 12px '+DATA;x.textAlign="center";x.fillText(String(r[2]),dx,by+4);x.textAlign="left"}
+        })});
+      if(PC.read){x.fillStyle=C.fg;x.font='400 15px '+BODY;wrap(x,PC.read.replace(/<[^>]+>/g,""),PX+20,top+MID-44,PW-40,21,2)}
+    } else {x.fillStyle=C.muted;x.font='400 15px '+BODY;x.fillText("Open his page to load percentiles.",PX+20,top+70)}
+    // ---------- pitch grades ----------
+    if(GR){panel(20,top2,W-40,GR,"Pitch grades","20–80 scale · 50 = average · split vs lefties / righties");
+      var gw=(W-40-60-40)/2;
+      gp.forEach(function(g,i){var col=i%2,row=Math.floor(i/2),X=40+col*(gw+60),Y=top2+62+row*50,v=g[1];
+        x.fillStyle=PCOL2[g[0]]||"#8c97a8";x.beginPath();x.arc(X+7,Y+8,7,0,Math.PI*2);x.fill();
+        x.fillStyle=C.fg;x.font='600 16px '+BODY;x.fillText(N[g[0]]||g[0],X+22,Y+14);
+        x.fillStyle=C.muted;x.font='400 12px '+DATA;x.fillText([g[2]!=null?"vs L "+g[2]:"",g[3]!=null?"vs R "+g[3]:""].filter(Boolean).join(" · "),X+22,Y+34);
+        var bx=X+190,bw=gw-260;x.fillStyle="#eceff4";rr(x,bx,Y+2,bw,12,6);x.fill();
+        var c=v>=55?"#1f8a6b":v<=45?"#d9622b":"#7d8899";x.fillStyle=c;rr(x,bx,Y+2,Math.max(10,bw*(v-20)/60),12,6);x.fill();
+        x.fillStyle="#5d6a7c";x.fillRect(bx+bw/2-1,Y-2,2,20);
+        x.textAlign="right";x.fillStyle=c;x.font='700 22px '+DATA;x.fillText(String(v),X+gw,Y+16);x.textAlign="left"});
     }
-    group("vs Left-handed hitters",rowsL);group("vs Right-handed hitters",rowsR);
-    // footer
+    // ---------- pitch table ----------
+    if(TB){panel(20,top3,W-40,TB,"Arsenal","Season averages · HB shown toward arm or glove side");
+      var cols=[["PITCH",40,"left"],["USAGE",560,"right"],["VELO",760,"right"],["IVB",960,"right"],["HB",1120,"right"]];
+      x.font='600 12px '+DATA;x.fillStyle=C.muted;cols.forEach(function(c){x.textAlign=c[2];x.fillText(c[0],c[1],top3+58)});x.textAlign="left";
+      pts.forEach(function(p,i){var y=top3+66+i*38;
+        if(i%2===0){x.fillStyle="#f3f5f8";x.fillRect(30,y,W-60,38)}
+        var yy=y+25;x.fillStyle=PCOL2[p.t]||"#8c97a8";x.beginPath();x.arc(48,yy-5,7,0,Math.PI*2);x.fill();
+        x.fillStyle=C.fg;x.font='600 16px '+BODY;x.fillText(N[p.t]||p.t,64,yy);
+        var bw=150,bx=320;x.fillStyle="#eceff4";rr(x,bx,yy-11,bw,10,5);x.fill();x.fillStyle=PCOL2[p.t]||"#8c97a8";rr(x,bx,yy-11,Math.max(6,bw*Math.min(p.u,60)/60),10,5);x.fill();
+        x.font='600 16px '+DATA;x.textAlign="right";x.fillStyle=C.fg;
+        x.fillText(p.u.toFixed(1)+"%",560,yy);x.fillText(p.v.toFixed(1)+" mph",760,yy);x.fillText((p.iv>=0?"":"−")+Math.abs(p.iv).toFixed(1)+"\"",960,yy);
+        x.fillText(Math.abs(p.hb).toFixed(1)+"\"",1120,yy);x.fillStyle=C.muted;x.font='400 13px '+BODY;x.textAlign="left";x.fillText(Math.abs(p.hb)<1?"":p.hb>0?"arm side":"glove side",1130,yy);x.textAlign="left"});
+    }
+    // ---------- footer ----------
     var fy=H-60;x.fillStyle=C.head;rr(x,20,fy,W-40,44,10);x.fill();
-    x.fillStyle="#ffffff";x.font='italic 700 20px '+DISP;if(KB_BUG.complete&&KB_BUG.naturalWidth){x.drawImage(KB_BUG,34,fy+5,34,34)}x.fillText("KAFKAESQUE BASEBALL",74,fy+29);var bw=x.measureText("KAFKAESQUE BASEBALL").width;
-    x.fillStyle="#c9d2de";x.font='400 13px '+BODY;
-    x.fillText("Vs. same pitch, hand and batter side · Whiff+ & Location+: 100 = avg · Green good, red bad",74+bw+24,fy+28);
+    x.fillStyle="#ffffff";x.font='italic 700 20px '+DISP;if(KB_BUG.complete&&KB_BUG.naturalWidth){x.drawImage(KB_BUG,34,fy+5,34,34)}x.fillText("KAFKAESQUE BASEBALL",74,fy+29);var bw2=x.measureText("KAFKAESQUE BASEBALL").width;
+    x.fillStyle="#c9d2de";x.font='400 13px '+BODY;x.fillText("K-Stuff+: 100 = avg · Grades 20–80 · Green good, orange bad",74+bw2+24,fy+28);
     x.textAlign="right";x.fillText("benkafka.github.io/kafkaesque-baseball · Data: Statcast",W-40,fy+28);x.textAlign="left";
     return cv;
   }
