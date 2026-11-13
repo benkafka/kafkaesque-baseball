@@ -204,6 +204,10 @@ jobs:
               if m and pos > m.start():
                   m = None  # the pitcher has to be the one agreeing, not someone named later
               if m:
+                  gap = t[pos + len(last):m.start()]
+                  if len(gap.split()) > 3 or re.search(r"[A-Z][a-z]+ [A-Z][a-z]+", gap):
+                      m = None  # the verb has to belong to him: "Vesia ... with Evan Phillips signing" is about Phillips
+              if m:
                   after = t[m.end():]
                   hits = []
                   for nk in NICK:
