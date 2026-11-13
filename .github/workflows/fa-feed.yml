@@ -223,10 +223,16 @@ jobs:
                   if nxt.lower().startswith(norm(name).lower()) or nxt.lower().startswith(last):
                       return NICK[m.group(1)]
               return None
+          # unofficial deals only count from official and top national outlets
+          OFFICIAL_NAMES = re.compile(r"^(MLB\.com|MLB|ESPN|The Athletic|The New York Times|Associated Press|AP News)$", re.I)
+          OFFICIAL_SITES = re.compile(r"(^|\.)(mlb\.com|espn\.com|nytimes\.com|theathletic\.com|apnews\.com)$", re.I)
+          def official(src, url=""):
+              host = urllib.parse.urlparse(url).netloc if url else ""
+              return bool(OFFICIAL_NAMES.match((src or "").strip()) or (host and OFFICIAL_SITES.search(host)))
           agreed = {}
           for pid, v in old.get("agreed", {}).items():
               o = next((p for p in everyone if str(p["id"]) == pid), None)
-              if o is None or agreed_team(v.get("title", ""), o["n"]):
+              if o is None or (official(v.get("src", "")) and agreed_team(v.get("title", ""), o["n"])):
                   agreed[pid] = v
               else:
                   print("dropped agreed:", o["n"], "|", v.get("title"))
@@ -252,7 +258,10 @@ jobs:
                       d = datetime.date.today().isoformat()
                   if d < "2026-10-28":
                       continue
-                  src = (it.find("source").text if it.find("source") is not None else "") or ""
+                  se = it.find("source")
+                  src = (se.text if se is not None else "") or ""
+                  if not official(src, se.get("url", "") if se is not None else ""):
+                      continue
                   if best is None or d > best["d"]:
                       best = {"t": tm, "d": d, "title": title[:200], "src": src[:60]}
                       tr = terms(title, o["n"], "deal")
