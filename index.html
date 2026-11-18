@@ -861,6 +861,8 @@ section.page{padding-block:28px 12px;min-height:60vh;scroll-margin-top:100vh}
 .sh-grip small{display:block;margin-top:6px;font-size:12px;color:var(--muted)}
 .sh-best button{grid-template-columns:minmax(0,1fr) auto}
 
+.sub-box{flex-direction:row;align-items:center;gap:24px;margin-top:18px;flex-wrap:wrap}.sub-copy{flex:1 1 260px}.sub-copy h3{margin:4px 0}.sub-copy p{margin:0}.sub-box iframe{flex:0 1 480px;width:100%;max-width:480px;height:150px;border:0;border-radius:8px;background:#fff}#about .sub-box{grid-column:1/-1}
+#rc-x,#rc-li,#lab-x{margin-left:6px}
 .dl-btn{font:600 12px var(--f-body);color:var(--accent-ink);background:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:5px 10px;cursor:pointer}
 .dl-btn:hover{filter:brightness(1.08)}
 .dl-btn[disabled]{opacity:.6;cursor:progress}
@@ -1001,6 +1003,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     </a>
   </div>
   <p class="hc-foot">New to the numbers? <a href="#glossary">Read the glossary</a> · <a href="#about">About Ben</a></p>
+  <div class="panel sub-box"><div class="sub-copy"><div class="meta">Newsletter</div><h3>Get new pieces by email</h3><p>Breakout picks, pitch design deep dives and new tools, straight from my Substack. Free.</p><a class="art-go" href="https://bkafka.substack.com/subscribe" target="_blank" rel="noopener">Or subscribe on Substack →</a></div><iframe src="https://bkafka.substack.com/embed" title="Subscribe to Ben Kafka's Substack" width="480" height="150" frameborder="0" scrolling="no" loading="lazy"></iframe></div>
   <div class="home-fa">
     <div class="sec-head" id="fa"><h2>Free Agency Tracker</h2><p>Every free-agent pitcher this winter, graded · signings update live from MLB</p></div>
     <div class="panel">
@@ -1199,7 +1202,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
         <div class="rc-id">
           <div class="rc-head">
             <h3 id="rc-name"></h3>
-            <span class="rc-act"><span class="meta" id="rc-meta"></span><button type="button" class="share-btn" id="rc-share">Copy link</button><button type="button" class="dl-btn" id="rc-dl">Download report card</button></span>
+            <span class="rc-act"><span class="meta" id="rc-meta"></span><button type="button" class="share-btn" id="rc-share">Copy link</button><button type="button" class="share-btn" id="rc-x">Share on X</button><button type="button" class="share-btn" id="rc-li">Share on LinkedIn</button><button type="button" class="dl-btn" id="rc-dl">Download report card</button></span>
           </div>
           <div class="seg rc-years" id="rc-years" role="group" aria-label="Season"></div>
           <dl class="bio" id="rc-bio" hidden></dl>
@@ -1333,7 +1336,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       <div id="lab-out" hidden>
       <div class="lab-hd">
         <img id="lab-photo" class="lab-photo" alt="" width="80" height="80">
-        <div><h3 id="lab-name"></h3><p class="meta" id="lab-meta"></p><a class="art-go" id="lab-card" href="#report">Full report card →</a> <a class="art-go" id="lab-pd" href="#shapes">Pitch design check →</a><button type="button" class="dl-btn lab-dl" id="lab-dl">Download Pitch Lab card</button></div>
+        <div><h3 id="lab-name"></h3><p class="meta" id="lab-meta"></p><a class="art-go" id="lab-card" href="#report">Full report card →</a> <a class="art-go" id="lab-pd" href="#shapes">Pitch design check →</a><button type="button" class="dl-btn lab-dl" id="lab-dl">Download Pitch Lab card</button><button type="button" class="share-btn lab-dl" id="lab-x">Share on X</button></div>
         <div class="lab-total"><span class="meta">Mix changes</span><b id="lab-tot"></b><small>runs over a season</small></div>
       </div>
       <div class="rc-head"><h3 class="sub">Pitch mix</h3><span class="meta">How often to throw each pitch</span></div>
@@ -1626,6 +1629,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
           <li><span class="when">2023</span><span>BS, Sports Management<br><span class="org">Old Dominion University</span></span></li>
         </ul>
       </div>
+      <div class="panel sub-box"><div class="sub-copy"><div class="meta">Newsletter</div><h3>Get new pieces by email</h3><p>Breakout picks, pitch design deep dives and new tools, straight from my Substack. Free.</p><a class="art-go" href="https://bkafka.substack.com/subscribe" target="_blank" rel="noopener">Or subscribe on Substack →</a></div><iframe src="https://bkafka.substack.com/embed" title="Subscribe to Ben Kafka's Substack" width="480" height="150" frameborder="0" scrolling="no" loading="lazy"></iframe></div>
     </div>
   </section>
 </main>
@@ -3272,6 +3276,29 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   document.querySelectorAll("[data-pkv]").forEach(function(b){b.addEventListener("click",function(){view=b.dataset.pkv;render()})});
   window.kbPark=function(k){if(D.parks[k]){sel.value=k;view="one"}render()};
   var hk=(location.hash.match(/^#parks-(\w+)/)||[])[1];sel.value=hk&&D.parks[hk]?hk:D.parks.NYM?"NYM":keys[0];met.value="bb:fb_pull";render();
+})();
+</script>
+<script>
+(function(){
+  var BASE=location.origin+location.pathname;
+  var NM={FF:"four-seamer",SI:"sinker",FC:"cutter",SL:"slider",ST:"sweeper",SV:"slurve",CU:"curveball",KC:"knuckle curve",CS:"slow curve",CH:"changeup",FS:"splitter",FO:"forkball",SC:"screwball",KN:"knuckleball"};
+  function open(u){window.open(u,"_blank","noopener,width=600,height=520")}
+  function x(text,url){open("https://x.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent(url))}
+  function li(url){open("https://www.linkedin.com/sharing/share-offsite/?url="+encodeURIComponent(url))}
+  function rcInfo(){var K=window.kbData;if(!K)return null;var id=K.cur();if(!id)return null;var d=K.P[id];if(!d)return null;var yr=K.yr();
+    var url=BASE+"#p"+id+(yr&&yr!==2026?"-"+yr:"");var g=d.g||{},t=d.n+"'s report card";
+    var best=(g.p||[]).filter(function(p){return p[1]!=null}).sort(function(a,b){return b[1]-a[1]})[0];
+    if(g.a!=null){t=d.n+": "+g.a+" arsenal grade"+(best?", and his best pitch is the "+(NM[best[0]]||best[0])+" ("+best[1]+" grade)":"")+". Full report card"}
+    return {t:t+" on Kafkaesque Baseball:",u:url}}
+  var bx=document.getElementById("rc-x"),bl=document.getElementById("rc-li");
+  if(bx)bx.addEventListener("click",function(){var o=rcInfo();if(o)x(o.t,o.u)});
+  if(bl)bl.addEventListener("click",function(){var o=rcInfo();if(o)li(o.u)});
+  var lx=document.getElementById("lab-x");
+  if(lx)lx.addEventListener("click",function(){var o=window.kbLabCardData&&window.kbLabCardData();if(!o)return;
+    var t=o.d.n,m=o.m,f=(o.fix||[]).slice().sort(function(a,b){return b[6]-a[6]})[0];
+    var bits=[];if(m&&m.t!=null&&m.t>=0.1)bits.push("+"+m.t.toFixed(1)+" runs a season from a better pitch mix");
+    if(f)bits.push("top fix: "+(f[0]==="New pitch"?"add a "+f[1].toLowerCase():f[2].replace(/\s*\(.*$/,"").toLowerCase()+" on his "+f[1].toLowerCase()));
+    x("Pitch Lab on "+t+(bits.length?": "+bits.join(", ")+".":".")+" Run any pitcher on Kafkaesque Baseball:",BASE+"#lab-"+o.id)});
 })();
 </script>
 
