@@ -1988,7 +1988,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   document.querySelectorAll(".rc-view button").forEach(function(b){b.addEventListener("click",function(){VIEW=b.dataset.v;document.querySelectorAll(".rc-view button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});if(CUR)show(CUR,false,YR)})});
   window.kbShowPitcher=show;
   window.kbData={P:P,BIO:BIO,ARM:ARM,SUM:SUM,NAMES:NAMES,cur:function(){return CUR},yr:function(){return YR}};
-  document.getElementById("rc-share").addEventListener("click",function(){if(CUR)copyLink(this,BASE+"#p"+CUR+(YR!==2026?"-"+YR:""))});
+  document.getElementById("rc-share").addEventListener("click",function(){if(CUR)copyLink(this,(YR===2026&&window.kbPageUrl&&window.kbPageUrl(CUR))||BASE+"#p"+CUR+(YR!==2026?"-"+YR:""))});
   var h0=location.hash||"", h=h0.slice(1);
   var hm=h.match(/^p(\d+)(?:-(\d{4}))?$/);
   if(hm&&yearsOf(hm[1]).length){show(hm[1],true,hm[2]?+hm[2]:0)}else{show("669373",true)}
@@ -3285,8 +3285,13 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   function open(u){window.open(u,"_blank","noopener,width=600,height=520")}
   function x(text,url){open("https://x.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent(url))}
   function li(url){open("https://www.linkedin.com/sharing/share-offsite/?url="+encodeURIComponent(url))}
+  var SLUG=null;
+  function bslug(n){return (n||"").normalize("NFKD").replace(/[^\x00-\x7f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"pitcher"}
+  window.kbPageUrl=function(id){var K=window.kbData;if(!K||!K.P[id])return null;
+    if(!SLUG){SLUG={};var c={};Object.keys(K.P).forEach(function(k){var b=bslug(K.P[k].n);c[b]=(c[b]||0)+1});Object.keys(K.P).forEach(function(k){var b=bslug(K.P[k].n);SLUG[k]=c[b]>1?b+"-"+k:b})}
+    return "https://kafkaesquebaseball.com/p/"+SLUG[id]+"/"};
   function rcInfo(){var K=window.kbData;if(!K)return null;var id=K.cur();if(!id)return null;var d=K.P[id];if(!d)return null;var yr=K.yr();
-    var url=BASE+"#p"+id+(yr&&yr!==2026?"-"+yr:"");var g=d.g||{},t=d.n+"'s report card";
+    var url=(yr===2026&&window.kbPageUrl(id))||BASE+"#p"+id+(yr&&yr!==2026?"-"+yr:"");var g=d.g||{},t=d.n+"'s report card";
     var best=(g.p||[]).filter(function(p){return p[1]!=null}).sort(function(a,b){return b[1]-a[1]})[0];
     if(g.a!=null){t=d.n+": "+g.a+" arsenal grade"+(best?", and his best pitch is the "+(NM[best[0]]||best[0])+" ("+best[1]+" grade)":"")+". Full report card"}
     return {t:t+" on Kafkaesque Baseball:",u:url}}
@@ -3298,7 +3303,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var t=o.d.n,m=o.m,f=(o.fix||[]).slice().sort(function(a,b){return b[6]-a[6]})[0];
     var bits=[];if(m&&m.t!=null&&m.t>=0.1)bits.push("+"+m.t.toFixed(1)+" runs a season from a better pitch mix");
     if(f)bits.push("top fix: "+(f[0]==="New pitch"?"add a "+f[1].toLowerCase():f[2].replace(/\s*\(.*$/,"").toLowerCase()+" on his "+f[1].toLowerCase()));
-    x("Pitch Lab on "+t+(bits.length?": "+bits.join(", ")+".":".")+" Run any pitcher on Kafkaesque Baseball:",BASE+"#lab-"+o.id)});
+    x("Pitch Lab on "+t+(bits.length?": "+bits.join(", ")+".":".")+" Run any pitcher on Kafkaesque Baseball:",window.kbPageUrl(o.id)||BASE+"#lab-"+o.id)});
 })();
 </script>
 <script>
