@@ -3301,4 +3301,10 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     x("Pitch Lab on "+t+(bits.length?": "+bits.join(", ")+".":".")+" Run any pitcher on Kafkaesque Baseball:",BASE+"#lab-"+o.id)});
 })();
 </script>
+<script>
+window.goatcounter={path:function(){var h=location.hash.slice(1);return location.pathname+(h?"#"+h:"")}};
+window.addEventListener("hashchange",function(){if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:window.goatcounter.path()})});
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#rc-x,#rc-li,#lab-x,#rc-dl,#lab-dl,#rc-share");if(b&&window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"click-"+b.id,title:b.textContent,event:true})});
+</script>
+<script data-goatcounter="https://kafkaesque.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
