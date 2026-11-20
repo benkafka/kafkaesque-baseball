@@ -1,0 +1,36 @@
+name: Update trending pitchers
+
+on:
+  schedule:
+    - cron: "41 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trending
+  cancel-in-progress: true
+
+jobs:
+  trending:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Count the most looked-up pitchers
+        env:
+          GOATCOUNTER_KEY: ${{ secrets.GOATCOUNTER_KEY }}
+        run: python3 build/trending.py
+
+      - name: Save to the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A trending.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Update trending pitchers"
+            for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          fi
