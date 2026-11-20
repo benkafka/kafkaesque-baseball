@@ -609,6 +609,19 @@ table.cnt-t{min-width:480px}
 @media (max-width:900px){.pd-doors,.pd-cheat{grid-template-columns:minmax(0,1fr)}}
 .pd-cv .pd-cta{margin:0 0 10px}
 .pct{margin:22px 0;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.pq-top{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}.pq-top h3{margin:0;font-size:24px}
+.pq-list{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.pq-gh{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 6px;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pq-gh em{font-style:normal;letter-spacing:0;text-transform:none;font-family:var(--f-data)}
+.pq-row{display:grid;grid-template-columns:minmax(96px,150px) minmax(60px,1fr) 78px 44px;align-items:center;gap:10px;padding:9px 0}
+.pq-l{font-weight:600;font-size:14px;line-height:1.2}.pq-v{font-family:var(--f-data);font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.pq-p{font-family:var(--f-data);font-size:15px;text-align:right}
+.pq-bar{position:relative;height:10px}@media (max-width:480px){.pq-row{grid-template-columns:minmax(80px,1fr) minmax(50px,1fr) 64px 40px;gap:8px}}.pq-bar i{position:absolute;display:block;top:0;height:10px;border-radius:6px}
+.pq-trk{left:0;right:0;background:var(--line)}
+.pq-fill.hi,.pq-p.hi,.pq-gh .hi{background:#1f8a6b}.pq-fill.mid{background:#a9b1bd}.pq-fill.lo{background:#e07a55}
+.pq-p.hi,.pq-gh em.hi{background:none;color:#1f8a6b}.pq-p.lo,.pq-gh em.lo{color:#d9622b}.pq-p.mid,.pq-gh em.mid{color:var(--fg)}
+.pq-prev{width:10px;height:10px!important;margin-left:-5px;border-radius:50%!important;border:2px solid var(--fg);background:var(--panel);box-sizing:border-box}
+.pq-foot{margin:10px 0 0}
 .pc-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:flex-start}.pc-top .fine{margin:4px 0 0}
 .pc-key{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;padding:0;font-size:12px;color:var(--muted)}.pc-key li{display:flex;align-items:center;gap:6px}
 .pc-key i{display:inline-block;width:12px;height:12px;border-radius:50%}.pc-key i.hi{background:#1f8a6b}.pc-key i.mid{background:#7d8899}.pc-key i.lo{background:#d9622b}
@@ -1910,9 +1923,10 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   // ---------- percentile profile ----------
   var PCT={}, PMIN=500;
   var BBD={};try{BBD=JSON.parse(document.getElementById("bb-data").textContent)}catch(e){}
-  var PM=[["Stuff",[["fbv","Fastball velo",0],["ks","K-Stuff+",0],["ext","Extension",0],["whiff","Whiff+",0]]],
+  var PM=[["Stuff",[["fbv","Fastball velo",0],["ks","K-Stuff+",0],["whiff","Whiff+",0]]],
           ["Command",[["loc","Location+",0],["zone","Zone%",0],["chase","Chase%",0]]],
-          ["Results",[["rv","Runs per 100",0],["swstr","SwStr%",0],["izw","In-zone whiff%",0],["xw","xwOBA on contact",1],["gb","GB%",0],["fb","FB%",1],["pull","Pulled FB%",1]]]];
+          ["Results",[["era","ERA",1],["fip","FIP",1],["k","K%",0],["bb","BB%",1],["xw","xwOBA on contact",1],["gb","GB%",0]]]];
+  var STDP={};try{var _sd=JSON.parse(document.getElementById("std-data").textContent),_c={};_sd.cols.forEach(function(c,i){_c[c]=i});_sd.rows.forEach(function(r){STDP[r[0]]={era:r[_c.era],fip:r[_c.fip],k:r[_c.k],bb:r[_c.bb]}})}catch(e){}
   function pmet(d,id,y){
     var rows=d.r.filter(function(r){return r[16]});
     function W(i){var s=0,w=0;rows.forEach(function(r){if(r[i]!=null){s+=r[i]*r[16];w+=r[16]}});return w?s/w:null}
@@ -1923,7 +1937,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
       if(r[9]!=null&&r[6]){xs+=r[9]*r[6];xn+=r[6]}});
     var fk=null;Object.keys(by).forEach(function(k){if(!fk||by[k][0]>by[fk][0])fk=k});
     var bk=null;Object.keys(tp).forEach(function(k){if(tp[k][0]>=100&&(!bk||tp[k][1]/tp[k][0]>tp[bk][1]/tp[bk][0]))bk=k});
-    var bx=(BBD[y]||{})[id]||[];return {ext:bx[4]!=null?bx[4]:null,swstr:bx[0]!=null?bx[0]:null,gb:bx[1]!=null?bx[1]:null,fb:bx[2]!=null?bx[2]:null,pull:bx[3]!=null?bx[3]:null,fbv:fk?by[fk][1]/by[fk][0]:null,fbk:fk,ks:W(29),best:bk?tp[bk][1]/tp[bk][0]:null,bestk:bk,whiff:W(4),loc:W(23),zone:W(17),chase:W(19),rv:W(5),xw:xn?xs/xn:null,izw:W(21)}}
+    var bx=(BBD[y]||{})[id]||[],sx=y===2026?(STDP[id]||{}):{};return {era:sx.era!=null?sx.era:null,fip:sx.fip!=null?sx.fip:null,k:sx.k!=null?sx.k:null,bb:sx.bb!=null?sx.bb:null,ext:bx[4]!=null?bx[4]:null,swstr:bx[0]!=null?bx[0]:null,gb:bx[1]!=null?bx[1]:null,fb:bx[2]!=null?bx[2]:null,pull:bx[3]!=null?bx[3]:null,fbv:fk?by[fk][1]/by[fk][0]:null,fbk:fk,ks:W(29),best:bk?tp[bk][1]/tp[bk][0]:null,bestk:bk,whiff:W(4),loc:W(23),zone:W(17),chase:W(19),rv:W(5),xw:xn?xs/xn:null,izw:W(21)}}
   function ptable(y,src){if(PCT[y])return PCT[y];var t={};Object.keys(src).forEach(function(k){if(src[k].p>=PMIN)t[k]=pmet(src[k],k,y)});
     var v={};PM.forEach(function(g){g[1].forEach(function(m){v[m[0]]=Object.keys(t).map(function(k){return t[k][m[0]]}).filter(function(x){return x!=null}).sort(function(a,b){return a-b})})});
     return (PCT[y]={t:t,v:v,n:Object.keys(t).length})}
@@ -1931,7 +1945,7 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var below=0,eq=0;for(var i=0;i<a.length;i++){if(a[i]<val)below++;else if(a[i]===val)eq++}
     var p=(below+eq/2)/a.length*100;return Math.max(1,Math.min(99,Math.round(low?100-p:p)))}
   function pfmt(k,v,m){if(v==null)return "–";
-    if(k==="fbv")return v.toFixed(1)+" mph";if(k==="ext")return v.toFixed(1)+" ft";if(k==="zone"||k==="chase"||k==="izw"||k==="swstr"||k==="gb"||k==="fb"||k==="pull")return v.toFixed(1)+"%";
+    if(k==="fbv")return v.toFixed(1)+" mph";if(k==="era"||k==="fip")return v.toFixed(2);if(k==="k"||k==="bb")return v.toFixed(1)+"%";if(k==="ext")return v.toFixed(1)+" ft";if(k==="zone"||k==="chase"||k==="izw"||k==="swstr"||k==="gb"||k==="fb"||k==="pull")return v.toFixed(1)+"%";
     if(k==="rv")return (v>=0?"+":"−")+Math.abs(v).toFixed(2);if(k==="xw")return v.toFixed(3).replace(/^0/,"");
     if(k==="best")return (NAMES[m.bestk]||m.bestk||"")+" · "+Math.round(v);return String(Math.round(v))}
   function pcol(p){return p==null?"mid":p>=70?"hi":p<=30?"lo":"mid"}
@@ -1946,19 +1960,18 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     var html=PM.map(function(g){var ps=[],cg={t:g[0],rows:[]};CARD.push(cg);
       var rows=g[1].map(function(x){var k=x[0],p=prank(T,k,m[k],x[2]),p0=pm?prank(PT,k,pm[k],x[2]):null;if(p!=null){ps.push(p);all.push([x[1],p])}
         var c=pcol(p),dl=p!=null&&p0!=null?p-p0:null;cg.rows.push([x[1],pfmt(k,m[k],m),p,p0,dl]);
-        return '<div class="pc-row"><div class="pc-l"><b>'+x[1]+'</b><span>'+esc(pfmt(k,m[k],m))+'</span></div><div class="pc-bar" '+(p==null?'aria-hidden="true"':'role="img" aria-label="'+x[1]+': '+pord(p)+' percentile'+(p0!=null?', '+pord(p0)+' in '+py:'')+'"')+'><i class="pc-trk"></i>'+(p!=null?'<i class="pc-fill '+c+'" style="width:'+p+'%"></i>':'')+'<i class="pc-avg"></i>'+(p0!=null?'<i class="pc-prev" style="left:'+p0+'%" title="'+py+': '+pord(p0)+'"></i>':'')+(p!=null?'<b class="pc-dot '+c+'" style="left:'+p+'%">'+p+'</b>':'<span class="pc-na">n/a</span>')+'</div>'+
-          '<div class="pc-d '+(dl==null?"":dl>=5?"hi":dl<=-5?"lo":"")+'">'+(dl==null?"":(dl>0?"↑ ":dl<0?"↓ ":"→ ")+Math.abs(dl))+'</div></div>'}).join("");
+        return '<div class="pq-row"><span class="pq-l">'+x[1]+'</span><div class="pq-bar" '+(p==null?'aria-hidden="true"':'role="img" aria-label="'+x[1]+': '+pord(p)+' percentile'+(p0!=null?', '+pord(p0)+' in '+py:'')+'"')+'><i class="pq-trk"></i>'+(p!=null?'<i class="pq-fill '+c+'" style="width:'+p+'%"></i>':'')+(p0!=null?'<i class="pq-prev" style="left:'+p0+'%"></i>':'')+'</div><span class="pq-v">'+esc(pfmt(k,m[k],m))+'</span><b class="pq-p '+c+'">'+(p==null?"–":pord(p))+'</b></div>'}).join("");
       var avg=ps.length?Math.round(ps.reduce(function(a,b){return a+b},0)/ps.length):null;gs.push([g[0],avg]);cg.avg=avg;
-      return '<div class="pc-g"><div class="pc-gh"><h4>'+g[0]+'</h4>'+(avg!=null?'<span class="'+pcol(avg)+'">'+pord(avg)+' avg</span>':'')+'</div>'+rows+'</div>'}).join("");
+      return '<div class="pq-g"><div class="pq-gh"><span>'+g[0]+'</span>'+(avg!=null?'<em class="'+pcol(avg)+'">'+pord(avg)+' avg</em>':'')+'</div>'+rows+'</div>'}).join("");
     var ok=gs.filter(function(g){return g[1]!=null}).sort(function(a,b){return b[1]-a[1]}),read="";
     if(ok.length>1){var top=all.slice().sort(function(a,b){return b[1]-a[1]}),hi=top[0],lo=top[top.length-1],s=ok[0],w=ok[ok.length-1];
       read=(w[1]>=60?"<b>Strong across the board.</b> All three groups rank above average. ":s[1]<=40?"<b>Below average across the board.</b> ":s[1]-w[1]<12?"<b>Balanced profile.</b> No group stands far above the others. ":"<b>"+s[0]+" is the strength, "+w[0].toLowerCase()+" is the gap.</b> ")+
         "His best mark is "+hi[0]+" ("+pord(hi[1])+"); his lowest is "+lo[0]+" ("+pord(lo[1])+").";
       if(pm&&SEA[py].P[id].p<800)read+=" His "+py+" came in a "+SEA[py].P[id].p+"-pitch sample, so big arrows partly reflect that small sample."}
     window.kbPctCard={id:id,yr:YR,g:CARD,n:T.n,read:read};
-    el.innerHTML='<div class="pc-top"><div><span class="meta">Percentile profile · '+YR+'</span><p class="fine">Ranked among '+T.n+' pitchers with '+PMIN+'+ pitches'+(d.p<PMIN?' (he is under the cutoff, so read with care)':'')+'. xwOBA on contact, FB% and pulled FB% are flipped, so a higher percentile is always better.</p></div>'+
-      '<ul class="pc-key"><li><i class="hi"></i>Top 30%</li><li><i class="mid"></i>Middle</li><li><i class="lo"></i>Bottom 30%</li>'+(pm?'<li><i class="pv"></i>Where he was in '+py+'</li>':'')+'<li><i class="av"></i>League average</li></ul></div>'+
-      '<div class="pc-grid">'+html+'</div>'+(read?'<p class="pc-read">'+read+'</p>':'');
+    el.innerHTML='<div class="pq-top"><h3>Percentiles</h3><span class="meta">'+YR+'</span></div>'+
+      '<div class="pq-list">'+html+'</div>'+(read?'<p class="pc-read">'+read+'</p>':'')+
+      '<p class="fine pq-foot">Far right and green is best, red is worst. Ranked among '+T.n+' pitchers with '+PMIN+'+ pitches'+(d.p<PMIN?' (he is under the cutoff, so read with care)':'')+'.'+(pm?' Hollow dot is where he was in '+py+'.':'')+'</p>';
     el.hidden=false;
   }
   var input=document.getElementById("ps-input"), list=document.getElementById("ps-list"), matches=[], active=-1;
