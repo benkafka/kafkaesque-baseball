@@ -1996,6 +1996,17 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   list.addEventListener("click",function(e){var b=e.target.closest("button[data-id]");if(b)pick(b.dataset.id)});
   document.addEventListener("click",function(e){if(!e.target.closest(".search"))list.hidden=true});
   document.querySelectorAll(".chip-btn").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.id)})});
+  // swap the suggestion buttons for the most looked-up pitchers (trending.json, updated from GoatCounter)
+  fetch("trending.json?"+Math.floor(Date.now()/36e5)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(t){
+    var top=(t.top||[]).filter(function(x){return P26[x.id]});if(!top.length)return;
+    var q=document.querySelector(".quick");if(!q)return;
+    var ids=top.map(function(x){return x.id});
+    q.querySelectorAll(".chip-btn").forEach(function(b){if(ids.length<4&&ids.indexOf(b.dataset.id)<0)ids.push(b.dataset.id)});
+    var last={};ids.forEach(function(id){var w=P26[id].n.split(" ").pop();last[w]=(last[w]||0)+1});
+    q.innerHTML='<span class="meta">Trending</span>'+ids.slice(0,4).map(function(id){var n=P26[id].n,w=n.split(" ").pop();
+      return '<button type="button" class="chip-btn" data-id="'+id+'" title="'+esc(n)+'">'+esc(last[w]>1?n:w)+'</button>'}).join("");
+    q.querySelectorAll(".chip-btn").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.id)})});
+  }).catch(function(){});
   var n=document.getElementById("pitcher-count"); if(n)n.textContent=Object.keys(P26).length;
   document.getElementById("rc-years").addEventListener("click",function(e){var b=e.target.closest("button[data-y]");if(b&&!b.disabled&&CUR)show(CUR,false,+b.dataset.y)});
   document.querySelectorAll(".rc-view button").forEach(function(b){b.addEventListener("click",function(){VIEW=b.dataset.v;document.querySelectorAll(".rc-view button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});if(CUR)show(CUR,false,YR)})});
