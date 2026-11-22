@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20T17:00Z",
+ "updated": "2026-11-22T07:00Z",
  "days": 7,
  "top": [
   {
@@ -8,13 +8,18 @@
    "views": 2
   },
   {
-   "id": "656464",
-   "n": "Kevin Ginkel",
+   "id": "701542",
+   "n": "Will Warren",
+   "views": 2
+  },
+  {
+   "id": "681402",
+   "n": "Gus Varland",
    "views": 1
   },
   {
-   "id": "808967",
-   "n": "Yoshinobu Yamamoto",
+   "id": "656464",
+   "n": "Kevin Ginkel",
    "views": 1
   }
  ]
