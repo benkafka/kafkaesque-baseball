@@ -869,6 +869,29 @@ section.page{padding-block:28px 12px;min-height:60vh;scroll-margin-top:100vh}
 .hcard:hover{border-color:var(--accent)}
 .hcard h3{font-family:var(--f-display);font-weight:700;font-size:22px;text-transform:uppercase;line-height:1.05;letter-spacing:.01em}
 .hcard .art-go{margin-top:auto;padding-top:4px}
+.mt .hc-viz{height:104px;display:flex;align-items:center;justify-content:center;margin:4px 0 2px;background:var(--panel-2);border-radius:8px;padding:8px 12px}
+.mt .hc-viz svg{width:100%;height:100%;max-width:280px;overflow:visible}
+.mt .hc-word{font-family:var(--f-data);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.v-grass{fill:rgba(31,138,91,.16)}.v-dirt{fill:rgba(184,106,0,.22)}.v-ln{stroke:var(--muted);stroke-width:1;fill:none;opacity:.6}.v-fence{stroke:var(--fg);stroke-width:2.5;fill:none}
+.v-ok{fill:#1f8a5b}.v-hot{fill:#d2453c}.v-acc{fill:var(--accent)}.v-mut{fill:var(--muted)}.v-base{fill:var(--line)}
+.v-txt{font:700 15px var(--f-data)}.v-inv{fill:var(--panel)}.v-vs{font:italic 700 20px var(--f-display);fill:var(--fg)}
+.v-lab{font:600 10px var(--f-data);fill:var(--muted)}.v-lab-a{fill:var(--accent)}
+.v-pos{fill:#1f8a5b}.v-dot{fill:var(--muted);opacity:.45}.v-zone{fill:var(--panel);stroke:var(--fg);stroke-width:1.5}.v-zl{stroke:var(--line);stroke-width:1}.v-plate{fill:var(--panel);stroke:var(--muted);stroke-width:1}.v-neg{fill:#d2453c}.v-top{fill:var(--accent)}.v-zero{stroke:var(--muted);stroke-width:1}
+.mt-bars{width:100%;display:grid;gap:7px}
+.mt-bars div{display:grid;grid-template-columns:1fr 46px;align-items:center;gap:8px;font-size:12px;color:var(--fg)}
+.mt-bars div span{display:block;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:3px 8px;border-radius:4px;background:linear-gradient(90deg,rgba(31,138,91,.28) var(--w),transparent var(--w))}
+.mt-bars b{font:600 12px var(--f-data);color:#1f8a5b;text-align:right}
+.mt-fa{width:100%}
+.mt-fa-bar{display:flex;height:18px;border-radius:9px;overflow:hidden;background:var(--line)}
+.mt-fa-bar i{display:block;height:100%;width:0;transition:width .4s}
+.mt-fa-bar .s{background:var(--accent)}.mt-fa-bar .p{background:var(--muted);opacity:.55}
+.mt-fa-k{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)}
+.mt-fa-k b{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--line);margin-right:5px;vertical-align:-1px}
+.mt-fa-k b.s{background:var(--accent)}.mt-fa-k b.p{background:var(--muted);opacity:.55}
+.mt-fa-k span em{font-style:normal;font-family:var(--f-data);color:var(--fg);margin-left:3px}
+.mt-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.mt-chips span{font:600 12px var(--f-data);padding:4px 9px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--fg)}
+.mt-chips span:first-child{border-color:var(--accent);color:var(--accent)}
 .hc-faces{display:flex;gap:6px}
 .hc-faces img{width:44px;height:44px;border-radius:50%;background:var(--panel-2);object-fit:cover;border:1px solid var(--line)}
 .hc-list{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:13px;counter-reset:hc}
@@ -1060,13 +1083,13 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   <section id="more" class="page">
     <div class="sec-head"><h2>More Tools</h2><p>Everything else on the site</p></div>
     <div class="grid g3 more-grid">
-      <a class="panel hcard" href="#leaders"><div class="meta">Leaderboards</div><h3>Every pitcher, the stats you know</h3><p>ERA, FIP, K-BB% and WHIP for every 2026 pitcher, plus his arsenal grade. Sort, filter by role, export to CSV.</p><ol class="hc-list" id="hc-leaders"></ol><span class="art-go">Open leaderboards →</span></a>
-      <a class="panel hcard" href="#teams"><div class="meta">Staff Payroll</div><h3>All 30 staffs, ranked</h3><p>Every staff ranked by run value next to its payroll, with each pitcher's arsenal grade and best pitch.</p><ol class="hc-list" id="hc-teams"></ol><span class="art-go">See all staffs →</span></a>
-      <a class="panel hcard" href="#parks"><div class="meta">Ballparks</div><h3>How every park changes a pitch</h3><p>Batted balls, movement and swing-and-miss by pitch type in all 30 parks, adjusted for pitcher and hitter.</p><span class="art-go">Open ballparks →</span></a>
-      <a class="panel hcard" href="#freeagency"><div class="meta">Free Agency</div><h3>Every free-agent pitcher, graded</h3><p>This winter's pitchers with their grades and estimated price, updated as deals become official.</p><span class="art-go">Open the tracker →</span></a>
-      <a class="panel hcard" href="#matchups"><div class="meta">Matchups</div><h3>Today's starters, head to head</h3><p>What each probable starter does best and how the other lineup handles it. Runs during the season.</p><span class="art-go">See matchups →</span></a>
-      <a class="panel hcard" href="#minors"><div class="meta">Farm Systems</div><h3>Pitching prospects by org</h3><p>Every organization's minor league arms, with the stuff that stands out.</p><span class="art-go">Open farm systems →</span></a>
-      <a class="panel hcard" href="#glossary"><div class="meta">Glossary</div><h3>What every number means</h3><p>Plain-English definitions for coaches, with the technical details underneath.</p><span class="art-go">Read the glossary →</span></a>
+      <a class="panel hcard mt" href="#leaders"><div class="meta">Leaderboards</div><h3>Every pitcher, the stats you know</h3><div class="hc-viz"><svg id="hc-leaders" viewBox="0 0 240 96" role="img" aria-label="ERA spread for every 2026 pitcher with 50+ innings"></svg></div><span class="hc-word">Sortable</span><span class="art-go">Open leaderboards →</span></a>
+      <a class="panel hcard mt" href="#teams"><div class="meta">Staff Payroll</div><h3>All 30 staffs, ranked</h3><div class="hc-viz"><svg id="hc-teams" viewBox="0 0 240 96" role="img" aria-label="All 30 pitching staffs ranked by run value"></svg></div><span class="hc-word">Efficiency</span><span class="art-go">See all staffs →</span></a>
+      <a class="panel hcard mt" href="#parks"><div class="meta">Ballparks</div><h3>How every park changes a pitch</h3><div class="hc-viz"><svg viewBox="0 0 240 96" aria-hidden="true"><path class="v-grass" d="M120 92 L46 30 Q120 -14 194 30 Z"/><path class="v-dirt" d="M120 92 L94 66 L120 42 L146 66 Z"/><path class="v-ln" d="M120 92 L46 30 M120 92 L194 30"/><path class="v-fence" d="M46 30 Q120 -14 194 30"/><circle class="v-ok" cx="84" cy="44" r="4"/><circle class="v-ok" cx="150" cy="40" r="4"/><circle class="v-ok" cx="112" cy="30" r="4"/><circle class="v-hot" cx="168" cy="12" r="4.5"/><circle class="v-hot" cx="70" cy="16" r="4.5"/></svg></div><span class="hc-word">Context</span><span class="art-go">Open ballparks →</span></a>
+      <a class="panel hcard mt" href="#freeagency"><div class="meta">Free Agency</div><h3>Every free-agent pitcher, graded</h3><div class="hc-viz"><svg id="hc-fa" viewBox="0 0 240 96" role="img" aria-label="Free-agent pitchers by arsenal grade and estimated salary, signed pitchers highlighted"></svg></div><span class="hc-word">Live</span><span class="art-go">Open the tracker →</span></a>
+      <a class="panel hcard mt" href="#matchups"><div class="meta">Matchups</div><h3>Today's starters, head to head</h3><div class="hc-viz"><svg viewBox="0 0 240 96" aria-hidden="true"><rect class="v-zone" x="24" y="18" width="44" height="52" rx="2"/><path class="v-zl" d="M24 35.3h44M24 52.6h44M38.7 18v52M53.3 18v52"/><path class="v-plate" d="M24 78h44l-4 6h-36z"/><rect class="v-zone" x="172" y="18" width="44" height="52" rx="2"/><path class="v-zl" d="M172 35.3h44M172 52.6h44M186.7 18v52M201.3 18v52"/><path class="v-plate" d="M172 78h44l-4 6h-36z"/><circle class="v-top" cx="34" cy="30" r="3.6"/><circle class="v-top" cx="44" cy="22" r="3.6"/><circle class="v-top" cx="52" cy="38" r="3.6"/><circle class="v-top" cx="40" cy="46" r="3.6"/><circle class="v-top" cx="60" cy="58" r="3.6"/><circle class="v-top" cx="30" cy="60" r="3.6"/><circle class="v-top" cx="48" cy="64" r="3.6"/><circle class="v-top" cx="56" cy="26" r="3.6"/><circle class="v-mut" cx="176" cy="40" r="3.6"/><circle class="v-mut" cx="190" cy="34" r="3.6"/><circle class="v-mut" cx="198" cy="52" r="3.6"/><circle class="v-mut" cx="184" cy="62" r="3.6"/><circle class="v-mut" cx="206" cy="66" r="3.6"/><circle class="v-mut" cx="172" cy="58" r="3.6"/><circle class="v-mut" cx="194" cy="24" r="3.6"/><circle class="v-mut" cx="208" cy="44" r="3.6"/><text class="v-vs" x="120" y="52" text-anchor="middle">VS</text></svg></div><span class="hc-word">Daily</span><span class="art-go">See matchups →</span></a>
+      <a class="panel hcard mt" href="#minors"><div class="meta">Farm Systems</div><h3>Pitching prospects by org</h3><div class="hc-viz"><svg viewBox="0 0 240 96" aria-hidden="true"><rect class="v-base" x="20" y="62" width="32" height="18" rx="3"/><rect class="v-base" x="64" y="50" width="32" height="30" rx="3"/><rect class="v-base" x="108" y="38" width="32" height="42" rx="3"/><rect class="v-base" x="152" y="26" width="32" height="54" rx="3"/><rect class="v-acc" x="196" y="12" width="32" height="68" rx="3"/><text class="v-lab" x="36" y="93" text-anchor="middle">A</text><text class="v-lab" x="80" y="93" text-anchor="middle">A+</text><text class="v-lab" x="124" y="93" text-anchor="middle">AA</text><text class="v-lab" x="168" y="93" text-anchor="middle">AAA</text><text class="v-lab v-lab-a" x="212" y="93" text-anchor="middle">MLB</text></svg></div><span class="hc-word">Prospects</span><span class="art-go">Open farm systems →</span></a>
+      <a class="panel hcard mt" href="#glossary"><div class="meta">Glossary</div><h3>What every number means</h3><div class="hc-viz"><div class="mt-chips"><span>K-Stuff+</span><span>Whiff+</span><span>IVB</span><span>FIP</span><span>K-BB%</span><span>Run value</span></div></div><span class="hc-word">Definitions</span><span class="art-go">Read the glossary →</span></a>
     </div>
   </section>
 
@@ -2749,11 +2772,19 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
   document.querySelectorAll("[data-board]").forEach(function(a){a.addEventListener("click",function(){if(window.kbShowBoard)window.kbShowBoard(a.dataset.board)})});
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
   var tl=document.getElementById("hc-teams");
-  if(tl&&window.kbTeamList)tl.innerHTML=window.kbTeamList.slice(0,3).map(function(t){return '<li><span>'+esc(t.name)+'</span><b class="up">+'+t.rv.toFixed(2)+'</b></li>'}).join("");
+  if(tl&&window.kbTeamList){var TL=window.kbTeamList,mx=Math.max.apply(null,TL.map(function(t){return Math.abs(t.rv)}))||1,bw=240/TL.length,mid=48,
+    svg='<line class="v-zero" x1="0" x2="240" y1="'+mid+'" y2="'+mid+'"/>';
+    TL.forEach(function(t,i){var h=Math.max(1.5,Math.abs(t.rv)/mx*40),y=t.rv>=0?mid-h:mid;svg+='<rect class="'+(i<3?"v-top":t.rv>=0?"v-pos":"v-neg")+'" x="'+(i*bw+1).toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(bw-2).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1"><title>'+esc(t.name)+' '+(t.rv>=0?"+":"")+t.rv.toFixed(2)+'</title></rect>'});
+    svg+='<text class="v-lab v-lab-a" x="0" y="94">'+esc(TL[0].name.split(" ").slice(-1)[0])+' #1</text><text class="v-lab" x="240" y="94" text-anchor="end">#30</text>';tl.innerHTML=svg}
   var ll=document.getElementById("hc-leaders"), B={};
   try{B=JSON.parse(document.getElementById("board-data").textContent)}catch(e){}
   var SD0={rows:[]};try{SD0=JSON.parse(document.getElementById("std-data").textContent)}catch(e){}
-  if(ll)ll.innerHTML=SD0.rows.filter(function(r){return r[5]>=162&&r[6]!=null}).sort(function(a,b){return a[6]-b[6]}).slice(0,3).map(function(r){return '<li><span>'+esc(r[1])+' <small>'+esc(r[2])+'</small></span><b class="up">'+r[6].toFixed(2)+' ERA</b></li>'}).join("");
+  if(ll){var R=SD0.rows.filter(function(r){return r[5]>=50&&r[6]!=null}),bins=[],lo=1.5,st=0.25,nb=22;for(var i=0;i<nb;i++)bins.push(0);
+    R.forEach(function(r){var k=Math.floor((Math.min(Math.max(r[6],lo),lo+st*nb-.001)-lo)/st);bins[k]++});
+    var mxb=Math.max.apply(null,bins)||1,bw=240/nb,top=R.slice().sort(function(a,b){return a[6]-b[6]})[0],g='';
+    bins.forEach(function(c,i){var h=c/mxb*62,e=lo+i*st;g+='<rect class="'+(e<3?"v-pos":e>=5?"v-neg":"v-base")+'" x="'+(i*bw+1).toFixed(1)+'" y="'+(74-h).toFixed(1)+'" width="'+(bw-2).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1.5"/>'});
+    if(top){var tx=(Math.max(top[6],lo)-lo)/st*bw+bw/2;g+='<path class="v-zero" d="M'+tx.toFixed(1)+' 74 L'+tx.toFixed(1)+' 6"/><circle class="v-top" cx="'+tx.toFixed(1)+'" cy="6" r="4"/><text class="v-lab v-lab-a" x="'+(tx+8).toFixed(1)+'" y="10">'+esc(top[1].split(" ").slice(-1)[0])+' '+top[6].toFixed(2)+'</text>'}
+    g+='<line class="v-zero" x1="0" x2="240" y1="74.5" y2="74.5"/><text class="v-lab" x="0" y="92">1.50 ERA</text><text class="v-lab" x="240" y="92" text-anchor="end">7.00+</text>';ll.innerHTML=g}
   route();
 })();
 </script>
@@ -3122,6 +3153,9 @@ b.g-hi,b.g-up{color:var(--ok)} b.g-lo,b.g-dn{color:var(--hot)}
     if(rows.length>SHOW){more.hidden=false;more.textContent="Show all "+rows.length}else if(SHOW>25&&rows.length>25){more.hidden=false;more.textContent="Show fewer"}else{more.hidden=true}
     var signed=L.filter(off).length, pend=L.filter(function(p){var s=status(p);return s&&s.k==="pend"}).length, avail=L.length-signed-pend;
     var top=L.filter(function(p){return !off(p)&&p.v!=null}).sort(function(a,b){return b.v-a.v}).slice(0,3);
+    var hf=document.getElementById("hc-fa");if(hf&&L.length){var pts=L.filter(function(p){return p.a!=null&&p.v!=null}),vm=Math.max.apply(null,pts.map(function(p){return p.v}))||1,g='<line class="v-zero" x1="0" x2="240" y1="78.5" y2="78.5"/>';
+      pts.sort(function(a,b){return (off(a)?1:0)-(off(b)?1:0)}).forEach(function(p){var x=Math.max(0,Math.min(1,(p.a-20)/60))*232+4,y=74-Math.sqrt(p.v/vm)*68,o=off(p);g+='<circle class="'+(o?"v-top":"v-dot")+'" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(o?4:2.6)+'"><title>'+esc(p.n)+'</title></circle>'});
+      g+='<text class="v-lab" x="0" y="92">Weaker stuff</text><text class="v-lab" x="240" y="92" text-anchor="end">Better stuff</text><text class="v-lab" x="2" y="8">$$$</text><circle class="v-top" cx="198" cy="5" r="4"/><text class="v-lab v-lab-a" x="205" y="8">signed</text>';hf.innerHTML=g}
     document.getElementById("fa-count").innerHTML='<b>'+avail+'</b> available · '+(pend?'<b>'+pend+'</b> decisions pending · ':'')+'<b>'+signed+'</b> off the market'+(top.length?'<span class="fine" style="font-style:normal;font-family:var(--f-body);font-weight:400;display:block;margin-top:4px">Best still available: '+top.map(function(p){return esc(p.n)+' ('+$m(p.v)+')'}).join(", ")+'</span>':'');
     var rec=L.filter(function(p){var s=status(p);return s&&s.k==="sign"&&s.d}).sort(function(a,b){return status(b).d.localeCompare(status(a).d)}).slice(0,4);
     var rb=document.getElementById("fa-recent");
