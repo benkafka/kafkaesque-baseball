@@ -188,6 +188,8 @@ jobs:
           # 5. Agreed deals from news (MLB only lists a signing once it's official, often days later)
           AGREE = re.compile(r"\b(agree[sd]?|agreed to|reach(es|ed)? (an? )?(agreement|deal)|sign(s|ed|ing)? with|to sign with|lands? with|inks?|finaliz\w*|returns? to)\b", re.I)
           TEAMV = re.compile(r"\b(" + "|".join(re.escape(n) for n in sorted(NICK, key=len, reverse=True)) + r")\b\s+(agree|agrees|sign|signs|ink|inks|land|lands|add|adds|bring back|re-sign|re-signs)\b")
+          TEAMW = re.compile(r"\b(" + "|".join(re.escape(n) for n in sorted(NICK, key=len, reverse=True)) + r")\b\s+(?:agree|agrees|reach|reaches|finalize|finalizes|complete|completes)\b(?:(?![A-Z][a-z]+ [A-Z][a-z]+)[^,;:])*?\b(?:deal|contract|terms|agreement)\s+with\b")
+          TEAMC = re.compile(r"\b(" + "|".join(re.escape(n) for n in sorted(NICK, key=len, reverse=True)) + r")\b\s*(?:,|and|&)\s*")
           def agreed_team(title, name):
               t = norm(title).replace("\u2019", "'")
               last = norm(name).split()[-1].lower()
@@ -216,6 +218,18 @@ jobs:
                           hits.append((mm.start(), -len(nk), nk))
                   if hits:
                       return NICK[min(hits)[2]]
+              for m in TEAMC.finditer(t):
+                  # "Mets, Hernández agree to 3-year deal"
+                  nxt = re.sub(r"^\s*((veteran|closer|reliever|starter|right-hander|left-hander|righty|lefty|rhp|lhp|ace|free agent|japanese|korean|former|pitcher)\s+)*", "", t[m.end():], flags=re.I)
+                  for nn in (norm(name), last):
+                      if nxt.lower().startswith(nn.lower()) and re.match(r"\s*(agree|agrees|reach|reaches|finalize|finalizes)\b", nxt[len(nn):], re.I):
+                          return NICK[m.group(1)]
+              m = TEAMW.search(t)
+              if m:
+                  # "Mets agree to a three-year deal with lefty X": X has to be the next name after "with"
+                  nxt = re.sub(r"^\s*((veteran|closer|reliever|starter|right-hander|left-hander|righty|lefty|rhp|lhp|ace|free agent|japanese|korean|former|pitcher)\s+)*", "", t[m.end():], flags=re.I)
+                  if nxt.lower().startswith(norm(name).lower()) or nxt.lower().startswith(last):
+                      return NICK[m.group(1)]
               m = TEAMV.search(t)
               if m:
                   # "Tigers bring back X": X has to be the next name after the verb
@@ -271,6 +285,7 @@ jobs:
                   agreed[pid] = best
                   print("agreed:", o["n"], "->", best["t"], "|", best["title"])
               time.sleep(1)
+
 
           new = {"transactions": keep, "rosters": rosters, "news": news, "contracts": contracts, "agreed": agreed}
           if any(old.get(k) != v for k, v in new.items()):
