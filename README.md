@@ -1,10 +1,63 @@
-# Kafkaesque Baseball: Pitch Mix Tool
+# Kafkaesque Baseball
+
+Pitch arsenal evaluation and development recommendations for MLB and amateur pitchers.
+**Live site: [kafkaesquebaseball.com](https://kafkaesquebaseball.com)** · How well the models hold up: [Does It Work?](https://kafkaesquebaseball.com/#validate)
+
+## Start here (2-minute version)
+
+**The pipeline**
+
+```
+Statcast pitches (pybaseball)  ──>  Colab notebook (Pitch_Mix_Tool_v1.ipynb)
+MLB Stats API (rosters, bios)       • grade every pitch vs. exact peers (Whiff+, Location+, run value)
+                                    • K-Stuff+ model, pitch and arsenal grades
+                                    • Pitch Lab, mix optimizer, Watch List, ballparks
+                                          │
+                                          ▼
+                              index.html (data embedded as JSON blocks)
+                                          │
+              ┌───────────────────────────┼──────────────────────────────┐
+              ▼                           ▼                              ▼
+   build/build_pages.py         .github/workflows/fa-feed.yml     build/trending.py
+   a page + preview image       free agency updates from          most looked-up pitchers
+   for every pitcher (p/, og/)  official sources, every 3 hrs     (GoatCounter), every 6 hrs
+```
+
+**Data sources:** Statcast pitch-by-pitch data via [pybaseball](https://github.com/jldbc/pybaseball) (2021 to 2026 regular seasons), the MLB Stats API (rosters, bios, transactions), Spotrac (payroll), MLB.com and other official outlets (free agency news).
+
+**Reproduce one model in a minute.** Test 1 on the Does It Work? page (do K-Stuff+ and Whiff+ predict next season?) runs from files already in this repo, with no downloads:
+
+```bash
+git clone https://github.com/benkafka/kafkaesque-baseball && cd kafkaesque-baseball
+pip install numpy
+python3 validation/next_season_test.py
+```
+
+It prints the same table as the site: 324 pitchers, 2025 inputs vs. 2026 results, 5-fold cross-validated.
+
+**Repo map**
+
+| Path | What it is |
+|---|---|
+| `Pitch_Mix_Tool_v1.ipynb` | The full analysis: data pulls, every model, every threshold |
+| `index.html` | The site, with each season's results embedded as JSON |
+| `seasons/YYYY.json` | Past seasons (2021 to 2025), loaded when a visitor switches years |
+| `validation/` | Scripts that reproduce the Does It Work? tests |
+| `build/` | Builds the per-pitcher pages and the trending list |
+| `.github/workflows/` | Scheduled jobs: free agency feed, pitcher pages, trending |
+| `milb.json`, `fa_*.json` | Minor league data and the free agency feed |
+
+**How it's built:** I designed the methods and the tests. Claude, an AI model, wrote most of the code.
+
+---
+
+## Full details
 
 A pitching tool that grades every arsenal in MLB against its exact peers and flags where a pitcher's usage doesn't match his results.
 
 Built in Python with [pybaseball](https://github.com/jldbc/pybaseball), using 2026 and 2025 Statcast data and the MLB Stats API.
 
-**Live site:** https://benkafka.github.io/kafkaesque-baseball/
+**Live site:** https://kafkaesquebaseball.com
 
 **Notebook:** [Pitch_Mix_Tool_v1.ipynb](Pitch_Mix_Tool_v1.ipynb)
 
@@ -20,10 +73,10 @@ Built in Python with [pybaseball](https://github.com/jldbc/pybaseball), using 20
 - **Adds shape and context:** velocity, induced vertical break, arm-side horizontal break, and splits by count (ahead, even, behind).
 - **K-Stuff+ grades the pitch itself.** A gradient-boosted model, trained on every 2026 pitch, learns how velo, movement, spin, release point, extension, arm angle and the gap from the pitcher's main fastball translate into run value. It never sees location, count or results. 100 = average, 10 points = 1 standard deviation. In a first-half/second-half test, first-half K-Stuff+ predicted second-half run value better than first-half run value did (r = 0.24 vs. 0.17).
 - **Pitch Lab suggests fixes for each pitcher.** It tests small, realistic changes to each pitch (1 mph, 2 inches of break, 150 rpm, 0.3 ft of extension) with the K-Stuff+ model, allowing only versions that pitchers with a similar arm slot already throw. It also builds the typical version of pitches he doesn't throw from comparable pitchers. Each suggestion comes with estimated runs saved and a real pitcher who throws a similar shape.
-- **Daily Matchups** (home page). Each day's probable starters and lineups load live from the MLB Stats API. Each starter's run value by pitch group is set against the opposing offense's 2026 run value vs. that group from same-handed pitchers (ranked 1–30), with a matchup edge and per-hitter pitch-group splits.
+- **Daily Matchups** (Matchups page, under More Tools). Each day's probable starters and lineups load live from the MLB Stats API. Each starter's run value by pitch group is set against the opposing offense's 2026 run value vs. that group from same-handed pitchers (ranked 1–30), with a matchup edge and per-hitter pitch-group splits.
 - **2027 Watch List.** Ten starters and ten relievers who are 29 or younger, threw 600+ pitches in 2026, were average or worse and have never had a strong season since 2021 (10+ runs above average, +1.0 runs/100, or arsenal grade 60+), ranked by projected 2027 run value. The projection is a ridge regression fit on back-to-back seasons from 2021 to 2026, leaning on K-Stuff+ and Whiff+, then Location+, fastball velo change and contact quality. Forward test on 2022–2025 (each list built only from earlier seasons): reliever picks were above average the next year 28 of 40 times vs. 50% of similar relievers and broke out 9 of 40 vs. about 15%; starter picks were above average 22 of 40 vs. 38% but broke out only 6 of 40 vs. about 11%. Age sets eligibility; as a predictor it didn't consistently help, so it isn't weighted.
 - **Farm Systems.** All 30 farm systems and each organization's top 10 pitching prospects (MLB Pipeline's order, our numbers alongside) from 2026 Triple-A and Florida State League pitch tracking (1,073 pitchers graded) plus stats for every pitcher at all four levels. K-Stuff+ is scored with the model trained on MLB pitches, so a prospect's number sits on the big league scale. Farm system pages rank all 30 orgs on trends like Triple-A fastball velo, breaking ball and changeup usage, strikeout and walk rates, and age vs level. "Called up" tags link 2026 debuts to their MLB cards. Data lives in milb.json.
-- **Free Agency Tracker.** Replaces Today's Matchups on the home page for the offseason. All 156 pitchers on MLB.com's 2026-27 free agent list, graded with the site's arsenal grade, K-Stuff+, run value and best pitch, with filters (available or signed, starters or relievers) and sortable columns. Signings and club option pickups update live from MLB's public transactions feed. Pitchers who barely pitched in 2026 use their most recent full season and are tagged with that year.
+- **Free Agency Tracker** (under More Tools). All 156 pitchers on MLB.com's 2026-27 free agent list, graded with the site's arsenal grade, K-Stuff+, run value and best pitch, with filters (available or signed, starters or relievers) and sortable columns. Signings and club option pickups update live from MLB's public transactions feed. Pitchers who barely pitched in 2026 use their most recent full season and are tagged with that year.
 - **Arm Slot Changes.** Every 4°+ change in a pitcher's average arm angle from one season to the next since 2021 (335 cases, 300+ pitches both seasons), with his main fastball's ride and run change, K-Stuff+ change and run value change. Across 1,955 back-to-back seasons, each degree lower cost a fastball about 0.15" of ride and added 0.17" of arm-side run with almost no velocity change; after adjusting for the prior season, slot changes didn't reliably help or hurt results. 2021→2022 changes are measured against a league-wide ~3° tracking shift in 2022.
 - **Past seasons (2021–2025).** Every pitcher page has a season switcher. Each past season is rebuilt with the same report card (Whiff+, Location+, K-Stuff+, run value with breakdown, pitch and arsenal grades, role, team, arm angle), graded against that season's league. Season data lives in `seasons/YYYY.json` and loads only when clicked. Pitchers who didn't reach 300 pitches in 2026 are still searchable by their past seasons.
 - **Pitch mix optimizer** (Pitch Lab tab). Suggests how often to throw each pitch against each batter side, using each pitch's run value blended with K-Stuff+, with a diminishing-returns charge for throwing a pitch more, capped shifts (20 points) and a fastball floor. Backtest on 2025 data: pitchers who moved toward its advice held steady (+0.03 runs/100) while those who moved away declined (−0.24), but after controlling for regression to the mean the effect was small (+0.03). Given only Bryan Baker's 2025 numbers, it recommended fewer sliders and more changeups to righties, the same direction the Rays took him.
