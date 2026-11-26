@@ -1,11 +1,16 @@
 {
- "updated": "2026-11-24T22:00Z",
+ "updated": "2026-11-26T08:00Z",
  "days": 7,
  "top": [
   {
    "id": "669373",
    "n": "Tarik Skubal",
    "views": 5
+  },
+  {
+   "id": "669947",
+   "n": "Jesse Scholtens",
+   "views": 3
   },
   {
    "id": "669432",
@@ -15,11 +20,6 @@
   {
    "id": "669270",
    "n": "Joel Kuhnel",
-   "views": 2
-  },
-  {
-   "id": "804636",
-   "n": "Jonah Tong",
    "views": 2
   }
  ]
