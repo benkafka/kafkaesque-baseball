@@ -1,11 +1,16 @@
 {
- "updated": "2026-11-26T08:00Z",
+ "updated": "2026-11-27T09:00Z",
  "days": 7,
  "top": [
   {
    "id": "669373",
    "n": "Tarik Skubal",
-   "views": 5
+   "views": 6
+  },
+  {
+   "id": "608718",
+   "n": "Brent Suter",
+   "views": 3
   },
   {
    "id": "669947",
@@ -16,11 +21,6 @@
    "id": "669432",
    "n": "Trevor Rogers",
    "views": 3
-  },
-  {
-   "id": "669270",
-   "n": "Joel Kuhnel",
-   "views": 2
   }
  ]
 }
